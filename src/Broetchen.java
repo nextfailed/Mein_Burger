@@ -1,6 +1,8 @@
 public class Broetchen extends Zutat{
     int backzeit;
     int hoehe;
+    
+    int test;
 
     public Broetchen(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int backzeit, int hoehe) {
         super(nummer, name, preis, klassisch, vegan, vegetarisch);
