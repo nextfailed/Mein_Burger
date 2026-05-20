@@ -1,5 +1,5 @@
 public class Gemuese extends Zutat {
-    private int scheibenDicke;
+    private float scheibenDicke;
     private int scheibenAnzahl;
 
     public Gemuese(int nummer, String name, float preis) {
@@ -8,7 +8,7 @@ public class Gemuese extends Zutat {
     }
 
     // Getter
-    public int getScheibenDicke() {
+    public float getScheibenDicke() {
         return scheibenDicke;
     }
 
@@ -29,6 +29,6 @@ public class Gemuese extends Zutat {
      */
     @Override
     public float berechneHoehe() {
-        return 0;
+        return scheibenDicke * scheibenAnzahl;
     }
 }
