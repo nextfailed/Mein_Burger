@@ -1,3 +1,6 @@
+/**
+ *
+ */
 public abstract class Zutat{
     protected int nummer;
     protected String name;
@@ -10,10 +13,9 @@ public abstract class Zutat{
     public Zutat(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch){
         this.nummer = nummer;
         this.name = name;
-
         this.preis = preis;
-        this.klassisch = klassisch;
 
+        this.klassisch = klassisch;
         this.vegan = vegan; 
         this.vegetarisch = vegetarisch;
     }
