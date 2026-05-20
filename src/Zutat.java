@@ -1,3 +1,6 @@
+/**
+ *
+ */
 public abstract class Zutat{
     protected int nummer;
     protected String name;
