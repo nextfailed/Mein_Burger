@@ -1,5 +1,5 @@
 /**
- *
+ * Abstakte Oberklasse für alle Zutaten des Burgers.
  */
 public abstract class Zutat{
     protected int nummer;
@@ -10,6 +10,17 @@ public abstract class Zutat{
     protected boolean vegan;
     protected boolean vegetarisch;
 
+
+    /**
+     * Vollständiger Konstruktor mit allen Parametern:
+     *
+     * @param nummer
+     * @param name
+     * @param preis
+     * @param klassisch
+     * @param vegan
+     * @param vegetarisch
+     */
     public Zutat(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch){
         this.nummer = nummer;
         this.name = name;
@@ -20,6 +31,14 @@ public abstract class Zutat{
         this.vegetarisch = vegetarisch;
     }
 
+
+    /**
+     * Verkürzter Konstruktor ohne Ernaehrungsart
+     *
+     * @param nummer
+     * @param name
+     * @param preis
+     */
     public Zutat(int nummer, String name, float preis){
         this(nummer,name, preis, false, false, false);
     }

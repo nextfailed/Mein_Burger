@@ -1,3 +1,6 @@
+/**
+ * Broetchen-Objektklasse, Unterklasse von Zutat.
+ */
 public class Broetchen extends Zutat{
     int backzeit;
     int hoehe;

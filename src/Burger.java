@@ -1,5 +1,7 @@
-import java.util.ArrayList;
-
+/**
+ * Burger dient der Erstellung eines eigenen Burgers mit beliebigen Zutaten und
+ * berechnet dessen Höhe und den Preis.
+ */
 public class Burger {
     private String name;
     private float gesamtHoehe = 0.0f;
@@ -23,6 +25,10 @@ public class Burger {
         return gesamtPreis;
     }
 
+
+    /**
+     * Berechnet die Hoehe des Burgers anhand aller verwendeten Zutaten.
+     */
     public void berechneHoehe() {
         for(Zutat aktuelleZutat : zutaten) {
             if(aktuelleZutat instanceof Salat || aktuelleZutat instanceof Sauce) {
@@ -34,6 +40,10 @@ public class Burger {
         }
     }
 
+    /**
+     * Fügt dem Burger eine Liste an beliebigen Zutaten hinzu.
+     * @param zutaten
+     */
     public void zutatenHinzufuegen(Zutat[] zutaten) {
         int arrayLength = zutaten.length;
         this.zutaten = new Zutat[arrayLength];
