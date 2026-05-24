@@ -9,7 +9,7 @@ public class App {
 
     /**
      * Main-Methode
-     * @param args
+     * @param args Startbefehl wird nicht verwendet
      */
     public static void main(String[] args) {
 
@@ -40,7 +40,7 @@ public class App {
                     break;
                 case "zutat":
                     if(StringIsNumber(befehlsTeile[1])) {
-                        // TODO: Zutat Methode
+                        //TODO: Zutat Methode
                     }
                     break;
                 case "ok":
