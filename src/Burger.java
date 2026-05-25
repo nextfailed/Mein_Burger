@@ -26,19 +26,34 @@ public class Burger {
     @Override
     public String toString(){
         StringBuffer buffer = new StringBuffer();
+        int leerzeichenFuerEinruecken = 3;
+
+        String einruecken = " ".repeat(leerzeichenFuerEinruecken);
         char listenZaehler = 'a';
 
         // Kopfzeile
         buffer.append("Rezept: " + name).append("(").append(this.berechneHoehe() + "mm, ");
         buffer.append(getDiaetdyp()).append(")");
-        buffer.append(" - ").append(berechnePreis() + "EUR");
+        buffer.append(" - ").append(berechnePreis() + "EUR\n\n");
+
+        // Zutatenliste
+        buffer.append(einruecken).append("Zutaten: ");
+        for(int i = 0; i < zutaten.length; i++){
+            Zutat aktuelleZutat = zutaten[i];
+
+            if(aktuelleZutat == null) continue;
+            buffer.append(aktuelleZutat);
+
+            if(i < zutaten.length - 1) buffer.append(", ");
+        }
 
         // Zubereitung
-        buffer.append("Und so gehts: \n");
+        buffer.append(einruecken).append("Und so gehts: \n");
         for(Zutat aktuelleZutat : zutaten){
             if(aktuelleZutat == null) continue;
 
-            buffer.append(listenZaehler++).append(aktuelleZutat.getZubereitung());
+            buffer.append(einruecken);
+            buffer.append(listenZaehler++ + " - ").append(aktuelleZutat.getZubereitung()).append("\n");
         }
 
         return buffer.toString();
