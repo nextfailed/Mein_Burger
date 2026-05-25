@@ -6,10 +6,16 @@ public class Burger {
     public static final int MAX_ZUTATENANZAHL = 9; // insgesamt 9 Zutaten -> 1 Broetchen an Stelle 0, und 8 Zusatzzutaten
     public static final int BROETCHEN_POSITION = 0;
 
+    public static final int INDIKATOR_VEGAN = 2;
+    public static final int INDIKATOR_VEGETARISCH = 1;
+
     private String name;
+
+    /* 
     private float gesamtHoehe = 0.0f;
     private float gesamtPreis = 0.0f;
     private int zubereitungsDauer;
+    */
 
     private Zutat[] zutaten = new Zutat[MAX_ZUTATENANZAHL];
 
@@ -17,11 +23,33 @@ public class Burger {
         this.name = name;
     }
 
+    @Override
+    public String toString(){
+        StringBuffer buffer = new StringBuffer();
+        char listenZaehler = 'a';
+
+        // Kopfzeile
+        buffer.append("Rezept: " + name).append("(").append(this.berechneHoehe() + "mm, ");
+        buffer.append(getDiaetdyp()).append(")");
+        buffer.append(" - ").append(berechnePreis() + "EUR");
+
+        // Zubereitung
+        buffer.append("Und so gehts: \n");
+        for(Zutat aktuelleZutat : zutaten){
+            if(aktuelleZutat == null) continue;
+
+            buffer.append(listenZaehler++).append(aktuelleZutat.getZubereitung());
+        }
+
+        return buffer.toString();
+    }
+
     // Getter
     public String getName() {
         return name;
     }
 
+    /* 
     public float getGesamtHoehe() {
         return gesamtHoehe;
     }
@@ -29,37 +57,30 @@ public class Burger {
     public float getGesamtPreis() {
         return gesamtPreis;
     }
+    */
 
     /**
-     * Berechnet, ob der Burger vegan ist
+     * Berechnet, ob der Burger vegan oder vegetarisch ist 
+     * Wird als Integer behandelt, da alles was Vegan ebenfalls vegetarisch ist
      * @return
      */
-    public boolean isVegan(){    
+    public int getDiaetdyp(){   
+        int diaettyp = INDIKATOR_VEGAN; 
+        
         for(Zutat aktuelleZutat : zutaten){
-            if(!aktuelleZutat.getVegan()) return false;
+            diaettyp = Math.min(diaettyp, aktuelleZutat.getDiaettyp()); // Saenkt den Indikatorwert, falls eine Zutat mit einem geringeren diaetentyp innerhalb des Burgers gefunden wurde
         }
 
-        return true;
+        return diaettyp;
     }
 
-    /**
-     * Gibt zurueck, ob der Burger vegetarisch ist. (gibt ebenfalls true zurueck, wenn der Burger vegan ist)
-     * @return
-     */
-    public boolean isVegetarisch(){
-        for(Zutat aktuelleZutat : zutaten){
-            if(!(aktuelleZutat.getVegetarisch() || aktuelleZutat.getVegan())) return false;
-        }
-
-        return true;
-    }
 
     /**
      * Gibt fuer jede Zutat die Zubereitungsweise aus und gibt die gesamte Zubereitungsdauer zurueck
      * @return
      */
-    public void zubereiten(){
-        zubereitungsDauer = 0;
+    public int zubereiten(){
+        int zubereitungsDauer = 0;
 
         for(Zutat aktuelleZutat : zutaten) {
             if(aktuelleZutat == null) {
@@ -69,14 +90,15 @@ public class Burger {
             zubereitungsDauer += aktuelleZutat.zubereiten();
         }
 
+        return zubereitungsDauer;
     }
 
-
     /**
-     * Berechnet die Hoehe des Burgers anhand aller verwendeten Zutaten.
+     *  Berechnet die Hoehe des Burgers anhand aller verwendeten Zutaten
+     * @return
      */
-    public void berechneHoehe() {
-        gesamtHoehe = 0f;
+    public float berechneHoehe() {
+        float gesamtHoehe = 0f;
 
         for(Zutat aktuelleZutat : zutaten) {
             if(aktuelleZutat == null) {
@@ -85,10 +107,16 @@ public class Burger {
             
             gesamtHoehe += aktuelleZutat.berechneHoehe();
         }
+
+        return gesamtHoehe;
     }
     
-    public void berechnePreis(){
-        gesamtPreis = 0f;
+    /**
+     * Berechnet dynamisch den Gesamtpreis des Burgers
+     * @return
+     */
+    public float berechnePreis(){
+        float gesamtPreis = 0f;
         
 
         for(Zutat aktuelleZutat : zutaten) {
@@ -98,18 +126,22 @@ public class Burger {
             
             gesamtPreis += aktuelleZutat.getPreis();
         }
+
+        return gesamtPreis;
     }
 
     /**
-     * Fügt dem Burger eine Liste an beliebigen Zutaten hinzu.
+     * Fügt dem Burger eine Liste an beliebigen Zutaten hinzu
      * @param zutat
      */
     public void zutatHinzufuegen(Zutat zutat) {
+        // Ueberschreibt falls es sich um ein neues Broetchen handelt an der Position des Broetchens das alte Broetchen und geht zurueck
         if(zutat instanceof Broetchen){
             zutaten[BROETCHEN_POSITION] = zutat;
             return;
         }
 
+        // Sucht nach einer leeren Stelle und fuegt dort die Zutat ein
         for(Zutat aktuelleZutat : zutaten) {
             if(aktuelleZutat == null) {
                 aktuelleZutat = zutat;
@@ -117,6 +149,7 @@ public class Burger {
             }
         }
 
+        // Gibt eine Fehlermeldung aus, falls keine leere Stelle im Array gefunden wurde und die Zutatenliste somit voll ist 
         System.err.println("Es ist kein Platz mehr fuer " + zutat + " moeglich. Maximale Zutatenanzahl wurde ueberschritten.");
     }
 }

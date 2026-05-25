@@ -5,7 +5,7 @@ public class Gemuese extends Zutat {
 
     public Gemuese(int nummer, String name, float preis, int scheibenAnzahl, float scheibenDicke) {
         super(nummer, name, preis);
-        super.vegan = true;
+        super.diaettyp = INDIKATOR_VEGAN;
 
         this.scheibenAnzahl = scheibenAnzahl;
         this.scheibenDicke = scheibenDicke;
@@ -27,11 +27,6 @@ public class Gemuese extends Zutat {
     public int zubereiten() {
         int zubereitungsZeitInSekunden = 1;
 
-        print(this.name + " wird gewaschen");
-        for(int i = 0; i < scheibenAnzahl; i++){
-            print((i+1) + getZubereitung());
-        }
-
         return scheibenAnzahl * zubereitungsZeitInSekunden;
     }
 
@@ -44,7 +39,16 @@ public class Gemuese extends Zutat {
     }
 
     @Override
-    protected String getZubereitung() {
-        return (") Scheibe mit" + scheibenDicke + "mm schneiden");
+    public String getZubereitung() {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(this.name + " wird gewaschen");
+        for(int i = 0; i < scheibenAnzahl; i++){
+            buffer.append((i+1) + getZubereitung());
+        }
+
+        buffer.append(") Scheibe mit" + scheibenDicke + "mm schneiden");
+
+        return buffer.toString();
     }
 }

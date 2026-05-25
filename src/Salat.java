@@ -4,7 +4,7 @@
 public class Salat extends Zutat {
     public Salat(int nummer, String name, float preis) {
         super(nummer, name, preis);
-        super.vegan = true;
+        super.diaettyp = INDIKATOR_VEGAN;
     }
 
 
@@ -14,8 +14,6 @@ public class Salat extends Zutat {
      */
     @Override
     public int zubereiten() {
-        printZubereitung();
-
         return 0;
     }
 
@@ -29,7 +27,7 @@ public class Salat extends Zutat {
     }
 
     @Override
-    protected String getZubereitung() {
+    public String getZubereitung() {
         return (this.name + " wird gewaschen und geschleudert");
     }
 }

@@ -3,6 +3,9 @@ import java.awt.Color;
 
 /**
  * Abstakte Oberklasse für alle Zutaten des Burgers.
+ * 
+ * Vegan und Vegetarisch werden als Integer abgespeichert, da jeder vegane burger ebenfalls vegetarisch ist.
+ * Waeren beide in booleans gespeichert, koennte 
  */
 public abstract class Zutat{
     protected int nummer;
@@ -10,8 +13,13 @@ public abstract class Zutat{
     protected float preis;
 
     protected boolean klassisch; 
-    protected boolean vegan;
-    protected boolean vegetarisch;
+
+    // Indikatoren, ob ein Burger vegan, vegetarisch oder weder noch ist
+    public static final int INDIKATOR_VEGAN = 2;
+    public static final int INDIKATOR_VEGETARISCH = 1;
+    public static final int INDIKATOR_NON_VEGAN = 0;
+
+    public int diaettyp; // Diaettyp speicher vegan und vegetarisch als einzelner Integer ab
 
     protected static final DyeBucket bucket = new DyeBucket();
 
@@ -19,74 +27,90 @@ public abstract class Zutat{
 
     /**
      * Vollständiger Konstruktor mit allen Parametern:
-     *
+     * 
+     * Diaettypen:
+     * 2 = vegan, 1 = vegetarisch, default oder 0 = non-vegan (weder vegetarisch noch vegan)
+     * 
      * @param nummer
      * @param name
      * @param preis
      * @param klassisch
-     * @param vegan
-     * @param vegetarisch
+     * @param diaettyp
      */
-    public Zutat(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch){
+    public Zutat(int nummer, String name, float preis, boolean klassisch, int diaettyp){
         this.nummer = nummer;
         this.name = name;
         this.preis = preis;
 
         this.klassisch = klassisch;
-        this.vegan = vegan; 
-        this.vegetarisch = vegetarisch;
+
+        this.diaettyp = diaettyp;
 
         zutatenkatalog.add(this);
     }
 
     /**
      * Verkürzter Konstruktor ohne Ernaehrungsart
-     *
+     * 
      * @param nummer
      * @param name
      * @param preis
      */
     public Zutat(int nummer, String name, float preis){
-        this(nummer,name, preis, false, false, false);
+        this(nummer,name, preis, false, 0);
     }
 
+    /**
+     * Gibt die Liste an Zutaten zurueck. Jede Zutat wird bei ihrer Instanziierung im statischen Zutat.Katalog abgespeichert
+     * @return
+     */
     public static ArrayList<Zutat> getKatalog(){
         return zutatenkatalog;
     }
 
-    public static void setZutat(Zutat neueZutat){
+    /**
+     * Eine neue Zutat wird in den Katalog eingefuegt (Redundant, da bei der Erzeugung bereits eine Instanz eingefuegt wird)
+     * @param neueZutat
+     */
+    public static void addZutat(Zutat neueZutat){
         zutatenkatalog.add(neueZutat);
     }
 
+    /**
+     * Zutat wird mit ihrer jeweiligen Nummer im Array gesucht und herausgegeben 
+     * @param nummer
+     * @return
+     */
     public static Zutat getZutat(int nummer){
-        Zutat gesuchteZutat = null;
-
         for(Zutat current : zutatenkatalog){
             if(current.getNummer() == nummer) {
-                gesuchteZutat = current;
-                break;
+                return current;
             }
         }
 
-        return gesuchteZutat;
+        System.err.println("Zutat mit der Nummer " + nummer + " konnte nicht gefunden werden.");
+        return null;
     }
 
+    
     @Override
     public String toString(){
-        String isVegan = vegan ? " (vegan) ":"";
-        String isVegetarisch = vegetarisch?" (vegetarisch) ":"";
-        String isKlassisch = klassisch?" (klassisch) ":"";
+        // DyeBucket Faerbt den Text 
+        String diaetString = switch(this.diaettyp){
+            case INDIKATOR_VEGAN -> bucket.dyeText("(vegan)", Color.GREEN);
+            case INDIKATOR_VEGETARISCH -> bucket.dyeText("(vegetarisch)", Color.YELLOW);
+            default -> "";
+        };
 
-        // Faerbt die Varianten farbig ein
-        isVegan = bucket.dyeText(isVegan, Color.YELLOW);
-        isVegetarisch = bucket.dyeText(isVegetarisch, Color.GREEN);
-        isKlassisch = bucket.dyeText(isKlassisch, Color.RED);
 
-        return name + " : " + nummer + ")" + isVegan + isVegetarisch + isKlassisch;
+        String isKlassisch = klassisch ? " bucket.dyeText(isKlassisch, Color.RED) ":"";
+
+
+        return name + " : " + nummer + ")" + diaetString + isKlassisch;
     }
 
     /**
-     * Gibt die Zubereitungsweise der Zutat in der Konsole aus und die Dauer der Prozedur zurueck
+     * Gibt die Dauer des Herstellens zurueck
      * @return
      */
     public abstract int zubereiten();
@@ -97,17 +121,40 @@ public abstract class Zutat{
      */
     public abstract float berechneHoehe();
 
-    // Setter
-    public void setVegan(boolean newValue){
-        this.vegan = newValue;
+    /**
+     * Setzt den Diaetenindikator auf vegan (und automatisch ebenfalls auf vegetarisch)
+     */
+    public void setVegan(){
+        this.diaettyp = INDIKATOR_VEGAN;
     }
 
-    public void setVegetarisch(boolean newValue){
-        this.vegetarisch = newValue;
+    /**
+     * Setzt den Diaetindikator auf vegetarisch
+     */
+    public void setVegetarisch(){
+        this.diaettyp = INDIKATOR_VEGETARISCH;
     }
 
-    public void setClassic(boolean newValue){
-        this.klassisch = newValue;
+    /**
+     * Setzt den Diaetindikator auf weder vegan noch vegetarisch
+     */
+    public void setNonVegan(){
+        this.diaettyp = INDIKATOR_VEGETARISCH;
+    }
+
+    /**
+     * Switcht Klassisch auf true oder false
+     */
+    public void switchClassic(){
+        this.klassisch = !klassisch;
+    }
+
+    /**
+     * Setzt klassisch auf den mitgegebenen Parameter
+     * @param neuerWert
+     */
+    public void setClassic(boolean neuerWert){
+        this.klassisch = neuerWert;
     }
 
     // Getter
@@ -123,14 +170,39 @@ public abstract class Zutat{
         return this.name;
     }
 
+    public int getDiaettyp(){
+        return this.diaettyp;
+    }
+
+    /**
+     * Teilt getVegan() und getVegetarisch() auf eine Funktion auf, da der return bis auf den Indikator identisch waeren 
+     * @param indikator
+     * @return
+     */
+    protected boolean getDiaetdyp(int indikator){
+        return this.diaettyp >= indikator; // der typ kann >= der indikator sein, da ein veganer burger ebenfalls vegetarisch ist
+    }
+
+    /**
+     * Gibt zurueck, ob die Zutat vegan ist
+     * @return
+     */
     public boolean getVegan(){
-        return this.vegan;
+        return getDiaetdyp(INDIKATOR_VEGAN);
     }
 
+    /**
+     * Gibt zurueck, ob die Zutat vegetarisch oder vegan ist
+     * @return
+     */
     public boolean getVegetarisch(){
-        return this.vegetarisch;
+        return getDiaetdyp(INDIKATOR_VEGETARISCH);
     }
 
+    /**
+     * Gibt zurueck, ob die Zutat klassisch ist
+     * @return
+     */
     public boolean getKlassisch(){
         return this.klassisch;
     }
@@ -157,5 +229,5 @@ public abstract class Zutat{
      * Gibt die Zubereitungsausgabe zurueck
      * @return
      */
-    protected abstract String getZubereitung(); 
+    public abstract String getZubereitung(); 
 }

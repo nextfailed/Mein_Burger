@@ -5,14 +5,14 @@ public class Sauce extends Zutat {
     private Geschmack geschmack;
 
 
-    public Sauce(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int menge, Geschmack geschmack) {
-        super(nummer, name, preis, klassisch, vegan, vegetarisch);
+    public Sauce(int nummer, String name, float preis, boolean klassisch, int diaettyp, int menge, Geschmack geschmack) {
+        super(nummer, name, preis, klassisch, diaettyp);
         this.menge = menge;
         this.geschmack = geschmack;
     }
 
     public Sauce(int nummer, String name, float preis, int menge, Geschmack geschmack) {
-        this(nummer, name, preis, false, false, false, menge, geschmack);
+        this(nummer, name, preis, false, INDIKATOR_NON_VEGAN, menge, geschmack);
     }
 
     Optional<Geschmack> parse(String string) {
@@ -39,8 +39,6 @@ public class Sauce extends Zutat {
      */
     @Override
     public int zubereiten() {
-        printZubereitung();
-
         return 0;
     }
 
@@ -54,7 +52,7 @@ public class Sauce extends Zutat {
     }
 
     @Override
-    protected String getZubereitung(){
+    public String getZubereitung(){
         return (this.name + " wird geschuettelt");
     }; 
 }

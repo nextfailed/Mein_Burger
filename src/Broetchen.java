@@ -7,14 +7,14 @@ public class Broetchen extends Zutat{
 
     final static float WACHSTUMS_RATE = 0.025f; // => 2.5% Wachstum
 
-    public Broetchen(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int backzeit, int hoehe) {
-        super(nummer, name, preis, klassisch, vegan, vegetarisch);
+    public Broetchen(int nummer, String name, float preis, boolean klassisch, int diaettyp, int backzeit, int hoehe) {
+        super(nummer, name, preis, klassisch, diaettyp);
         this.backzeit = backzeit; // backzeit wird in Sekunden angegeben
         this.hoehe = hoehe;
     }
 
     public Broetchen(int nummer, String name, float preis, int backzeit, int hoehe){
-        this(nummer,name,preis,false,false,false,backzeit,hoehe);
+        this(nummer,name,preis,false, INDIKATOR_NON_VEGAN,backzeit,hoehe);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Broetchen extends Zutat{
     }
 
     @Override
-    protected String getZubereitung() {
+    public String getZubereitung() {
         return (this.name + " " + backzeit + " Minuten roesten und aufschneiden");
     }    
 }
