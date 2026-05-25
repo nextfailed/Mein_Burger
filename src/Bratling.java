@@ -2,6 +2,8 @@ public class Bratling extends Zutat {
     private int bratzeit;
     private int hoehe;
 
+    private String zubereitungschritt = (this.name + " wird geschuettelt");
+
     public Bratling(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int bratzeit, int hoehe) {
         super(nummer, name, preis, klassisch, vegan, vegetarisch);
         this.bratzeit = bratzeit;
@@ -23,6 +25,8 @@ public class Bratling extends Zutat {
 
     @Override
     public int zubereiten() {
+        print(zubereitungschritt);
+
         return 0;
     }
 
