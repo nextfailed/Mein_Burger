@@ -34,6 +34,7 @@ public class Sauce extends Zutat {
     }
 
     /**
+     * Saucen haben keine Zubereitungsdauer
      * @return
      */
     @Override
@@ -44,6 +45,7 @@ public class Sauce extends Zutat {
     }
 
     /**
+     * Saucen haben keinen Einfluss auf die Hoehe
      * @return
      */
     @Override
