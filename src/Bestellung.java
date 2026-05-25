@@ -13,6 +13,41 @@ public class Bestellung {
      * @param burgerName Name des Burgers
      */
     public void neuerBurger(String burgerName) {
+        boolean addedSuccessfully = addBurgerToList(burgerName);
+
+        if(addedSuccessfully) {
+            System.out.println("Du stellst einen neuen Burger zusammen.");
+            System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschließen.");
+
+            String eingabe;
+            int counter = 1;
+
+            do {
+                if(counter > Burger.MAX_ZUTATENANZAHL) {
+                    System.err.println("Einem Burger koennen maximal 9 Zutaten hinzugefuegt werden!");
+                    break;
+                }
+                System.out.println("Bitte gib die " + counter + ". Zutat an:");
+                System.out.print("> ");
+                eingabe = App.scanner.nextLine();
+                String befehl = App.befehl(eingabe);
+                String argument = App.befehlsArgument(eingabe);
+
+                if(befehl.equals("zutat")) {
+                    zutatHinzufuegen(Integer.parseInt(argument));
+                    counter++;
+                }
+                else {
+                    App.unbekannteEingabe();
+                }
+            } while(!eingabe.equalsIgnoreCase("ok"));
+        }
+        else {
+            System.err.println("Es wurde bereits das Maximum von zehn Burgern in dieser Bestellung erreicht!");
+        }
+    }
+
+    private boolean addBurgerToList(String burgerName) {
         Burger neuerBurger = new Burger(burgerName);
 
         for(int i = 0; i < burgerListe.length; i++) {
@@ -20,11 +55,11 @@ public class Bestellung {
                 burgerListe[i] = neuerBurger;
                 aktiverBurger = neuerBurger;
                 isEmpty = false;
-                return;
+                return true;
             }
         }
 
-        System.err.println("Es wurde bereits das Maximum von zehn Burgern in dieser Bestellung erreicht!");
+        return false;
     }
 
     /**
@@ -32,6 +67,8 @@ public class Bestellung {
      * @param nummer Zutatennummer
      */
     public void zutatHinzufuegen(int nummer) {
+        System.out.println("");
+
         if(aktiverBurger != null) {
             Zutat zutat = Zutat.getZutat(nummer);
             System.out.println(zutat.toString());
@@ -41,14 +78,6 @@ public class Bestellung {
             System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt. Bitte fuege der\n" +
                     "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
         }
-    }
-
-    /**
-     * Beendet die Bearbeitung des Burgers, den der Nutzer zurzeit bearbeitet.
-     */
-    public void ok() {
-        System.out.println("Dein Burger '" + aktiverBurger.getName() + "' wurde aufgenommen.");
-        aktiverBurger = null;
     }
 
     /**
