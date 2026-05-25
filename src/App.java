@@ -8,9 +8,12 @@ public class App {
 
     public final static Scanner scanner = new Scanner(System.in);
     public final static DyeBucket dyebucket = new DyeBucket();
+
     public static Bestellung bestellung;
 
     public static void main(String[] args) {
+        generiereKatalog();
+
         System.out.println("################################################################################");
         System.out.println("\nYou'll never burger alone - Create your Burger");
         System.out.println("\nMit 'menu' kannst du dir alle zur Verfügung stehenden Zutaten anzeigen lassen.");
@@ -97,5 +100,10 @@ public class App {
 
     public static void unbekannteEingabe() {
         System.err.println("Unbekannte Eingaben!");
+    }
+
+    public static void generiereKatalog() {
+        new Broetchen(10, "Hamburger (Standard)", 0.85f, true, Zutat.INDIKATOR_VEGETARISCH, 27, 90);
+        new Bratling(20, "Rindfleisch (Original)", 1.85f, true, Zutat.INDIKATOR_NON_VEGAN, 270, 25);
     }
 }
