@@ -3,10 +3,12 @@
  * berechnet dessen Hoehe und den Preis.
  */
 public class Burger {
+    public static final int MAX_ZUTATENANZAHL = 9;
+
     private String name;
     private float gesamtHoehe = 0.0f;
     private float gesamtPreis;
-    private Zutat[] zutaten;
+    private Zutat[] zutaten = new Zutat[MAX_ZUTATENANZAHL];
 
     public Burger(String name) {
         this.name = name;
@@ -42,14 +44,13 @@ public class Burger {
 
     /**
      * Fügt dem Burger eine Liste an beliebigen Zutaten hinzu.
-     * @param zutaten
+     * @param zutat
      */
-    public void zutatenHinzufuegen(Zutat[] zutaten) {
-        int arrayLength = zutaten.length;
-        this.zutaten = new Zutat[arrayLength];
-
-        for(int i = 0; i < zutaten.length; i++) {
-            this.zutaten[i] = zutaten[i];
+    public void zutatHinzufuegen(Zutat zutat) {
+        for(Zutat aktuelleZutat : zutaten) {
+            if(aktuelleZutat == null) {
+                aktuelleZutat = zutat;
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -6,6 +7,7 @@ import java.util.Scanner;
 public class App {
 
     public static Scanner scanner = new Scanner(System.in);
+    public static Bestellung bestellung;
 
     /**
      * Main-Methode
@@ -30,6 +32,7 @@ public class App {
      */
     private static void nutzerBefehlseingabe() {
         String eingabe;
+        bestellung = new Bestellung();
 
         do {
             System.out.println("Bitte deine Eingabe:");
@@ -39,12 +42,15 @@ public class App {
 
             switch (befehlsTeile[0].toLowerCase()){
                 case "menu", "menü":
+                    menu();
                     break;
-                case "neuer burger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
+                case "neuerburger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
+                    bestellung.neuerBurger(befehlsTeile[1]);
                     break;
                 case "zutat":
-                    if(StringIsNumber(befehlsTeile[1])) {
-                        //TODO: Zutat Methode
+                    String befehlsZusatz = befehlsTeile[1];
+                    if(StringIsNumber(befehlsZusatz)) {
+                        bestellung.zutatHinzufuegen(Integer.parseInt(befehlsZusatz));
                     }
                     else {
                         System.err.println("'zutat " + befehlsTeile[1] + "' ist kein gültiger Befehl,\n" +
@@ -52,10 +58,13 @@ public class App {
                     }
                     break;
                 case "ok":
+                    //TODO: OK-Befehl
                     break;
-                case "meine burger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
+                case "meineburger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
+                    bestellung.meineBurger();
                     break;
                 case "bestellen":
+                    //TODO: Bestellung finalisieren
                     break;
                 case "quit":
                     System.out.println("Auf Wiedersehen!");
@@ -67,24 +76,18 @@ public class App {
         } while(!eingabe.equals("quit") && !eingabe.equals("bestellen"));
     }
 
+
+    /**
+     * Gibt das gesamte Menue ueber die Konsole aus.
+     */
     public static void menu() {
-        //TODO
-    }
+        ArrayList<Zutat> zutatenKatalog = Zutat.getKatalog();
 
-    public static void neuerBurger() {
-        //TODO
-    }
+        System.out.println("##### Folgende Zutaten stehen zur Auswahl: #####");
 
-    public static void zutatHinzufueger(int nummer) {
-        //TODO
-    }
-
-    public static void ok() {
-        //TODO
-    }
-
-    public static void bestellen() {
-        //TODO
+        for(Zutat aktuelleZutat : zutatenKatalog) {
+            aktuelleZutat.toString();
+        }
     }
 
     /**

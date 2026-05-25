@@ -58,7 +58,7 @@ public abstract class Zutat{
         zutatenkatalog.add(neueZutat);
     }
 
-    public Zutat getZutat(int nummer){
+    public static Zutat getZutat(int nummer){
         Zutat gesuchteZutat = null;
 
         for(Zutat current : zutatenkatalog){
@@ -137,7 +137,7 @@ public abstract class Zutat{
 
     /**
      * Printed die einzelnen Zubereitungsschritte in der Konsole aus
-     * @param zubereitung
+     * @param zubereitungsschritt
      */
     protected void printZubereitung(){
         print(getZubereitung());
