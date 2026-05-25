@@ -9,7 +9,7 @@ public class Broetchen extends Zutat{
 
     public Broetchen(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int backzeit, int hoehe) {
         super(nummer, name, preis, klassisch, vegan, vegetarisch);
-        this.backzeit = backzeit; // Backzeit wird in Minuten angegeben, 1 Minute -> backzeit = 1 
+        this.backzeit = backzeit; // backzeit wird in Sekunden angegeben
         this.hoehe = hoehe;
     }
 
