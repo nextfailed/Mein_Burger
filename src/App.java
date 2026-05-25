@@ -14,18 +14,11 @@ public class App {
      * @param args Startbefehl wird nicht verwendet
      */
     public static void main(String[] args) {
-
-//        Burger testBurger = new Burger("testBurger");
-//        Zutat broetchen = new Broetchen(1, "Sesam", 0.5f, false, true, false, 5, 4);
-//        Zutat salat = new Salat(2, "Rucola", 0.1f);
-//        Zutat[] zutaten = new Zutat[] {broetchen, salat};
-//        testBurger.zutatenHinzufuegen(zutaten);
-//        testBurger.berechneHoehe();
-//        var test = testBurger.getGesamtHoehe();
-
+        System.out.println("You'll never burger alone - Create your Burger");
+        System.out.println("\nMit 'menu' kannst du dir alle zur Verfügung stehenden Zutaten anzeigen lassen.");
+        System.out.println("Mit 'zutat' und der jeweiligen Nummer kannst du eine Zutat auswaehlen.");
         nutzerBefehlseingabe();
     }
-
 
     /**
      * Fragt den Benutzer so lange nach der Eingabe eines Befehls, bis dieser 'bestellen' oder 'quit' eingibt.
@@ -41,7 +34,7 @@ public class App {
             String[] befehlsTeile = teileBefehl(eingabe);
 
             switch (befehlsTeile[0].toLowerCase()){
-                case "menu", "menü":
+                case "menu":
                     menu();
                     break;
                 case "neuerburger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
@@ -58,13 +51,13 @@ public class App {
                     }
                     break;
                 case "ok":
-                    //TODO: OK-Befehl
+                    bestellung.ok();
                     break;
                 case "meineburger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
                     bestellung.meineBurger();
                     break;
                 case "bestellen":
-                    //TODO: Bestellung finalisieren
+                    bestellung.bestellen();
                     break;
                 case "quit":
                     System.out.println("Auf Wiedersehen!");
@@ -76,7 +69,6 @@ public class App {
         } while(!eingabe.equals("quit") && !eingabe.equals("bestellen"));
     }
 
-
     /**
      * Gibt das gesamte Menue ueber die Konsole aus.
      */
@@ -86,7 +78,7 @@ public class App {
         System.out.println("##### Folgende Zutaten stehen zur Auswahl: #####");
 
         for(Zutat aktuelleZutat : zutatenKatalog) {
-            aktuelleZutat.toString();
+            System.out.println(aktuelleZutat.toString());
         }
     }
 

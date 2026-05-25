@@ -137,7 +137,6 @@ public abstract class Zutat{
 
     /**
      * Printed die einzelnen Zubereitungsschritte in der Konsole aus
-     * @param zubereitungsschritt
      */
     protected void printZubereitung(){
         print(getZubereitung());

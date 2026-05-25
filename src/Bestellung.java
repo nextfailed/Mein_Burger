@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Bestellung {
     private final int MAX_BURGERANZAHL = 10;
 
@@ -40,16 +38,23 @@ public class Bestellung {
             aktiverBurger.zutatHinzufuegen(zutat);
         }
         else {
-            System.err.println("FEHLER! Zur Zeit wird kein Burger von dir erstellt. Bitte fuege der\n" +
+            System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt. Bitte fuege der\n" +
                     "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
         }
     }
 
+    /**
+     * Beendet die Bearbeitung des Burgers, den der Nutzer zurzeit bearbeitet.
+     */
     public void ok() {
         System.out.println("Dein Burger '" + aktiverBurger.getName() + "' wurde aufgenommen.");
         aktiverBurger = null;
     }
 
+    /**
+     * Gibt alle Burger dieser Bestellung aus. Sollte noch kein Burger aufgenommen worden sein,
+     * wird ein entsprechender Fehler ausgegeben.
+     */
     public void meineBurger() {
         if(!isEmpty){
             System.out.println("Folgende Burger wurden deiner Bestellung hinzugefuegt:");
@@ -64,6 +69,9 @@ public class Bestellung {
         }
     }
 
+    /**
+     * Finalisiert die Bestellung und beginnt die Zubereitung der Burger.
+     */
     public void bestellen() {
         //TODO
     }
