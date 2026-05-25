@@ -14,7 +14,6 @@ public abstract class Zutat{
 
     private static final ArrayList<Zutat> zutatenkatalog = new ArrayList<>();
 
-
     /**
      * Vollständiger Konstruktor mit allen Parametern:
      *
@@ -36,7 +35,6 @@ public abstract class Zutat{
 
         zutatenkatalog.add(this);
     }
-
 
     /**
      * Verkürzter Konstruktor ohne Ernaehrungsart
@@ -125,9 +123,23 @@ public abstract class Zutat{
      * Printed die einzelnen Zubereitungsschritte in der Konsole aus
      * @param zubereitung
      */
-    protected void print(String zubereitungsschritt){
-        String abstand = "\n";
-
-        System.out.println(zubereitungsschritt + abstand);
+    protected void printZubereitung(){
+        print(getZubereitung());
     }
+
+    /**
+     * Printed den eingegebenen Input aus
+     * @param eingabe
+     */
+    protected void print(String eingabe){
+        String umbruch = "\n";
+
+        System.out.println(eingabe + umbruch);
+    }
+
+    /**
+     * Gibt die Zubereitungsausgabe zurueck
+     * @return
+     */
+    protected abstract String getZubereitung(); 
 }

@@ -2,7 +2,6 @@ public class Gemuese extends Zutat {
     private float scheibenDicke;
     private int scheibenAnzahl;
 
-    private String zubereitungschritt = (") Scheibe mit" + scheibenDicke + "mm schneiden");
 
     public Gemuese(int nummer, String name, float preis, int scheibenAnzahl, float scheibenDicke) {
         super(nummer, name, preis);
@@ -26,11 +25,9 @@ public class Gemuese extends Zutat {
      */
     @Override
     public int zubereiten() {
-        String einruecken = "\n  ";
-
         print(this.name + " wird gewaschen");
         for(int i = 0; i < scheibenAnzahl; i++){
-            print(einruecken + i + zubereitungschritt);
+            print((i+1) + getZubereitung());
         }
 
         return 0;
@@ -42,5 +39,10 @@ public class Gemuese extends Zutat {
     @Override
     public float berechneHoehe() {
         return scheibenDicke * scheibenAnzahl;
+    }
+
+    @Override
+    protected String getZubereitung() {
+        return (") Scheibe mit" + scheibenDicke + "mm schneiden");
     }
 }

@@ -5,7 +5,6 @@ public class Broetchen extends Zutat{
     int backzeit;
     int hoehe;
 
-    private String zubereitungschritt = (this.name + " " + backzeit + " Minuten roesten und aufschneiden");
 
     public Broetchen(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int backzeit, int hoehe) {
         super(nummer, name, preis, klassisch, vegan, vegetarisch);
@@ -24,7 +23,7 @@ public class Broetchen extends Zutat{
 
     @Override
     public int zubereiten() {
-        print(zubereitungschritt);
+        printZubereitung();
         
         return hoehe * backzeit;
     }    
@@ -33,4 +32,9 @@ public class Broetchen extends Zutat{
     public float berechneHoehe(){
         return (float)((this.hoehe * 0.25)*backzeit);
     }
+
+    @Override
+    protected String getZubereitung() {
+        return (this.name + " " + backzeit + " Minuten roesten und aufschneiden");
+    }    
 }
