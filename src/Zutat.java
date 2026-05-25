@@ -123,15 +123,15 @@ public abstract class Zutat{
         return this.name;
     }
 
-    public boolean getVegan(boolean newValue){
+    public boolean getVegan(){
         return this.vegan;
     }
 
-    public boolean getVegetarisch(boolean newValue){
+    public boolean getVegetarisch(){
         return this.vegetarisch;
     }
 
-    public boolean getKlassisch(boolean newValue){
+    public boolean getKlassisch(){
         return this.klassisch;
     }
 
