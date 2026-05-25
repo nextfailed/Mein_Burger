@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class App {
 
     public static Scanner scanner = new Scanner(System.in);
+    public static Bestellung bestellung = new Bestellung();
 
     /**
      * Main-Methode
@@ -39,8 +40,10 @@ public class App {
 
             switch (befehlsTeile[0].toLowerCase()){
                 case "menu", "menü":
+                    //TODO: Menue Methode
                     break;
-                case "neuer burger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
+                case "neuerburger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
+                    bestellung.neuerBurger(befehlsTeile[1]);
                     break;
                 case "zutat":
                     if(StringIsNumber(befehlsTeile[1])) {
@@ -52,10 +55,13 @@ public class App {
                     }
                     break;
                 case "ok":
+                    //TODO: OK-Befehl
                     break;
                 case "meine burger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
+                    //TODO: Burger auflisten
                     break;
                 case "bestellen":
+                    //TODO: Bestellung finalisieren
                     break;
                 case "quit":
                     System.out.println("Auf Wiedersehen!");
@@ -67,23 +73,11 @@ public class App {
         } while(!eingabe.equals("quit") && !eingabe.equals("bestellen"));
     }
 
+
+    /**
+     * Gibt das gesamte Menue ueber die Konsole aus.
+     */
     public static void menu() {
-        //TODO
-    }
-
-    public static void neuerBurger() {
-        //TODO
-    }
-
-    public static void zutatHinzufueger(int nummer) {
-        //TODO
-    }
-
-    public static void ok() {
-        //TODO
-    }
-
-    public static void bestellen() {
         //TODO
     }
 
