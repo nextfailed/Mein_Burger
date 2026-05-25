@@ -7,12 +7,16 @@ public class Salat extends Zutat {
         super.vegan = true;
     }
 
+    private String zubereitungschritt = (this.name + " wird gewaschen und geschleudert");
+
     /**
      *
      * @return
      */
     @Override
     public int zubereiten() {
+        print(zubereitungschritt);
+
         return 0;
     }
 

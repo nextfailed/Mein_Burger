@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Abstakte Oberklasse für alle Zutaten des Burgers.
  */
@@ -9,6 +11,8 @@ public abstract class Zutat{
     protected boolean klassisch; 
     protected boolean vegan;
     protected boolean vegetarisch;
+
+    private static final ArrayList<Zutat> zutatenkatalog = new ArrayList<>();
 
 
     /**
@@ -29,6 +33,8 @@ public abstract class Zutat{
         this.klassisch = klassisch;
         this.vegan = vegan; 
         this.vegetarisch = vegetarisch;
+
+        zutatenkatalog.add(this);
     }
 
 
@@ -41,6 +47,27 @@ public abstract class Zutat{
      */
     public Zutat(int nummer, String name, float preis){
         this(nummer,name, preis, false, false, false);
+    }
+
+    public static ArrayList<Zutat> getKatalog(){
+        return zutatenkatalog;
+    }
+
+    public void setZutat(Zutat neueZutat){
+        zutatenkatalog.add(neueZutat);
+    }
+
+    public Zutat getZutat(int nummer){
+        Zutat gesuchteZutat = null;
+
+        for(Zutat current : zutatenkatalog){
+            if(current.getNummer() == nummer) {
+                gesuchteZutat = current;
+                break;
+            }
+        }
+
+        return gesuchteZutat;
     }
 
     @Override
@@ -70,6 +97,18 @@ public abstract class Zutat{
     }
 
     // Getter
+    public float getPreis(){
+        return this.preis;
+    }
+
+    public int getNummer(){
+        return this.nummer;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
     public boolean getVegan(boolean newValue){
         return this.vegan;
     }
@@ -80,5 +119,15 @@ public abstract class Zutat{
 
     public boolean getKlassisch(boolean newValue){
         return this.klassisch;
+    }
+
+    /**
+     * Printed die einzelnen Zubereitungsschritte in der Konsole aus
+     * @param zubereitung
+     */
+    protected void print(String zubereitungsschritt){
+        String abstand = "\n";
+
+        System.out.println(zubereitungsschritt + abstand);
     }
 }

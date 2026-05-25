@@ -11,6 +11,8 @@ public class Sauce extends Zutat {
     // private String geschmack;
     private Geschmack geschmack;
 
+    private String zubereitungschritt = (this.name + " wird geschuettelt");
+
 
     public Sauce(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int menge, Geschmack geschmack) {
         super(nummer, name, preis, klassisch, vegan, vegetarisch);
@@ -45,6 +47,8 @@ public class Sauce extends Zutat {
      */
     @Override
     public int zubereiten() {
+        print(zubereitungschritt);
+
         return 0;
     }
 
@@ -53,6 +57,6 @@ public class Sauce extends Zutat {
      */
     @Override
     public float berechneHoehe() {
-        return 0;
+        return 0f;
     }
 }
