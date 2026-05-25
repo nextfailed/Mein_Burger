@@ -1,6 +1,6 @@
 /**
  * Burger dient der Erstellung eines eigenen Burgers mit beliebigen Zutaten und
- * berechnet dessen Höhe und den Preis.
+ * berechnet dessen Hoehe und den Preis.
  */
 public class Burger {
     private String name;

@@ -1,23 +1,14 @@
+import java.util.ArrayList;
 
 public class Bestellung {
 
-    public static void menu() {
-        //TODO
+    private ArrayList<Burger> burgerListe = new ArrayList<>();
+
+    public void burgerHinzufuegen(Burger neuerBurger) {
+        burgerListe.add(neuerBurger);
     }
 
-    public static void neuerBurger() {
-        //TODO
-    }
-
-    public static void zutatHinzufueger(int nummer) {
-        //TODO
-    }
-
-    public static void ok() {
-        //TODO
-    }
-
-    public static void bestellen() {
-        //TODO
+    public Burger[] getBurger() {
+        return (Burger[]) burgerListe.toArray();
     }
 }

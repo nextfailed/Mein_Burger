@@ -24,6 +24,10 @@ public class App {
         nutzerBefehlseingabe();
     }
 
+
+    /**
+     * Fragt den Benutzer so lange nach der Eingabe eines Befehls, bis dieser 'bestellen' oder 'quit' eingibt.
+     */
     private static void nutzerBefehlseingabe() {
         String eingabe;
 
@@ -36,24 +40,51 @@ public class App {
             switch (befehlsTeile[0].toLowerCase()){
                 case "menu", "menü":
                     break;
-                case "neuer burger":
+                case "neuer burger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
                     break;
                 case "zutat":
                     if(StringIsNumber(befehlsTeile[1])) {
                         //TODO: Zutat Methode
                     }
+                    else {
+                        System.err.println("'zutat " + befehlsTeile[1] + "' ist kein gültiger Befehl,\n" +
+                                "da '" + befehlsTeile[1] + "' keine Nummer ist!");
+                    }
                     break;
                 case "ok":
                     break;
-                case "meine burger":
+                case "meine burger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
                     break;
                 case "bestellen":
+                    break;
+                case "quit":
+                    System.out.println("Auf Wiedersehen!");
                     break;
                 default:
                     System.err.println("Unbekannte Eingaben!");
                     break;
             }
-        } while(!eingabe.equals("quit"));
+        } while(!eingabe.equals("quit") && !eingabe.equals("bestellen"));
+    }
+
+    public static void menu() {
+        //TODO
+    }
+
+    public static void neuerBurger() {
+        //TODO
+    }
+
+    public static void zutatHinzufueger(int nummer) {
+        //TODO
+    }
+
+    public static void ok() {
+        //TODO
+    }
+
+    public static void bestellen() {
+        //TODO
     }
 
     /**
