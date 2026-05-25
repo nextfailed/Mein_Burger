@@ -114,4 +114,29 @@ public class App {
             return false;
         }
     }
+
+    public static void unbekannteEingabe() {
+        System.err.println("Unbekannte Eingaben!");
+    }
+
+    /**
+     * Erzeugt den Standartkatalog, der von Anfang an existiert
+     * Zutaten werden autoamtisch in der ArrayListe innerhalb der Zutatenklasse deklariert und muessen daher nur instanziiert werden
+     */
+    public static void generiereKatalog() {
+
+        // Broetchen
+        new Broetchen(10, "Hamburger (Standard)", 0.85f, true, Zutat.INDIKATOR_VEGETARISCH, 27, 90);
+
+        // Bratlinge
+        new Bratling(20, "Rindfleisch (Original)", 1.85f, true, Zutat.INDIKATOR_NON_VEGAN, 270, 25);
+
+        // Gemuese
+
+        // Salat
+
+        // Sauce
+
+        // 
+    }
 }
