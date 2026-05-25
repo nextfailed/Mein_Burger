@@ -2,13 +2,14 @@
  * Broetchen-Objektklasse, Unterklasse von Zutat.
  */
 public class Broetchen extends Zutat{
-    int backzeit;
-    int hoehe;
+    private int backzeit;
+    private int hoehe;
 
+    final static float WACHSTUMS_RATE = 0.025f; // => 2.5% Wachstum
 
     public Broetchen(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int backzeit, int hoehe) {
         super(nummer, name, preis, klassisch, vegan, vegetarisch);
-        this.backzeit = backzeit;
+        this.backzeit = backzeit; // Backzeit wird in Minuten angegeben, 1 Minute -> backzeit = 1 
         this.hoehe = hoehe;
     }
 
@@ -25,12 +26,12 @@ public class Broetchen extends Zutat{
     public int zubereiten() {
         printZubereitung();
         
-        return hoehe * backzeit;
+        return backzeit;
     }    
 
     @Override
     public float berechneHoehe(){
-        return (float)((this.hoehe * 0.25)*backzeit);
+        return (float)(this.hoehe * Math.pow((1 + WACHSTUMS_RATE), backzeit));
     }
 
     @Override

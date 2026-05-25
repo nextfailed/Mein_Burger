@@ -1,16 +1,8 @@
 import java.util.Optional;
 
 public class Sauce extends Zutat {
-    public enum Geschmack {
-        NORMAL,
-        SCHARF,
-        SUESS
-    }
-
     private int menge;
-    // private String geschmack;
     private Geschmack geschmack;
-
 
 
     public Sauce(int nummer, String name, float preis, boolean klassisch, boolean vegan, boolean vegetarisch, int menge, Geschmack geschmack) {

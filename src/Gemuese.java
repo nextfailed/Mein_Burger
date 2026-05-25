@@ -25,12 +25,14 @@ public class Gemuese extends Zutat {
      */
     @Override
     public int zubereiten() {
+        int zubereitungsZeitInSekunden = 1;
+
         print(this.name + " wird gewaschen");
         for(int i = 0; i < scheibenAnzahl; i++){
             print((i+1) + getZubereitung());
         }
 
-        return 0;
+        return scheibenAnzahl * zubereitungsZeitInSekunden;
     }
 
     /**

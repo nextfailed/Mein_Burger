@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.awt.Color;
 
 /**
  * Abstakte Oberklasse für alle Zutaten des Burgers.
@@ -11,6 +12,8 @@ public abstract class Zutat{
     protected boolean klassisch; 
     protected boolean vegan;
     protected boolean vegetarisch;
+
+    protected static final DyeBucket bucket = new DyeBucket();
 
     private static final ArrayList<Zutat> zutatenkatalog = new ArrayList<>();
 
@@ -51,7 +54,7 @@ public abstract class Zutat{
         return zutatenkatalog;
     }
 
-    public void setZutat(Zutat neueZutat){
+    public static void setZutat(Zutat neueZutat){
         zutatenkatalog.add(neueZutat);
     }
 
@@ -70,15 +73,28 @@ public abstract class Zutat{
 
     @Override
     public String toString(){
-        String isVegan = vegan?"(vegan) ":"";
-        String isVegetarisch = vegetarisch?"(vegetarisch) ":"";
-        String isKlassisch = klassisch?"(klassisch) ":"";
+        String isVegan = vegan ? " (vegan) ":"";
+        String isVegetarisch = vegetarisch?" (vegetarisch) ":"";
+        String isKlassisch = klassisch?" (klassisch) ":"";
+
+        // Faerbt die Varianten farbig ein
+        isVegan = bucket.dyeText(isVegan, Color.YELLOW);
+        isVegetarisch = bucket.dyeText(isVegetarisch, Color.GREEN);
+        isKlassisch = bucket.dyeText(isKlassisch, Color.RED);
 
         return name + " : " + nummer + ")" + isVegan + isVegetarisch + isKlassisch;
     }
 
+    /**
+     * Gibt die Zubereitungsweise der Zutat in der Konsole aus und die Dauer der Prozedur zurueck
+     * @return
+     */
     public abstract int zubereiten();
 
+    /**
+     * Berechnet die Hoehe dynamisch
+     * @return
+     */
     public abstract float berechneHoehe();
 
     // Setter
