@@ -80,7 +80,7 @@ public class Burger {
      * @return
      */
     public int getDiaetdyp(){   
-        int diaettyp = INDIKATOR_VEGAN; 
+        int diaettyp = INDIKATOR_VEGAN;  // Geht von der hoechsten bedingung aus und senkt, falls ein niedrigerer Wert folgt
         
         for(Zutat aktuelleZutat : zutaten){
             diaettyp = Math.min(diaettyp, aktuelleZutat.getDiaettyp()); // Saenkt den Indikatorwert, falls eine Zutat mit einem geringeren diaetentyp innerhalb des Burgers gefunden wurde
