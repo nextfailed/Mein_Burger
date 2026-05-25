@@ -23,19 +23,22 @@ public class Bestellung {
             int counter = 1;
 
             do {
-                if(counter > Burger.MAX_ZUTATENANZAHL) {
-                    System.err.println("Einem Burger koennen maximal 9 Zutaten hinzugefuegt werden!");
-                    break;
-                }
                 System.out.println("Bitte gib die " + counter + ". Zutat an:");
                 System.out.print("> ");
                 eingabe = App.scanner.nextLine();
                 String befehl = App.befehl(eingabe);
                 String argument = App.befehlsArgument(eingabe);
 
-                if(befehl.equals("zutat")) {
+                if(befehl.equals("zutat") && counter <= Burger.MAX_ZUTATENANZAHL) {
                     zutatHinzufuegen(Integer.parseInt(argument));
                     counter++;
+                }
+                else if(counter == Burger.MAX_ZUTATENANZAHL) {
+                    System.err.println("Einem Burger koennen maximal 9 Zutaten hinzugefuegt werden!");
+                    break;
+                }
+                else if(eingabe.equalsIgnoreCase("ok")) {
+                    continue;
                 }
                 else {
                     App.unbekannteEingabe();

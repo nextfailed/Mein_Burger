@@ -24,7 +24,7 @@ public class Burger {
     }
 
     @Override
-    public String toString(){
+    public String toString(){ //TODO: Geschmack hinzufuegen!
         StringBuffer buffer = new StringBuffer();
         int leerzeichenFuerEinruecken = 3;
 
