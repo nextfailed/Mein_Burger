@@ -26,13 +26,13 @@ public class Burger {
     @Override
     public String toString(){
         StringBuffer buffer = new StringBuffer();
-        int leerzeichenFuerEinruecken = 3;
+        int umNStellenEinruecken = 3;
 
-        String einruecken = " ".repeat(leerzeichenFuerEinruecken);
+        String einruecken = " ".repeat(umNStellenEinruecken);
         char listenZaehler = 'a';
 
         // Kopfzeile
-        buffer.append("Rezept: " + name).append("(");
+        buffer.append("Rezept fuer: " + name).append("(");
         buffer.append(this.berechneHoehe() + "mm, ");
         buffer.append(getDiaetdyp());
 
@@ -41,10 +41,10 @@ public class Burger {
             for(Geschmack currentGeschmack : geschmaecker){
                 if(currentGeschmack == null || currentGeschmack == Geschmack.NORMAL) continue; // Fuege dem String den jeweiligen Geschmack hinzu, es seidenn er ist null oder normal 
 
-                buffer.append(", " + currentGeschmack);
+                buffer.append(", " + currentGeschmack.toString());
             }
 
-
+        // Fuegt den Preis hinzu
         buffer.append(") - ").append(berechnePreis() + "EUR\n\n");
 
         // Zutatenliste
@@ -57,6 +57,9 @@ public class Burger {
 
             if(i < zutaten.length - 1) buffer.append(", ");
         }
+
+        // Setzt die naechste Zeile um 2 nach unten
+        buffer.append("\n".repeat(2));
 
         // Zubereitung
         buffer.append(einruecken).append("Und so gehts: \n");
