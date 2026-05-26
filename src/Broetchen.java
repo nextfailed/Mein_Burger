@@ -19,7 +19,7 @@ public class Broetchen extends Zutat{
 
     @Override
     public String toString(){
-        return super.toString() + " | Backzeit: " + (float)(this.zubereiten()/60f) + " Minuten";
+        return super.toString() + "| Backzeit: " + (float)(this.zubereiten()/60f) + " Minuten";
     }
 
     @Override
