@@ -6,11 +6,16 @@ import java.util.Scanner;
  * Hauptklasse für die Kontrolle des Programms.
  */
 public class App {
+    private static final int MAX_BURGERANZAHL = 10;
 
-    public final static Scanner scanner = new Scanner(System.in);
-    public final static DyeBucket dyebucket = new DyeBucket();
+    public static final Scanner scanner = new Scanner(System.in);
+    public static final DyeBucket dyebucket = new DyeBucket();
 
-    public static Bestellung bestellung;
+    //public static Bestellung bestellung;
+
+    private static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
+    private static boolean isEmpty = true;
+    private static Burger aktiverBurger;
 
     public static void main(String[] args) {
         generiereKatalog();
@@ -37,7 +42,7 @@ public class App {
      */
     private static void befehlseingabe() {
         String eingabe;
-        bestellung = new Bestellung();
+        //bestellung = new Bestellung();
 
         do{
             System.out.println(dyebucket.dyeText("Bitte deine Eingabe:", Color.YELLOW));
@@ -51,7 +56,17 @@ public class App {
                     menu();
                     break;
                 case "neuer burger":
-                    bestellung.neuerBurger(argument);
+                    neuerBurger(argument);
+                    break;
+                case "zutat":
+                    break;
+                case "ok":
+                    break;
+                case "meine burger":
+                    break;
+                case "bestellen":
+                    break;
+                case "help", "hilfe":
                     break;
                 case "quit":
                     break;
@@ -73,6 +88,102 @@ public class App {
 
         for(Zutat aktuelleZutat : zutatenKatalog) {
             System.out.println(aktuelleZutat.toString());
+        }
+    }
+
+    /**
+     * Fuegt der Bestellung einen neuen Burger mit dem uebergebenen Namen hinzu.
+     *
+     * @param burgerName Name des Burgers
+     */
+    public static void neuerBurger(String burgerName) {
+        boolean addedSuccessfully = tryAddBurgerToList(burgerName);
+
+        if(addedSuccessfully) {
+            System.out.println("Du stellst einen neuen Burger zusammen.");
+            System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschließen.");
+
+            String eingabe;
+            int counter = 1;
+
+            do {
+                if(counter > Burger.MAX_ZUTATENANZAHL) {
+                    System.err.println("Einem Burger koennen maximal 9 Zutaten hinzugefuegt werden!");
+                    break;
+                }
+                System.out.println("Bitte gib die " + counter + ". Zutat an:");
+                System.out.print("> ");
+                eingabe = App.scanner.nextLine();
+                String befehl = App.befehl(eingabe);
+                String argument = App.befehlsArgument(eingabe);
+
+                if(befehl.equals("zutat")) {
+                    zutatHinzufuegen(Integer.parseInt(argument));
+                    counter++;
+                }
+                else {
+                    App.unbekannteEingabe();
+                }
+            } while(!eingabe.equalsIgnoreCase("ok"));
+        }
+        else {
+
+        }
+    }
+
+    private static boolean tryAddBurgerToList(String burgerName) {
+        Burger neuerBurger = new Burger(burgerName);
+
+        try {
+            for(int i = 0; i < burgerListe.length; i++) {
+                if(burgerListe[i] == null) {
+                    burgerListe[i] = neuerBurger;
+                    aktiverBurger = neuerBurger;
+                    isEmpty = false;
+                    return true;
+                }
+            }
+        }
+        catch (Exception exception) {
+            System.err.println("Es wurde bereits das Maximum von zehn Burgern in dieser Bestellung erreicht!");
+        }
+
+        return false;
+    }
+
+    /**
+     * Fuegt dem aktuellen Burger die Zutat mit der uebergebenen Nummer hinzu.
+     * @param nummer Zutatennummer
+     */
+    public static void zutatHinzufuegen(int nummer) {
+        System.out.println("");
+
+        if(aktiverBurger != null) {
+            Zutat zutat = Zutat.getZutat(nummer);
+            System.out.println(zutat.toString());
+            aktiverBurger.zutatHinzufuegen(zutat);
+        }
+        else {
+            System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt. Bitte fuege der\n" +
+                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
+        }
+    }
+
+    /**
+     * Gibt alle Burger dieser Bestellung aus. Sollte noch kein Burger aufgenommen worden sein,
+     * wird ein entsprechender Fehler ausgegeben.
+     */
+    public static void meineBurger() {
+        if(!isEmpty){
+            System.out.println("Folgende Burger wurden deiner Bestellung hinzugefuegt:");
+            for (int i = 0; i < burgerListe.length; i++) {
+                Burger aktuellerBurger = burgerListe[i];
+                System.out.println((i + 1) + ")" + aktuellerBurger.toString());
+            }
+        }
+        else {
+            System.err.println("Der Bestellung wurden noch keine Burger hinzugefuegt. Bitte fuege der\n" +
+                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
         }
     }
 
@@ -114,8 +225,10 @@ public class App {
     }
 
     /**
-     * Erzeugt den Standartkatalog, der von Anfang an existiert
-     * Zutaten werden autoamtisch in der ArrayListe<Zutat> innerhalb der Zutatenklasse durch den Konstruktoraufruf deklariert und muessen daher nur instanziiert werden
+     * Erzeugt den Standartkatalog, der von Anfang an existiert.
+     * Zutaten werden automatisch in der ArrayListe<Zutat> innerhalb der
+     * Zutatenklasse durch den Konstruktoraufruf deklariert und
+     * muessen daher nur instanziiert werden.
      */
     public static void generiereKatalog() {
 
