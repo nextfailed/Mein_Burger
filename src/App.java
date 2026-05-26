@@ -6,76 +6,51 @@ import java.util.Scanner;
  */
 public class App {
 
-    public static Scanner scanner = new Scanner(System.in);
+    public final static Scanner scanner = new Scanner(System.in);
+    public final static DyeBucket dyebucket = new DyeBucket();
+
     public static Bestellung bestellung;
 
-    /**
-     * Main-Methode
-     * @param args Startbefehl wird nicht verwendet
-     */
     public static void main(String[] args) {
+        generiereKatalog();
 
-//        Burger testBurger = new Burger("testBurger");
-//        Zutat broetchen = new Broetchen(1, "Sesam", 0.5f, false, true, false, 5, 4);
-//        Zutat salat = new Salat(2, "Rucola", 0.1f);
-//        Zutat[] zutaten = new Zutat[] {broetchen, salat};
-//        testBurger.zutatenHinzufuegen(zutaten);
-//        testBurger.berechneHoehe();
-//        var test = testBurger.getGesamtHoehe();
-
-        nutzerBefehlseingabe();
+        System.out.println("################################################################################");
+        System.out.println("\nYou'll never burger alone - Create your Burger");
+        System.out.println("\nMit 'menu' kannst du dir alle zur Verfügung stehenden Zutaten anzeigen lassen.");
+        System.out.println("Mit 'zutat' und der jeweiligen Nummer kannst du eine Zutat auswaehlen.");
+        befehlseingabe();
     }
-
 
     /**
      * Fragt den Benutzer so lange nach der Eingabe eines Befehls, bis dieser 'bestellen' oder 'quit' eingibt.
      */
-    private static void nutzerBefehlseingabe() {
+    private static void befehlseingabe() {
         String eingabe;
         bestellung = new Bestellung();
 
-        do {
+        do{
             System.out.println("Bitte deine Eingabe:");
             System.out.print("> ");
             eingabe = scanner.nextLine();
-            String[] befehlsTeile = teileBefehl(eingabe);
+            String befehl = befehl(eingabe).toLowerCase();
+            String argument = befehlsArgument(eingabe);
 
-            switch (befehlsTeile[0].toLowerCase()){
-                case "menu", "menü":
+            switch(befehl) {
+                case "menu":
                     menu();
                     break;
-                case "neuerburger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
-                    bestellung.neuerBurger(befehlsTeile[1]);
-                    break;
-                case "zutat":
-                    String befehlsZusatz = befehlsTeile[1];
-                    if(StringIsNumber(befehlsZusatz)) {
-                        bestellung.zutatHinzufuegen(Integer.parseInt(befehlsZusatz));
-                    }
-                    else {
-                        System.err.println("'zutat " + befehlsTeile[1] + "' ist kein gültiger Befehl,\n" +
-                                "da '" + befehlsTeile[1] + "' keine Nummer ist!");
-                    }
-                    break;
-                case "ok":
-                    //TODO: OK-Befehl
-                    break;
-                case "meineburger": // Vorsicht! Getrennte Worte werden nicht richtig verarbeitet!!
-                    bestellung.meineBurger();
-                    break;
-                case "bestellen":
-                    //TODO: Bestellung finalisieren
+                case "neuer burger":
+                    bestellung.neuerBurger(argument);
                     break;
                 case "quit":
-                    System.out.println("Auf Wiedersehen!");
                     break;
                 default:
-                    System.err.println("Unbekannte Eingaben!");
+                    unbekannteEingabe();
                     break;
             }
-        } while(!eingabe.equals("quit") && !eingabe.equals("bestellen"));
-    }
 
+        } while(eingabe.equals("quit"));
+    }
 
     /**
      * Gibt das gesamte Menue ueber die Konsole aus.
@@ -86,19 +61,27 @@ public class App {
         System.out.println("##### Folgende Zutaten stehen zur Auswahl: #####");
 
         for(Zutat aktuelleZutat : zutatenKatalog) {
-            aktuelleZutat.toString();
+            System.out.println(aktuelleZutat.toString());
         }
     }
 
     /**
-     * Teilt den Befehl vom Zusatz an der Stelle des Leerzeichens (z.B. "zutat bestellnummer").
-     * @param eingabe Nutzereingabe
-     * @return {Befehl, Zusatz}
+     * Entfernt den Zusatz vom Befehl nach dem letzten Leerzeichen.
+     * @param eingabe Nutzereingabe: "zutat 1"
+     * @return Befehl: "zutat"
      */
-    private static String[] teileBefehl(String eingabe) {
-        return eingabe.split(" ");
+    public static String befehl(String eingabe) {
+        return eingabe.substring(0, eingabe.lastIndexOf(' '));
     }
 
+    /**
+     * Trennt das Argument an der Stelle des Leerzeichens vom Befehl ab.
+     * @param eingabe Nutzereingabe: "zutat 1"
+     * @return Argument: "1"
+     */
+    public static String befehlsArgument(String eingabe) {
+        return eingabe.substring(eingabe.lastIndexOf(' ') + 1);
+    }
 
     /**
      * Ueberprueft, ob der uebergebene String eine Nummer ist.
@@ -153,6 +136,6 @@ public class App {
         new Sauce(52, "Chili-Sauce", 0.25f, 8, Geschmack.SCHARF).setVegan();
         new Sauce(53, "Honig-Senf-Sauce", 0.18f, 8, Geschmack.SUESS).setVegetarisch();
 
-        // 
+        // Platz fuer Erweitungen
     }
 }
