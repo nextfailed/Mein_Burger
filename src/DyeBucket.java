@@ -4,7 +4,13 @@ import java.util.Map;
 
 public class DyeBucket{
     public <C> String dyeText(C content, String color){
+        if(color.equals("italic")) return dyeItalic(content);
+
         return ("\u001B["+getColor(color)+"m" + content + "\u001B[0m");
+    }
+
+    public <C> String dyeItalic(C content){
+        return ("\033[3m" + content + "\033[0m");
     }
 
     public <C> String dyeText(C content, Color color){
