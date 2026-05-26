@@ -104,10 +104,10 @@ public abstract class Zutat{
         };
 
 
-        String isKlassisch = klassisch ? bucket.dyeText(" klassisch ", Color.RED) :"";
+        String isKlassisch = klassisch ? bucket.dyeText("klassisch", Color.RED) :"";
 
 
-        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + ") " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
+        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + " - " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class Zutat{
      * @return
      */
     public Zutat setNonVegan(){
-        this.diaettyp = INDIKATOR_VEGETARISCH;
+        this.diaettyp = INDIKATOR_NON_VEGAN;
 
         return this;
     }
