@@ -136,6 +136,6 @@ public class App {
         new Sauce(52, "Chili-Sauce", 0.25f, 8, Geschmack.SCHARF).setVegan();
         new Sauce(53, "Honig-Senf-Sauce", 0.18f, 8, Geschmack.SUESS).setVegetarisch();
 
-        // Platz fuer erweitungen
+        // Platz fuer Erweitungen
     }
 }
