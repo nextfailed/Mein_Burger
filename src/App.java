@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,10 +15,20 @@ public class App {
     public static void main(String[] args) {
         generiereKatalog();
 
-        System.out.println("################################################################################");
-        System.out.println("\nYou'll never burger alone - Create your Burger");
-        System.out.println("\nMit 'menu' kannst du dir alle zur Verfügung stehenden Zutaten anzeigen lassen.");
-        System.out.println("Mit 'zutat' und der jeweiligen Nummer kannst du eine Zutat auswaehlen.");
+        StringBuffer ausgabe = new StringBuffer();
+        char umbruch = '\n';
+
+        Color keyWordColor = Color.CYAN;
+
+        String slogen = "You'll never burger alone - Create your Burger";
+
+        // Kopfzeile
+        ausgabe.append("#".repeat(slogen.length())).append(umbruch);
+        ausgabe.append(slogen).append(umbruch);
+        ausgabe.append(umbruch).append("- Mit " + dyebucket.dyeText("'Menu'", keyWordColor) + " kannst du dir alle zur Verfuegung stehenden Zutaten anzeigen lassen.");
+        ausgabe.append(umbruch).append("- Mit " + dyebucket.dyeText("'Zutat'", keyWordColor) + " und der jeweiligen Nummer kannst du eine Zutat auswaehlen.");
+
+        System.out.println(ausgabe.toString());
         befehlseingabe();
     }
 
@@ -29,7 +40,7 @@ public class App {
         bestellung = new Bestellung();
 
         do{
-            System.out.println("Bitte deine Eingabe:");
+            System.out.println(dyebucket.dyeText("Bitte deine Eingabe:", Color.YELLOW));
             System.out.print("> ");
             eingabe = scanner.nextLine();
             String befehl = befehl(eingabe).toLowerCase();
@@ -58,7 +69,7 @@ public class App {
     public static void menu() {
         ArrayList<Zutat> zutatenKatalog = Zutat.getKatalog();
 
-        System.out.println("##### Folgende Zutaten stehen zur Auswahl: #####");
+        System.out.println("\n##### Folgende Zutaten stehen zur Auswahl: #####\n");
 
         for(Zutat aktuelleZutat : zutatenKatalog) {
             System.out.println(aktuelleZutat.toString());

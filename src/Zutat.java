@@ -104,10 +104,10 @@ public abstract class Zutat{
         };
 
 
-        String isKlassisch = klassisch ? " bucket.dyeText(isKlassisch, Color.RED) ":"";
+        String isKlassisch = klassisch ? bucket.dyeText(" klassisch ", Color.RED) :"";
 
 
-        return name + " : " + nummer + ")" + diaetString + isKlassisch;
+        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + ") " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
     }
 
     /**
