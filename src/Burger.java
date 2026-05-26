@@ -10,6 +10,7 @@ public class Burger {
     public static final int INDIKATOR_VEGETARISCH = 1; // Vegetarisch wird als Level 1 angesehen, da er nicht vegan ist, aber mehr Restriktionen als non-Vegan hat
 
     private String name;
+    private int anzahlZutaten = 1;
 
     /* 
     private float gesamtHoehe = 0.0f;
@@ -17,24 +18,28 @@ public class Burger {
     private int zubereitungsDauer;
     */
 
-    private Zutat[] zutaten = new Zutat[MAX_ZUTATENANZAHL];
+    private Zutat[] zutaten;
 
     public Burger(String name) {
         this.name = name;
+        zutaten = new Zutat[MAX_ZUTATENANZAHL];
     }
 
+
+    /**
+     * @return Burgerdetails und Rezept
+     */
     @Override
     public String toString(){
         StringBuffer buffer = new StringBuffer();
         int umNStellenEinruecken = 3;
 
         String einruecken = " ".repeat(umNStellenEinruecken);
-        char listenZaehler = 'a';
 
         // Kopfzeile
         buffer.append("Rezept fuer: " + name).append("(");
         buffer.append(this.berechneHoehe() + "mm, ");
-        buffer.append(getDiaetdyp());
+        buffer.append(getDiaettyp());
 
             // fuegt gefundene Geschmaecker an
             Geschmack[] geschmaecker = getGeschmack();
@@ -63,12 +68,7 @@ public class Burger {
 
         // Zubereitung
         buffer.append(einruecken).append("Und so gehts: \n");
-        for(Zutat aktuelleZutat : zutaten){
-            if(aktuelleZutat == null) continue;
-
-            buffer.append(einruecken);
-            buffer.append(listenZaehler++ + " - ").append(aktuelleZutat.getZubereitung()).append("\n");
-        }
+        buffer.append(kuechenAnweisung());
 
         return buffer.toString();
     }
@@ -78,10 +78,14 @@ public class Burger {
         return name;
     }
 
+    public int getAnzahlZutaten() {
+        return anzahlZutaten;
+    }
+
     /**
-     * Gibt den Geschmack des Burgers zurueck
-     * Der Burger kann mehrere Geschmacksrichtungen haben, Geschmack ist ohne Probleme erweiterbar
-     * @return
+     * Gibt den Geschmack des Burgers zurueck.
+     * Der Burger kann mehrere Geschmacksrichtungen haben, Geschmack ist ohne Probleme erweiterbar.
+     * @return Geschmacksrichtung
      */
     public Geschmack[] getGeschmack(){
         int laengeOhneNormal = Geschmack.values().length - 1;
@@ -101,7 +105,7 @@ public class Burger {
                 for(int i = 0; i < geschmaecker.length; i++){
                     Geschmack zuTestenderGeschmack = geschmaecker[i];
 
-                    // Falls der Geschmack bereits verzeichnet ist, brech ab
+                    // Falls der Geschmack bereits verzeichnet ist, breche ab
                     if(currentGeschmack.equals(zuTestenderGeschmack)) break; 
 
                     //Falls Geschmack nicht bereits vorkommt und ein "leerer" Geschmack gefunden wurde, ersetze ihn und brich ab
@@ -116,35 +120,25 @@ public class Burger {
         return geschmaecker;
     }
 
-    /* 
-    public float getGesamtHoehe() {
-        return gesamtHoehe;
-    }
-
-    public float getGesamtPreis() {
-        return gesamtPreis;
-    }
-    */
-
     /**
-     * Berechnet, ob der Burger vegan oder vegetarisch ist 
-     * Wird als Integer behandelt, da alles was Vegan ebenfalls vegetarisch ist
-     * @return
+     * Berechnet, ob der Burger vegan oder vegetarisch ist.
+     * Wird als Integer behandelt, da alles was Vegan ebenfalls vegetarisch ist.
+     * @return Diettyp als Integer (0 = none vegan, 1 = vegetarisch, 2 = vegan)
      */
-    public int getDiaetdyp(){   
+    public int getDiaettyp(){
         int diaettyp = INDIKATOR_VEGAN;  // Geht von der hoechsten bedingung aus und senkt, falls ein niedrigerer Wert folgt
         
-        for(Zutat aktuelleZutat : zutaten){
-            diaettyp = Math.min(diaettyp, aktuelleZutat.getDiaettyp()); // Saenkt den Indikatorwert, falls eine Zutat mit einem geringeren diaetentyp innerhalb des Burgers gefunden wurde
+        for(Zutat aktuelleZutat : zutaten) {
+            if (aktuelleZutat != null) {
+                diaettyp = Math.min(diaettyp, aktuelleZutat.getDiaettyp()); // Saenkt den Indikatorwert, falls eine Zutat mit einem geringeren diaetentyp innerhalb des Burgers gefunden wurde
+            }
         }
-
         return diaettyp;
     }
 
-
     /**
-     * Gibt fuer jede Zutat die Zubereitungsweise aus und gibt die gesamte Zubereitungsdauer zurueck
-     * @return
+     * Liest fuer jede Zutat die Zubereitungsdauer aus und gibt die gesamte Zubereitungsdauer des Burgers zurueck.
+     * @return Zeit in Sekunden
      */
     public int zubereiten(){
         int zubereitungsDauer = 0;
@@ -160,9 +154,28 @@ public class Burger {
         return zubereitungsDauer;
     }
 
+    public String kuechenAnweisung() {
+        StringBuffer buffer = new StringBuffer();
+        int umNStellenEinruecken = 3;
+
+        String einruecken = " ".repeat(umNStellenEinruecken);
+        char listenZaehler = 'a';
+
+        for(Zutat aktuelleZutat : zutaten){
+            if(aktuelleZutat == null) continue;
+
+            buffer.append(einruecken);
+            buffer.append(listenZaehler++ + " - ").append(aktuelleZutat.getZubereitung()).append("\n");
+        }
+
+
+
+        return buffer.toString();
+    }
+
     /**
      *  Berechnet die Hoehe des Burgers anhand aller verwendeten Zutaten
-     * @return
+     * @return Hoehe in cm
      */
     public float berechneHoehe() {
         float gesamtHoehe = 0f;
@@ -180,7 +193,7 @@ public class Burger {
     
     /**
      * Berechnet dynamisch den Gesamtpreis des Burgers
-     * @return
+     * @return Preis in Euro
      */
     public float berechnePreis(){
         float gesamtPreis = 0f;
@@ -199,19 +212,29 @@ public class Burger {
 
     /**
      * Fügt dem Burger eine Liste an beliebigen Zutaten hinzu
-     * @param zutat
+     * @param zutat neue Zutat
      */
     public void zutatHinzufuegen(Zutat zutat) {
-        // Ueberschreibt falls es sich um ein neues Broetchen handelt an der Position des Broetchens das alte Broetchen und geht zurueck
+        // Ueberschreibt, falls es sich um ein neues Broetchen handelt an der Position des Broetchens das alte Broetchen und geht zurueck
         if(zutat instanceof Broetchen){
             zutaten[BROETCHEN_POSITION] = zutat;
+
+            System.out.println(zutat.toString() + " hinzugefuegt.");
+            return;
+        }
+
+        if(zutaten[BROETCHEN_POSITION] == null) {
+            System.err.println("FEHLER! Bitte fuege zuerst ein Broetchen hinzu.");
             return;
         }
 
         // Sucht nach einer leeren Stelle und fuegt dort die Zutat ein
-        for(Zutat aktuelleZutat : zutaten) {
-            if(aktuelleZutat == null) {
-                aktuelleZutat = zutat;
+        for (int i = BROETCHEN_POSITION + 1; i < zutaten.length; i++) {
+            if (zutaten[i] == null) {
+                zutaten[i] = zutat;
+                anzahlZutaten++;
+
+                System.out.println(zutat.toString() + " hinzugefuegt.");
                 return;
             }
         }
