@@ -131,15 +131,15 @@ public class App {
         new Bratling(22, "Falafel-Bratling", 1.45f, 210, 21).setVegan().setClassic(true);
         new Bratling(23, "Gemuese Bratling", 1.75f, 240, 25).setVegetarisch().setClassic(true);
 
+        // Salat
+        new Salat(30, "Eisbergsalat", 0.18f);
+        new Salat(31, "Roculasalat", 0.25f);
+
         // Gemuese
         new Gemuese(40, "Tomate", 0.25f, 3, 3).setClassic(true);;
         new Gemuese(41, "Salzgurke", 0.15f, 4, 2).setClassic(true);
         new Gemuese(42, "Rote Zwiebelringe", 0.08f, 5, 2);
         new Gemuese(43, "Jalapeno-Ringe", 0.08f, 5, 2);
-
-        // Salat
-        new Salat(30, "Eisbergsalat", 0.18f);
-        new Salat(31, "Roculasalat", 0.25f);
 
         // Sauce
         new Sauce(50, "Ketchup", 0.10f, 10, Geschmack.NORMAL).setVegan().setClassic(true);
