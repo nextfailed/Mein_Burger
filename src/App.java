@@ -6,29 +6,32 @@ import java.util.Scanner;
  * Hauptklasse für die Kontrolle des Programms.
  */
 public class App {
+    private static final int MAX_BURGERANZAHL = 10;
+    public static final char UMBRUCH = '\n';
 
-    public final static Scanner scanner = new Scanner(System.in);
-    public final static DyeBucket dyebucket = new DyeBucket();
+    public static final Scanner scanner = new Scanner(System.in);
+    public static final DyeBucket dyebucket = new DyeBucket();
 
-    public static Bestellung bestellung;
+    private static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
+    private static boolean isEmpty = true;
+    private static Burger aktiverBurger;
 
     public static void main(String[] args) {
+        StringBuffer ausgabe = new StringBuffer();
         generiereKatalog();
 
-        StringBuffer ausgabe = new StringBuffer();
-        char umbruch = '\n';
+        // Kopfzeile
+        String slogen = "You'll never burger alone - Create your Burger";
+        System.out.println("#".repeat(slogen.length()) + (UMBRUCH));
+        System.out.println(slogen);
 
         Color keyWordColor = Color.CYAN;
-
-        String slogen = "You'll never burger alone - Create your Burger";
-
-        // Kopfzeile
-        ausgabe.append("#".repeat(slogen.length())).append(umbruch);
-        ausgabe.append(slogen).append(umbruch);
-        ausgabe.append(umbruch).append("- Mit " + dyebucket.dyeText("'Menu'", keyWordColor) + " kannst du dir alle zur Verfuegung stehenden Zutaten anzeigen lassen.");
-        ausgabe.append(umbruch).append("- Mit " + dyebucket.dyeText("'Zutat'", keyWordColor) + " und der jeweiligen Nummer kannst du eine Zutat auswaehlen.");
+        ausgabe.append(UMBRUCH).append("- Mit " + dyebucket.dyeText("'help'", keyWordColor) +
+                " kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.");
 
         System.out.println(ausgabe.toString());
+
+
         befehlseingabe();
     }
 
@@ -37,12 +40,16 @@ public class App {
      */
     private static void befehlseingabe() {
         String eingabe;
-        bestellung = new Bestellung();
 
         do{
             System.out.println(dyebucket.dyeText("Bitte deine Eingabe:", Color.YELLOW));
             System.out.print("> ");
             eingabe = scanner.nextLine();
+
+            if(!eingabe.contains(" ")) {
+                eingabe += " ";
+            }
+
             String befehl = befehl(eingabe).toLowerCase();
             String argument = befehlsArgument(eingabe);
 
@@ -51,7 +58,35 @@ public class App {
                     menu();
                     break;
                 case "neuer burger":
-                    bestellung.neuerBurger(argument);
+                    if(aktiverBurger == null) {
+                        neuerBurger(argument);
+
+                        System.out.println("Du stellst einen neuen Burger zusammen.");
+                        System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschließen.");
+                    }
+                    else {
+                        System.err.println("FEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch" +
+                                "in der Zusammenstellung. Bitte beende erste die Zusammenstellung mit 'ok'.");
+                    }
+                    break;
+                case "zutat":
+                    if(stringIsNumber(argument)) {
+                        zutatHinzufuegen(Integer.parseInt(argument));
+                    }
+                    else {
+                        System.err.println("FEHLER! '" + argument + "' ist keine Nummer!");
+                    }
+                    break;
+                case "ok":
+                    aktiverBurger = null;
+                    break;
+                case "meine burger":
+                    meineBurger();
+                    break;
+                case "bestellen":
+                    break;
+                case "help", "hilfe":
+
                     break;
                 case "quit":
                     break;
@@ -60,7 +95,7 @@ public class App {
                     break;
             }
 
-        } while(eingabe.equals("quit"));
+        } while(!eingabe.equals("quit"));
     }
 
     /**
@@ -74,6 +109,72 @@ public class App {
         for(Zutat aktuelleZutat : zutatenKatalog) {
             System.out.println(aktuelleZutat.toString());
         }
+    }
+
+    /**
+     * Fuegt der Bestellung einen neuen Burger mit dem uebergebenen Namen hinzu.
+     * @param burgerName Name des Burgers
+     */
+    public static void neuerBurger(String burgerName) {
+        Burger neuerBurger = new Burger(burgerName);
+
+        try {
+            for(int i = 0; i < burgerListe.length; i++) {
+                if(burgerListe[i] == null) {
+                    burgerListe[i] = neuerBurger;
+                    aktiverBurger = neuerBurger;
+                    isEmpty = false;
+                }
+            }
+        }
+        catch (Exception exception) {
+            System.err.println("Es wurde bereits das Maximum von zehn Burgern in dieser Bestellung erreicht!");
+        }
+    }
+
+    /**
+     * Fuegt dem aktuellen Burger die Zutat mit der uebergebenen Nummer hinzu.
+     * @param nummer Zutatennummer
+     */
+    public static void zutatHinzufuegen(int nummer) {
+        System.out.println("");
+
+        if(aktiverBurger != null) {
+            Zutat zutat = Zutat.getZutat(nummer);
+            System.out.println(zutat.toString() + " hinzugefügt.");
+            aktiverBurger.zutatHinzufuegen(zutat);
+        }
+        else {
+            System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt. Bitte fuege der\n" +
+                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger [Burgername]' hinzu.");
+        }
+    }
+
+    /**
+     * Gibt alle Burger dieser Bestellung aus. Sollte noch kein Burger aufgenommen worden sein,
+     * wird ein entsprechender Fehler ausgegeben.
+     */
+    public static void meineBurger() {
+        if(!isEmpty){
+            System.out.println("Folgende Burger wurden deiner Bestellung hinzugefuegt:");
+            for (int i = 0; i < burgerListe.length; i++) {
+                Burger aktuellerBurger = burgerListe[i];
+                System.out.println((i + 1) + ")" + aktuellerBurger.toString());
+            }
+        }
+        else {
+            System.err.println("Der Bestellung wurden noch keine Burger hinzugefuegt. Bitte fuege der\n" +
+                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
+        }
+    }
+
+    private static void help() {
+        StringBuffer ausgabe = new StringBuffer();
+
+        Color keyWordColor = Color.CYAN;
+        ausgabe.append(UMBRUCH).append("- Mit " + dyebucket.dyeText("'help'", keyWordColor) +
+                " kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.");
+        System.out.println(ausgabe.toString());
     }
 
     /**
@@ -99,7 +200,7 @@ public class App {
      * @param string Zu ueberpruefender String
      * @return 'true' oder 'false'
      */
-    public static boolean StringIsNumber(String string) {
+    public static boolean stringIsNumber(String string) {
         try {
             Integer.parseInt(string);
             return true;
@@ -114,8 +215,10 @@ public class App {
     }
 
     /**
-     * Erzeugt den Standartkatalog, der von Anfang an existiert
-     * Zutaten werden autoamtisch in der ArrayListe<Zutat> innerhalb der Zutatenklasse durch den Konstruktoraufruf deklariert und muessen daher nur instanziiert werden
+     * Erzeugt den Standartkatalog, der von Anfang an existiert.
+     * Zutaten werden automatisch in der ArrayListe<Zutat> innerhalb der
+     * Zutatenklasse durch den Konstruktoraufruf deklariert und
+     * muessen daher nur instanziiert werden.
      */
     public static void generiereKatalog() {
 
