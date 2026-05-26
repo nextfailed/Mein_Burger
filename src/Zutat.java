@@ -50,7 +50,8 @@ public abstract class Zutat{
     }
 
     /**
-     * Verkürzter Konstruktor ohne Ernaehrungsart
+     * Verkürzter Konstruktor ohne Ernaehrungsart oder ob er klassisch ist.
+     * Kann mithilfe von Settern im nachhinein angepasst werden
      * 
      * @param nummer
      * @param name
@@ -103,10 +104,10 @@ public abstract class Zutat{
         };
 
 
-        String isKlassisch = klassisch ? " bucket.dyeText(isKlassisch, Color.RED) ":"";
+        String isKlassisch = klassisch ? bucket.dyeText(" klassisch ", Color.RED) :"";
 
 
-        return name + " : " + nummer + ")" + diaetString + isKlassisch;
+        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + ") " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
     }
 
     /**
@@ -122,39 +123,54 @@ public abstract class Zutat{
     public abstract float berechneHoehe();
 
     /**
-     * Setzt den Diaetenindikator auf vegan (und automatisch ebenfalls auf vegetarisch)
+     * Setzt den Diaetstyp auf Vegan, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
+     * @return
      */
-    public void setVegan(){
+    public Zutat setVegan(){
         this.diaettyp = INDIKATOR_VEGAN;
+
+        return this;
     }
 
     /**
-     * Setzt den Diaetindikator auf vegetarisch
+     * Setzt den Diaetstyp auf vegetarisch, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
+     * @return
      */
-    public void setVegetarisch(){
+    public Zutat setVegetarisch(){
         this.diaettyp = INDIKATOR_VEGETARISCH;
+
+        return this;
     }
 
     /**
-     * Setzt den Diaetindikator auf weder vegan noch vegetarisch
+     * Setzt den Diaetstyp auf nicht vegan oder vegetarisch, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
+     * @return
      */
-    public void setNonVegan(){
+    public Zutat setNonVegan(){
         this.diaettyp = INDIKATOR_VEGETARISCH;
+
+        return this;
     }
 
     /**
-     * Switcht Klassisch auf true oder false
+     * Switcht beim Aufruf klassisch zwischen true und false, gibt sich selbst zurueck, damit man beim Casten ebenfalls den diaetstyp einstellen kann
+     * @return
      */
-    public void switchClassic(){
+    public Zutat switchClassic(){
         this.klassisch = !klassisch;
+
+        return this;
     }
 
     /**
-     * Setzt klassisch auf den mitgegebenen Parameter
+     * Setzt klassisch auf den mitgegebenen Wert, gibt sich selbst zurueck, damit man beim Casten ebenfalls den diaetstyp einstellen kann
      * @param neuerWert
+     * @return
      */
-    public void setClassic(boolean neuerWert){
+    public Zutat setClassic(boolean neuerWert){
         this.klassisch = neuerWert;
+
+        return this;
     }
 
     // Getter
