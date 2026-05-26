@@ -121,7 +121,7 @@ public class App {
 
     /**
      * Erzeugt den Standartkatalog, der von Anfang an existiert
-     * Zutaten werden autoamtisch in der ArrayListe<Zutat> innerhalb der Zutatenklasse deklariert und muessen daher nur instanziiert werden
+     * Zutaten werden autoamtisch in der ArrayListe<Zutat> innerhalb der Zutatenklasse durch den Konstruktoraufruf deklariert und muessen daher nur instanziiert werden
      */
     public static void generiereKatalog() {
 
