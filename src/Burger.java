@@ -10,6 +10,7 @@ public class Burger {
     public static final int INDIKATOR_VEGETARISCH = 1; // Vegetarisch wird als Level 1 angesehen, da er nicht vegan ist, aber mehr Restriktionen als non-Vegan hat
 
     private String name;
+    private int anzahlZutaten = 1;
 
     /* 
     private float gesamtHoehe = 0.0f;
@@ -17,11 +18,13 @@ public class Burger {
     private int zubereitungsDauer;
     */
 
-    private Zutat[] zutaten = new Zutat[MAX_ZUTATENANZAHL];
+    private Zutat[] zutaten;
 
     public Burger(String name) {
         this.name = name;
+        zutaten = new Zutat[MAX_ZUTATENANZAHL];
     }
+
 
     @Override
     public String toString(){ //TODO: Geschmack hinzufuegen!
@@ -76,6 +79,10 @@ public class Burger {
     // Getter
     public String getName() {
         return name;
+    }
+
+    public int getAnzahlZutaten() {
+        return anzahlZutaten;
     }
 
     /**
@@ -141,7 +148,6 @@ public class Burger {
         return diaettyp;
     }
 
-
     /**
      * Gibt fuer jede Zutat die Zubereitungsweise aus und gibt die gesamte Zubereitungsdauer zurueck
      * @return
@@ -202,16 +208,17 @@ public class Burger {
      * @param zutat
      */
     public void zutatHinzufuegen(Zutat zutat) {
-        // Ueberschreibt falls es sich um ein neues Broetchen handelt an der Position des Broetchens das alte Broetchen und geht zurueck
+        // Ueberschreibt, falls es sich um ein neues Broetchen handelt an der Position des Broetchens das alte Broetchen und geht zurueck
         if(zutat instanceof Broetchen){
             zutaten[BROETCHEN_POSITION] = zutat;
             return;
         }
 
         // Sucht nach einer leeren Stelle und fuegt dort die Zutat ein
-        for(Zutat aktuelleZutat : zutaten) {
-            if(aktuelleZutat == null) {
-                aktuelleZutat = zutat;
+        for (int i = BROETCHEN_POSITION + 1; i < zutaten.length; i++) {
+            if (zutaten[i] == null) {
+                zutaten[i] = zutat;
+                anzahlZutaten++;
                 return;
             }
         }

@@ -7,33 +7,31 @@ import java.util.Scanner;
  */
 public class App {
     private static final int MAX_BURGERANZAHL = 10;
+    public static final char UMBRUCH = '\n';
 
     public static final Scanner scanner = new Scanner(System.in);
     public static final DyeBucket dyebucket = new DyeBucket();
-
-    //public static Bestellung bestellung;
 
     private static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
     private static boolean isEmpty = true;
     private static Burger aktiverBurger;
 
     public static void main(String[] args) {
+        StringBuffer ausgabe = new StringBuffer();
         generiereKatalog();
 
-        StringBuffer ausgabe = new StringBuffer();
-        char umbruch = '\n';
+        // Kopfzeile
+        String slogen = "You'll never burger alone - Create your Burger";
+        System.out.println("#".repeat(slogen.length()) + (UMBRUCH));
+        System.out.println(slogen);
 
         Color keyWordColor = Color.CYAN;
-
-        String slogen = "You'll never burger alone - Create your Burger";
-
-        // Kopfzeile
-        ausgabe.append("#".repeat(slogen.length())).append(umbruch);
-        ausgabe.append(slogen).append(umbruch);
-        ausgabe.append(umbruch).append("- Mit " + dyebucket.dyeText("'Menu'", keyWordColor) + " kannst du dir alle zur Verfuegung stehenden Zutaten anzeigen lassen.");
-        ausgabe.append(umbruch).append("- Mit " + dyebucket.dyeText("'Zutat'", keyWordColor) + " und der jeweiligen Nummer kannst du eine Zutat auswaehlen.");
+        ausgabe.append(UMBRUCH).append("- Mit " + dyebucket.dyeText("'help'", keyWordColor) +
+                " kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.");
 
         System.out.println(ausgabe.toString());
+
+
         befehlseingabe();
     }
 
@@ -42,12 +40,16 @@ public class App {
      */
     private static void befehlseingabe() {
         String eingabe;
-        //bestellung = new Bestellung();
 
         do{
             System.out.println(dyebucket.dyeText("Bitte deine Eingabe:", Color.YELLOW));
             System.out.print("> ");
             eingabe = scanner.nextLine();
+
+            if(!eingabe.contains(" ")) {
+                eingabe += " ";
+            }
+
             String befehl = befehl(eingabe).toLowerCase();
             String argument = befehlsArgument(eingabe);
 
@@ -56,17 +58,35 @@ public class App {
                     menu();
                     break;
                 case "neuer burger":
-                    neuerBurger(argument);
+                    if(aktiverBurger == null) {
+                        neuerBurger(argument);
+
+                        System.out.println("Du stellst einen neuen Burger zusammen.");
+                        System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschließen.");
+                    }
+                    else {
+                        System.err.println("FEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch" +
+                                "in der Zusammenstellung. Bitte beende erste die Zusammenstellung mit 'ok'.");
+                    }
                     break;
                 case "zutat":
+                    if(stringIsNumber(argument)) {
+                        zutatHinzufuegen(Integer.parseInt(argument));
+                    }
+                    else {
+                        System.err.println("FEHLER! '" + argument + "' ist keine Nummer!");
+                    }
                     break;
                 case "ok":
+                    aktiverBurger = null;
                     break;
                 case "meine burger":
+                    meineBurger();
                     break;
                 case "bestellen":
                     break;
                 case "help", "hilfe":
+
                     break;
                 case "quit":
                     break;
@@ -75,7 +95,7 @@ public class App {
                     break;
             }
 
-        } while(eingabe.equals("quit"));
+        } while(!eingabe.equals("quit"));
     }
 
     /**
@@ -93,45 +113,9 @@ public class App {
 
     /**
      * Fuegt der Bestellung einen neuen Burger mit dem uebergebenen Namen hinzu.
-     *
      * @param burgerName Name des Burgers
      */
     public static void neuerBurger(String burgerName) {
-        boolean addedSuccessfully = tryAddBurgerToList(burgerName);
-
-        if(addedSuccessfully) {
-            System.out.println("Du stellst einen neuen Burger zusammen.");
-            System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschließen.");
-
-            String eingabe;
-            int counter = 1;
-
-            do {
-                if(counter > Burger.MAX_ZUTATENANZAHL) {
-                    System.err.println("Einem Burger koennen maximal 9 Zutaten hinzugefuegt werden!");
-                    break;
-                }
-                System.out.println("Bitte gib die " + counter + ". Zutat an:");
-                System.out.print("> ");
-                eingabe = App.scanner.nextLine();
-                String befehl = App.befehl(eingabe);
-                String argument = App.befehlsArgument(eingabe);
-
-                if(befehl.equals("zutat")) {
-                    zutatHinzufuegen(Integer.parseInt(argument));
-                    counter++;
-                }
-                else {
-                    App.unbekannteEingabe();
-                }
-            } while(!eingabe.equalsIgnoreCase("ok"));
-        }
-        else {
-
-        }
-    }
-
-    private static boolean tryAddBurgerToList(String burgerName) {
         Burger neuerBurger = new Burger(burgerName);
 
         try {
@@ -140,15 +124,12 @@ public class App {
                     burgerListe[i] = neuerBurger;
                     aktiverBurger = neuerBurger;
                     isEmpty = false;
-                    return true;
                 }
             }
         }
         catch (Exception exception) {
             System.err.println("Es wurde bereits das Maximum von zehn Burgern in dieser Bestellung erreicht!");
         }
-
-        return false;
     }
 
     /**
@@ -160,12 +141,12 @@ public class App {
 
         if(aktiverBurger != null) {
             Zutat zutat = Zutat.getZutat(nummer);
-            System.out.println(zutat.toString());
+            System.out.println(zutat.toString() + " hinzugefügt.");
             aktiverBurger.zutatHinzufuegen(zutat);
         }
         else {
             System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt. Bitte fuege der\n" +
-                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
+                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger [Burgername]' hinzu.");
         }
     }
 
@@ -185,6 +166,15 @@ public class App {
             System.err.println("Der Bestellung wurden noch keine Burger hinzugefuegt. Bitte fuege der\n" +
                     "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
         }
+    }
+
+    private static void help() {
+        StringBuffer ausgabe = new StringBuffer();
+
+        Color keyWordColor = Color.CYAN;
+        ausgabe.append(UMBRUCH).append("- Mit " + dyebucket.dyeText("'help'", keyWordColor) +
+                " kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.");
+        System.out.println(ausgabe.toString());
     }
 
     /**
@@ -210,7 +200,7 @@ public class App {
      * @param string Zu ueberpruefender String
      * @return 'true' oder 'false'
      */
-    public static boolean StringIsNumber(String string) {
+    public static boolean stringIsNumber(String string) {
         try {
             Integer.parseInt(string);
             return true;
