@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 /**
  * Burger dient der Erstellung eines eigenen Burgers mit beliebigen Zutaten und
  * berechnet dessen Hoehe und den Preis.
@@ -20,7 +22,7 @@ public class Burger {
     private Zutat[] zutaten;
 
     public Burger(String name) {
-        this.name = name;
+        this.name = App.dyebucket.dyeText("'" + name + "'", Color.CYAN);
         zutaten = new Zutat[MAX_ZUTATENANZAHL];
     }
 
@@ -36,7 +38,7 @@ public class Burger {
         String einruecken = " ".repeat(umNStellenEinruecken);
 
         // Kopfzeile
-        buffer.append("Rezept fuer: ").append(this.name).append("(");
+        buffer.append("Rezept fuer ").append(this.name).append(": (");
         buffer.append(Math.round(this.berechneHoehe()*100f)/100f + "mm, ");
         buffer.append(getDiaettyp());
 

@@ -8,16 +8,18 @@ public enum Kommando {
         }, 
 
         "Stellt dir alle Befehle zur Verfuegung.",
-        Kommandotyp.AUSGABE
+        Kommandotyp.AUSGABE,
+        true
     ),
 
     QUIT(
         new String[]{
-        "Quit", "Beende", "q", "!"
+        "Beende", "Quit", "q", "!"
         }, 
 
         "Beendet das Programm.",
-        Kommandotyp.ABBRUCH
+        Kommandotyp.ABBRUCH,
+        true
     ),
 
     MENU(
@@ -25,25 +27,26 @@ public enum Kommando {
         "Menu", "M"
         },
 
-        "Gibt alle existierenden Zutaten mit ihrer ID und Eigenschaften aus.",
+        "Gibt alle existierenden Zutaten mit ihrer ID und ihren Eigenschaften aus.",
 
         Kommandotyp.AUSGABE
     ),
     
     NEW(
         new String[]{
-        "Neuer Burger [Burgername : String ohne Leerzeichen]", "New [Burgername]"
+        "Neuer Burger [Burgername]", "New []"
         },
 
         "Erstelle einen neuen Burger. Mithilfe von " + App.highlightBefehl("Zutat [Zutatsnummer]") + 
-        " koennen diesem Zutaten hinzugefuegt werden. Burger muessen mit "+ App.highlightBefehl("ok") +" abgeschlossen werden.\n  Achtung: Du kannst maximal " + App.dyebucket.dyeItalic(App.MAX_BURGERANZAHL) + " Burger erstellen",
+        " koennen diesem Zutaten hinzugefuegt werden. Burger muessen mit "+ App.highlightBefehl("ok") +" abgeschlossen werden.\n  Achtung: Du kannst maximal " 
+        + App.dyebucket.dyeText(App.MAX_BURGERANZAHL, Color.YELLOW) + " Burger erstellen",
         
         Kommandotyp.HINZUFUEGEN
     ),
 
     ZUTAT(
         new String[]{
-        "Zutat [ID : Integer]", "Ingredient[ID]", "Add[ID]"
+        "Zutat [ID]", "Ingredient[]", "Add[]"
         },
 
         "Fuege deinem Burger nach " + App.highlightBefehl("Mein Burger [Burgername]") + " eine Zutat mithilfe ihrer ID hinzu.",
@@ -62,10 +65,10 @@ public enum Kommando {
 
     OK(
         new String[]{
-        "ok", "done"
+        "okay", "ok", "done"
         },
 
-        "Beende das Zusammenstellen deines Burgers. Dein Burger kann bis zu " + App.dyebucket.dyeItalic(Burger.MAX_ZUTATENANZAHL) + 
+        "Beende das Zusammenstellen deines Burgers. Dein Burger kann bis zu " + App.dyebucket.dyeText(Burger.MAX_ZUTATENANZAHL, Color.YELLOW) + 
         " Zutaten haben.\n  Achtung: Es muss mindestens ein Broetchen hinzugefuegt werden! Du musst ebenfalls einen neuen Burger erstellen, bevor du einen abgeben kannst.",
         
         Kommandotyp.BESTAETIGEN
@@ -94,8 +97,9 @@ public enum Kommando {
 
     /// Initialisierungen    
    
-    private final String[] kommandos;
+    private final String[] aliases;
     private final String beschreibung;
+    private final boolean isEssential;
 
     private final Kommandotyp kommandotyp;
         
@@ -130,23 +134,46 @@ public enum Kommando {
         }
     }
         
-    private Kommando(String[] commands, String description, Kommandotyp type){
-        this.kommandos = commands;
+    /**
+     * 
+     * @param commands Beinhaltet Aliases fuer den selben Befehlsaufruf 
+     * @param description Beinhaltet die Beschreibung zu dem jeweiligen Befehl
+     * @param type Gibt den Typen des Befehls sowie die dazugehoerige Farbe mit an
+     * @param essential Gibt an, ob das Kommando bereits am Anfang ausgegeben wird oder erst mit dem ersten Help-Aufruf
+     */
+    private Kommando(String[] commands, String description, Kommandotyp type, boolean essential){
+        this.aliases = commands;
         this.beschreibung = description;
+        this.isEssential = essential;
 
         this.kommandotyp = type;
     }
 
+    /**
+     * 
+     * @param commands
+     * @param description
+     * @param type
+     */
+    private Kommando(String[] commands, String description, Kommandotyp type){
+        this(commands, description, type, false);
+    }
+
+    /**
+     * 
+     * @param commands
+     * @param description
+     */
     private Kommando(String[] commands, String description){
         this(commands, description, Kommandotyp.NORMAL);
     }
 
     public String toString(){
-        return this.kommandos[0];
+        return this.aliases[0];
     }
 
-    public String[] getKommandos(){
-        return this.kommandos;
+    public String[] getAliases(){
+        return this.aliases;
     }
 
     public String getDescription(){
@@ -157,7 +184,19 @@ public enum Kommando {
         return this.kommandotyp;
     }
 
+    /**
+     * Gibt die Farbe des Kommandotypens zurueck, dient zur Einfaerbung des Kommandos
+     * @return
+     */
     public Color getEigenfarbe(){
         return this.kommandotyp.eigenfarbe;
     } 
+
+    /**
+     * Gibt aus, ob das Kommando bereits am Anfang ausgegeben wird oder erst nach dem ersten Help-Aufruf.
+     * @return
+     */
+    public boolean getisEssential(){
+        return this.isEssential;
+    }
 }

@@ -6,19 +6,29 @@ import java.util.Scanner;
  * Hauptklasse für die Kontrolle des Programms.
  */
 public final class App {
+    // Finalisierte Maximalanzahlen
     protected static final int MAX_BURGERANZAHL = 10;
-    public static final char UMBRUCH = '\n';
 
+    // Tools
     public static final Scanner scanner = new Scanner(System.in);
     public static final DyeBucket dyebucket = new DyeBucket();
 
+    // Bestellungsspeicher
     protected static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
     protected static boolean isEmpty = true;
     protected static Burger aktiverBurger;
     protected static boolean wirdZusammengestellt = false;
 
+    // Wichtig fuer Ausgaben
+    protected static final String einleitung = "";
+    protected static final String alternativerBefehl = " | ";
+    protected static final String erlaeuterung = "=> ";
+    public static final char UMBRUCH = '\n';
+
+    // Farben fuer Befehle (Normal und Abbruch)
     protected static final Color keyWordColor = Color.BLUE;
     protected static final Color quitWordColor = Color.RED;
+
 
     public static void main(String[] args) {
         StringBuffer ausgabe = new StringBuffer();
@@ -26,32 +36,36 @@ public final class App {
 
         // Kopfzeile
         String slogen = "You'll never burger alone - Create your Burger";
-        String einleitung = "- Mit ";
+
+        String rand = "#".repeat(slogen.length()) + (UMBRUCH);
         
-        ausgabe.append("#".repeat(slogen.length()) + (UMBRUCH));
-        ausgabe.append(slogen + (UMBRUCH));
+        ausgabe.append(rand);
+        ausgabe.append(dyebucket.dyeText(slogen, Color.YELLOW)).append(UMBRUCH).append(UMBRUCH);
 
+        ausgabe.append("Folgende Befehle stehen dir zur Verfuegung: ").append(UMBRUCH);
         // Help-Ausgabe
-        ausgabe.append(UMBRUCH).append(einleitung);
+        for(Kommando aktuellesKommando : Kommando.values()){
+            if(aktuellesKommando == null || !aktuellesKommando.getisEssential()) continue;
+
+            ausgabe.append(UMBRUCH);
             
-            // Befehle
-            ausgabe.append(highlightBefehl("help")).append(", ");
-            ausgabe.append(highlightBefehl("h")).append(" oder ");
-            ausgabe.append(highlightBefehl("?")); 
+            String[] kommandoVarianten = aktuellesKommando.getAliases();
+            ausgabe.append(alternativerBefehl);
+            for(String variante : kommandoVarianten){
+                // Faerbt die Variante je nachdem ob sie etwas abbricht oder nicht
+                variante = highlightBefehl(variante, aktuellesKommando.getEigenfarbe());
 
-        ausgabe.append(" kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.").append(UMBRUCH);
+                variante = variante + alternativerBefehl;
+                ausgabe.append(variante);
 
-        // Quit-Ausgabe
-        ausgabe.append(einleitung);
-            // Befehle
-            ausgabe.append(highlightBefehl("quit")).append(", ");       
-            ausgabe.append(highlightBefehl("q")).append(" oder ");   
-            ausgabe.append(highlightBefehl("!")); 
+            }
 
-        ausgabe.append(" kannst du das Programm beenden.").append(UMBRUCH);
+            ausgabe.append(UMBRUCH).append(erlaeuterung).append(aktuellesKommando.getDescription()).append(UMBRUCH);
+        }
 
-        ausgabe.append("#".repeat(slogen.length()));
-
+        ausgabe.append(rand);
+        /// Befehle:
+        /// 
         System.out.println(ausgabe.toString());
 
         //        Burger testBurger = new Burger("testBurger");
@@ -66,6 +80,8 @@ public final class App {
     /**
      * Fragt den Benutzer so lange nach der Eingabe eines Befehls, bis dieser 'bestellen' oder 'quit' eingibt.
      */
+
+    /*
     protected static void befehlseingabe() {
         String eingabe;
 
@@ -91,12 +107,12 @@ public final class App {
                         neuerBurger(argument);
                         wirdZusammengestellt = true;
 
-                        System.out.println("\nDu stellst einen neuen Burger zusammen.");
-                        System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschliessen.");
+                        System.out.println("\nDu stellst einen neuen Burger Namens "+ aktiverBurger.getName() + " zusammen.");
+                        System.out.println("Mit " + highlightBefehl("ok") + " kannst du deine Zusammenstellung abschliessen.");
                     }
 
                     else {
-                        System.err.println("FEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch in der Zusammenstellung."
+                        System.err.println("\nFEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch in der Zusammenstellung."
                         + "Bitte beende erste die Zusammenstellung mit 'ok'.");
                     }
 
@@ -109,7 +125,7 @@ public final class App {
                     }
 
                     else {
-                        System.err.println("FEHLER! '" + argument + "' ist keine Nummer!");
+                        System.err.println("\nFEHLER! '" + argument + "' ist keine Nummer!");
                     }
 
                     break;
@@ -117,18 +133,18 @@ public final class App {
 
                 case "ok", "done":{
                     if(!wirdZusammengestellt){
-                        System.err.println("FEHLER: du erstellst momentan noch keinen burger.\nBitte erstelle einen neuen Burger mithilfe von: 'Mein burger [" +  highlightBefehl("Burgername") + "]'");
+                        System.err.println("\nFEHLER: du erstellst momentan noch keinen burger.\nBitte erstelle einen neuen Burger mithilfe von: " + highlightBefehl("Mein burger [Burgername]"));
                         break;
                     }
 
                     if(aktiverBurger != null && aktiverBurger.getAnzahlZutaten() == 0){
-                        System.err.println("FEHLER: du hast noch keine Zutaten fuer '" + aktiverBurger.getName() + "' hinzugefuegt\nBitte fuege deinem neuen Burger vorerst mindestens ein Broetchen hinzu.");
+                        System.err.println("\nFEHLER: du hast noch keine Zutaten fuer " + aktiverBurger.getName() + " hinzugefuegt\nBitte fuege deinem neuen Burger vorerst mindestens "+ highlightQuit("ein Broetchen") +" hinzu.");
 
                         break;
                     }
 
                     wirdZusammengestellt = false;
-                    System.out.println("Dein Burger '" + aktiverBurger.getName() + " wurde in Bestellung gegeben.");
+                    System.out.println("\nDein Burger " + aktiverBurger.getName() + " wurde deiner Bestellung hinzugefuegt.");
 
                     break;
                 }
@@ -150,12 +166,18 @@ public final class App {
                 }
 
                 case "abbruch", "cancel":{ // Resettet eine neue Zusammenstellung
-                    if(aktiverBurger == null || wirdZusammengestellt) {
+                    if(aktiverBurger == null && wirdZusammengestellt) {
                         System.err.println("Sie erstellen momentan noch keinen neuen Burger.");
                         break;
                     }
 
-                    aktiverBurger = null;
+                    else{
+                        aktiverBurger = null;
+
+                        System.out.println(highlightQuit("\nDein neuer Burger wurde komplett zurueckgesetzt"));
+                        wirdZusammengestellt = false;
+                    }
+
                     break;
                 }
 
@@ -172,6 +194,135 @@ public final class App {
             }
 
         } while(true); //(!eingabe.equals("quit")); => Redundant, da er auf die gegebenen Schluesselwoerter das Programm beendet
+    }
+    */
+
+    /**
+     * Fragt den Benutzer nach Befehlen und vergleicht den Input mit den jeweiligen Aliases der Kommandos.
+     * Die Methode und das Programm hoeren auf, sobald einer der beenden- oder bestellen-Aliases eingegeben wird.
+     * 
+     * Die Kommandos sind in der Kommando-Enum Klasse dynamisch abspeicherbar und koennen der if-else Abfrage manuell hinzugefuegt werden.
+     * Aliases und ihre Beschreibung werden automatisch in der befehlseingabe-methode, sowie beim Hilfs-Aufruf dynamisch hinzugefuert.     * 
+     */
+    protected static void befehlseingabe() {
+        String eingabe;
+
+        do{
+            System.out.println(dyebucket.dyeText("Bitte deine Eingabe:", Color.YELLOW));
+            System.out.print("> ");
+            eingabe = scanner.nextLine();
+
+            if(!eingabe.contains(" ")) {
+                eingabe += " ";
+            }
+
+            String befehl = befehl(eingabe).toLowerCase();
+            String argument = befehlsArgument(eingabe);
+
+            // Sucht hier die Aliases nach ab und ueberprueft, ob der Befehl mit einem Alias uebereinstimmt
+            if(kommandoGefunden(befehl, Kommando.HELP)){
+                help();
+            }
+
+            else if(kommandoGefunden(befehl, Kommando.MENU)){
+                    menu();
+            }
+
+            else if(kommandoGefunden(befehl, Kommando.NEW)){
+                if(!wirdZusammengestellt) {
+                    neuerBurger(argument);
+                    wirdZusammengestellt = true;
+
+                    System.out.println("\nDu stellst einen neuen Burger Namens "+ aktiverBurger.getName() + " zusammen.");
+                    System.out.println("Mit " + highlightBefehl("ok") + " kannst du deine Zusammenstellung abschliessen.");
+                }
+
+                else {
+                    System.err.println("\nFEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch in der Zusammenstellung."
+                    + "Bitte beende erste die Zusammenstellung mit 'ok'.");
+                }
+
+            }
+
+            else if(kommandoGefunden(befehl, Kommando.ZUTAT)){
+                if(stringIsNumber(argument)) {
+                    zutatHinzufuegen(Integer.parseInt(argument));
+                }
+
+                else {
+                    System.err.println("\nFEHLER! '" + argument + "' ist keine Nummer!");
+                }
+
+            }
+
+            else if(kommandoGefunden(befehl, Kommando.OK)){
+                if(!wirdZusammengestellt){
+                    System.err.println("\nFEHLER: du erstellst momentan noch keinen burger.\nBitte erstelle einen neuen Burger mithilfe von: " + highlightBefehl("Mein burger [Burgername]"));
+                    continue;
+                }
+
+                if(aktiverBurger != null && aktiverBurger.getAnzahlZutaten() == 0){
+                    System.err.println("\nFEHLER: du hast noch keine Zutaten fuer " + aktiverBurger.getName() + " hinzugefuegt\nBitte fuege deinem neuen Burger vorerst mindestens "+ highlightQuit("ein Broetchen") +" hinzu.");
+
+                    continue;
+                }
+
+                wirdZusammengestellt = false;
+                System.out.println("\nDein Burger " + aktiverBurger.getName() + " wurde deiner Bestellung hinzugefuegt.");
+            }
+
+            else if(kommandoGefunden(befehl, Kommando.NEW)){
+
+                meineBurger();
+                continue;
+
+            }
+
+            else if(kommandoGefunden(befehl, Kommando.ORDER)){
+                bestellen();
+            }
+
+
+            else if(kommandoGefunden(befehl, Kommando.CANCEL)){ // Resettet eine neue Zusammenstellung
+                if(aktiverBurger == null && wirdZusammengestellt) {
+                    System.err.println("Sie erstellen momentan noch keinen neuen Burger.");
+                    continue;
+                }
+
+                else{
+                    aktiverBurger = null;
+
+                    System.out.println(highlightQuit("\nDein neuer Burger wurde komplett zurueckgesetzt"));
+                    wirdZusammengestellt = false;
+                }
+
+                continue;
+            }
+
+            else if(kommandoGefunden(befehl, Kommando.QUIT)){ // Beendet das Programm
+                System.out.println(dyebucket.dyeText("Auf Wiedersehen!" , Color.blue));
+                return;
+            }
+                
+            else{
+                unbekannteEingabe();
+                continue;
+            }
+            
+
+        } while(true); //(!eingabe.equals("quit")); => Redundant, da er auf die gegebenen Schluesselwoerter das Programm beendet
+    }
+
+    /**
+     * Ueberprueft, ob der Eingabebefehl einem Alias entspricht
+     * @return Gibt zurueck, ob einer der Aliases fuer einen bestimmten Befehl mit dem dem Befehl uebereinstimmt
+     */
+    public static boolean kommandoGefunden(String zuSuchenderAlias, Kommando kommando){
+        for(String ueberpruefterAlias : kommando.getAliases()){
+            if(zuSuchenderAlias.equals(ueberpruefterAlias)) return true;
+        }
+
+        return false;
     }
 
     /**
@@ -298,9 +449,6 @@ public final class App {
     protected static void help() {
         final StringBuffer ausgabe = new StringBuffer();
 
-        final String einleitung = "";
-        final String alternativerBefehl = " | ";
-        final String erlaeuterung = "=> ";
         
         String anfang = dyebucket.dyeText("Hier sind alle noetigen Kommandos mit ihren Zusatzargumenten und ihrer Beschreibung aufgelistet.", Color.YELLOW);
         String rand = "#".repeat(anfang.length());
@@ -310,8 +458,8 @@ public final class App {
 
         ausgabe.append(anfang);
 
-        ausgabe.append(UMBRUCH).append(UMBRUCH).append(erlaeuterung).append("'Kommando [Argument]'");
-        ausgabe.append(UMBRUCH).append("Weder Argumente noch Kommands sind Case-Sensitiv.");
+        ausgabe.append(UMBRUCH).append(UMBRUCH).append("Syntax: ").append(highlightBefehl("Kommando [Argument]"));
+        ausgabe.append(UMBRUCH).append("Weder Argumente noch Kommandos sind Case-Sensitiv.");
 
         ausgabe.append(UMBRUCH).append(UMBRUCH).append(dyebucket.dyeText("Wichtig! Es duerfen keine Leerzeichen am Ende hinzugefuegt werden, wenn Argumente vorhanden sind!", quitWordColor));
         
@@ -332,7 +480,7 @@ public final class App {
             ausgabe.append(UMBRUCH);
             ausgabe.append(einleitung);
         
-            String[] kommandoVarianten = aktuellesKommando.getKommandos();
+            String[] kommandoVarianten = aktuellesKommando.getAliases();
 
             ausgabe.append(alternativerBefehl);
 
