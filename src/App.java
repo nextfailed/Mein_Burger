@@ -212,6 +212,8 @@ public final class App {
             System.out.print("> ");
             eingabe = scanner.nextLine();
 
+            eingabe.trim();
+
             if(!eingabe.contains(" ")) {
                 eingabe += " ";
             }
@@ -239,7 +241,7 @@ public final class App {
 
                 else {
                     System.err.println("\nFEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch in der Zusammenstellung."
-                    + "Bitte beende erste die Zusammenstellung mit 'ok'.");
+                    + "\nBitte beende erste die Zusammenstellung mit "+ highlightBefehl("ok") +".");
                 }
 
             }
@@ -250,8 +252,14 @@ public final class App {
                 }
 
                 else {
-                    System.err.println("\nFEHLER! '" + argument + "' ist keine Nummer!");
+                    System.err.println("\nFEHLER! '" + argument + "' ist keine bekannte Nummer!");
                 }
+
+            }
+        
+            else if(kommandoGefunden(befehl, Kommando.MY)){
+                meineBurger();
+                continue;
 
             }
 
@@ -319,7 +327,7 @@ public final class App {
      */
     public static boolean kommandoGefunden(String zuSuchenderAlias, Kommando kommando){
         for(String ueberpruefterAlias : kommando.getAliases()){
-            if(zuSuchenderAlias.equals(ueberpruefterAlias)) return true;
+            if(zuSuchenderAlias.toLowerCase().equals(ueberpruefterAlias.toLowerCase())) return true;
         }
 
         return false;
@@ -389,7 +397,7 @@ public final class App {
             }
         }
         catch (Exception exception) {
-            System.err.println("Es wurde bereits das Maximum von zehn Burgern in dieser Bestellung erreicht!");
+            System.err.println("Es wurde bereits das Maximum von " + highlightQuit(MAX_BURGERANZAHL + "") + " Burgern in dieser Bestellung erreicht!");
         }
     }
 
@@ -405,9 +413,8 @@ public final class App {
             aktiverBurger.zutatHinzufuegen(zutat);
         }
         else {
-            System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt. Bitte fuege der\n" +
-                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger " +
-                    dyebucket.dyeItalic(dyebucket.dyeText("Burgername", Color.red)) + "' hinzu.");
+            System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt." +
+                    "\nBitte fuege der Bestellung zunaechst einen neuen Burger mit "+ highlightBefehl(Kommando.NEW.getMainAlias()) + " hinzu.");
         }
     }
 
@@ -431,12 +438,15 @@ public final class App {
 
         else {
             System.err.println("Der Bestellung wurden noch keine Burger hinzugefuegt. Bitte fuege der\n" +
-                    "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
+                    "Bestellung zunaechst einen neuen Burger mit " + highlightBefehl(Kommando.MY.getMainAlias()) + " hinzu.");
         }
     }
 
+    /**
+     *
+     */
     protected static void bestellen() {
-
+        // TODO: Unvollstaendig
         // 1. alle burger zubereiten
         // 2. alle burger printen
         // 3. gesamtpreis ausgeben
@@ -446,6 +456,9 @@ public final class App {
         }
     }
 
+    /**
+     * Gibt alle Kommandos, Aliases und ihre Beschreibungen dynamisch in der Konsole aus.
+     */
     protected static void help() {
         final StringBuffer ausgabe = new StringBuffer();
 
@@ -461,7 +474,6 @@ public final class App {
         ausgabe.append(UMBRUCH).append(UMBRUCH).append("Syntax: ").append(highlightBefehl("Kommando [Argument]"));
         ausgabe.append(UMBRUCH).append("Weder Argumente noch Kommandos sind Case-Sensitiv.");
 
-        ausgabe.append(UMBRUCH).append(UMBRUCH).append(dyebucket.dyeText("Wichtig! Es duerfen keine Leerzeichen am Ende hinzugefuegt werden, wenn Argumente vorhanden sind!", quitWordColor));
         
         ausgabe.append(UMBRUCH).append(rand).append(UMBRUCH);
 
@@ -497,7 +509,7 @@ public final class App {
 
         ausgabe.append(UMBRUCH).append(rand);
 
-        /*
+        /* Vorherige Vorgehensweise: Brute-Force, ist nicht dynamisch erweiterbar und muss manuell angepasst werden
         // Help-Ausgabe
         ausgabe.append(UMBRUCH).append(einleitung);
             

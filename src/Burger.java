@@ -8,19 +8,17 @@ public class Burger {
     public static final int MAX_ZUTATENANZAHL = 9; // insgesamt 9 Zutaten -> 1 Broetchen an Stelle BROETCHEN_POSITION, und 8 Zusatzzutaten
     public static final int BROETCHEN_POSITION = 0;
 
-    public static final int INDIKATOR_VEGAN = 2; // Vegan wird als Level 2 angesehen, da vegan ueber Level 1 steht und er somit ebenfalls vegetarisch repraesentiert
-    public static final int INDIKATOR_VEGETARISCH = 1; // Vegetarisch wird als Level 1 angesehen, da er nicht vegan ist, aber mehr Restriktionen als non-Vegan hat
+    public static final int INDIKATOR_VEGAN = Zutat.INDIKATOR_VEGAN; // Vegan wird als Level 2 angesehen, da vegan ueber Level 1 steht und er somit ebenfalls vegetarisch repraesentiert
+    public static final int INDIKATOR_VEGETARISCH = Zutat.INDIKATOR_VEGETARISCH; // Vegetarisch wird als Level 1 angesehen, da er nicht vegan ist, aber mehr Restriktionen als non-Vegan hat
 
     private String name;
 
-    /* 
-    private float gesamtHoehe = 0.0f;
-    private float gesamtPreis = 0.0f;
-    private int zubereitungsDauer;
-    */
-
     private Zutat[] zutaten;
 
+    /**
+     * Der Name wird dem Burger (inklusive Farbgebung) hinzugefuegt. Zutaten wird auf die Maximale Anzahl gesetzt.
+     * @param name Name des Burgers
+     */
     public Burger(String name) {
         this.name = App.dyebucket.dyeText("'" + name + "'", Color.CYAN);
         zutaten = new Zutat[MAX_ZUTATENANZAHL];
@@ -40,7 +38,9 @@ public class Burger {
         // Kopfzeile
         buffer.append("Rezept fuer ").append(this.name).append(": (");
         buffer.append(Math.round(this.berechneHoehe()*100f)/100f + "mm, ");
-        buffer.append(getDiaettyp());
+        buffer.append(getDiaettypAsString());
+
+        buffer.append(Zutat.getKlassischToString(this.isKlassisch()));
 
             // fuegt gefundene Geschmaecker an
             Geschmack[] geschmaecker = getGeschmack();
@@ -60,9 +60,9 @@ public class Burger {
             Zutat aktuelleZutat = zutaten[i];
 
             if(aktuelleZutat == null) continue;
-            buffer.append(aktuelleZutat.getName());
+            if(!(i == 0)) buffer.append(", ");
 
-            if(i < zutaten.length - 1) buffer.append(", ");
+            buffer.append(aktuelleZutat.getName());
         }
 
         // Setzt die naechste Zeile um 2 nach unten
@@ -139,7 +139,7 @@ public class Burger {
     /**
      * Berechnet, ob der Burger vegan oder vegetarisch ist.
      * Wird als Integer behandelt, da alles was Vegan ebenfalls vegetarisch ist.
-     * @return Diettyp als Integer (0 = none vegan, 1 = vegetarisch, 2 = vegan)
+     * @return Diettyp als Integer. (0 = none vegan, 1 = vegetarisch, 2 = vegan)
      */
     public int getDiaettyp(){
         int diaettyp = INDIKATOR_VEGAN;  // Geht von der hoechsten bedingung aus und senkt, falls ein niedrigerer Wert folgt
@@ -150,6 +150,42 @@ public class Burger {
             }
         }
         return diaettyp;
+    }
+
+    /**
+     * 
+     * @return Gibt zurueck, ob jede Zutat innerhalb des Burgers klassisch ist
+     */
+    protected boolean isKlassisch(){
+        boolean isKlassisch = true;
+
+        for(Zutat aktuelleZutat : zutaten){
+            if(aktuelleZutat == null) continue;
+
+            isKlassisch = isKlassisch && aktuelleZutat.getKlassisch();
+        }
+
+        return isKlassisch;
+    }
+
+
+    /**
+     * Konvertiert Diaetstyp von Integer als sein String und gibt diesen zurueck.
+     * Die Methode ist in Zutat definitert, Burger ruft diese statisch auf.
+     * 
+     * @param diaetstyp sollte den Diaetstyp des ganzen Burgers erhalten.
+     * @return Gibt ueber den Indikator den Diaetstyp als String zurueck.
+     */
+    protected String getDiaettypAsString(int diaetstyp){
+        return Zutat.getDiaetstypAsString(diaetstyp);
+    }
+
+    /**
+     * Fuehrt getDiaettypAsString() direkt mit dem errechneten Diaetstypen des gesamten Burgers aus. 
+     * @return
+     */
+    protected String getDiaettypAsString(){
+        return Zutat.getDiaetstypAsString(getDiaettyp());
     }
 
     /**
@@ -235,7 +271,7 @@ public class Burger {
      * @param zutat neue Zutat
      */
     public void zutatHinzufuegen(Zutat zutat) {
-        // Ueberschreibt, falls es sich um ein neues Broetchen handelt an der Position des Broetchens das alte Broetchen und geht zurueck
+        // Ueberschreibt, falls es sich um ein neues Broetchen handelt an der Position des Broetchens das alte Broetchen und geht zurueck.
         if(zutat instanceof Broetchen){
             zutaten[BROETCHEN_POSITION] = zutat;
 

@@ -34,10 +34,10 @@ public enum Kommando {
     
     NEW(
         new String[]{
-        "Neuer Burger [Burgername]", "New []"
+        "Neuer Burger", "New"
         },
 
-        "Erstelle einen neuen Burger. Mithilfe von " + App.highlightBefehl("Zutat [Zutatsnummer]") + 
+        "Erstelle einen neuen Burger. Dem Neuen Burger muss im Kommando als Argument ein Name hinzugegeben werden.\n  Mithilfe von " + App.highlightBefehl("Zutat [Zutatsnummer]") + 
         " koennen diesem Zutaten hinzugefuegt werden. Burger muessen mit "+ App.highlightBefehl("ok") +" abgeschlossen werden.\n  Achtung: Du kannst maximal " 
         + App.dyebucket.dyeText(App.MAX_BURGERANZAHL, Color.YELLOW) + " Burger erstellen",
         
@@ -46,10 +46,10 @@ public enum Kommando {
 
     ZUTAT(
         new String[]{
-        "Zutat [ID]", "Ingredient[]", "Add[]"
+        "Zutat", "Ingredient", ""
         },
 
-        "Fuege deinem Burger nach " + App.highlightBefehl("Mein Burger [Burgername]") + " eine Zutat mithilfe ihrer ID hinzu.",
+        "Fuege deinem Burger nach " + App.highlightBefehl("Mein Burger [Burgername]") + " eine Zutat mithilfe ihrer ID hinzu. ID wird als Argument ans Ende dazugegeben.",
         Kommandotyp.HINZUFUEGEN
     ),
 
@@ -169,6 +169,10 @@ public enum Kommando {
     }
 
     public String toString(){
+        return this.getMainAlias();
+    }
+
+    public String getMainAlias(){
         return this.aliases[0];
     }
 

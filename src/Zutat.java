@@ -96,17 +96,25 @@ public abstract class Zutat{
     @Override
     public String toString(){
         // DyeBucket Faerbt den Text 
-        String diaetString = switch(this.diaettyp){
+        String diaetString = getDiaetstypAsString();
+
+
+        String isKlassisch = getKlassischToString();
+
+
+        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + " - " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
+    }
+
+    public String getDiaetstypAsString(){
+        return getDiaetstypAsString(this.diaettyp);
+    }
+
+    public static String getDiaetstypAsString(int indikator){
+        return switch(indikator){
             case INDIKATOR_VEGAN -> bucket.dyeText("(vegan) ", Color.GREEN);
             case INDIKATOR_VEGETARISCH -> bucket.dyeText("(vegetarisch) ", Color.YELLOW);
             default -> "";
         };
-
-
-        String isKlassisch = klassisch ? bucket.dyeText("(klassisch) ", Color.RED) :"";
-
-
-        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + " - " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
     }
 
     /**
@@ -199,27 +207,43 @@ public abstract class Zutat{
     }
 
     /**
-     * Gibt zurueck, ob die Zutat vegan ist
-     * @return
+     *
+     * @return Gibt zurueck, ob die Zutat vegan ist
      */
     public boolean getVegan(){
         return getDiaetdyp(INDIKATOR_VEGAN);
     }
 
     /**
-     * Gibt zurueck, ob die Zutat vegetarisch oder vegan ist
-     * @return
+     * 
+     * @return Gibt zurueck, ob die Zutat vegetarisch oder vegan ist
      */
     public boolean getVegetarisch(){
         return getDiaetdyp(INDIKATOR_VEGETARISCH);
     }
 
     /**
-     * Gibt zurueck, ob die Zutat klassisch ist
-     * @return
+     * 
+     * @return Gibt zurueck, ob die Zutat klassisch ist
      */
     public boolean getKlassisch(){
         return this.klassisch;
+    }
+
+    /**
+     * 
+     * @return Gibt die Variable Klassisch-Variante als String zurueck.
+     */
+    public static String getKlassischToString(boolean klassisch){
+        return klassisch ? bucket.dyeText("(klassisch) ", Color.RED) :"";
+    }
+
+    /**
+     * 
+     * @return Gibt die Variable Klassisch-Variante als String zurueck.
+     */
+    public String getKlassischToString(){
+        return getKlassischToString(this.klassisch);
     }
 
     /**
