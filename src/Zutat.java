@@ -39,7 +39,7 @@ public abstract class Zutat{
      */
     public Zutat(int nummer, String name, float preis, boolean klassisch, int diaettyp){
         this.nummer = nummer;
-        this.name = name;
+        this.name = bucket.dyeText(name, Color.BLUE);
         this.preis = preis;
 
         this.klassisch = klassisch;

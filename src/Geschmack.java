@@ -5,7 +5,7 @@ import java.awt.Color;
  * Geschmaecker besitzen ihren eigenen Geschmack als String-Ausgabe und wird direkt als solches durch die toString-Methode mit ihrer jeweiligen Farbe direkt ausgegeben
  */
 public enum Geschmack {
-        NORMAL("-"),
+        NORMAL(""),
         SCHARF("Scharf", Color.RED),
         SUESS("Suess", Color.MAGENTA),
         SALZIG("Salzig", Color.BLUE);

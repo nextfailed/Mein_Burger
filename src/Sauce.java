@@ -24,6 +24,11 @@ public class Sauce extends Zutat implements hatGeschmack{
         }
     }
 
+    @Override 
+    public String toString(){
+        return super.toString() + geschmack;
+    }
+
     // Getter
     public int getMenge() {
         return menge;

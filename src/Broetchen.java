@@ -29,7 +29,7 @@ public class Broetchen extends Zutat{
 
     @Override
     public float berechneHoehe(){
-        return (float)(this.hoehe * Math.pow((1 + WACHSTUMS_RATE), backzeit));
+        return (float)(this.hoehe * Math.pow((1 + WACHSTUMS_RATE), (float)(backzeit/60f)));
     }
 
     @Override

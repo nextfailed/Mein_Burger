@@ -5,17 +5,20 @@ import java.util.Scanner;
 /**
  * Hauptklasse für die Kontrolle des Programms.
  */
-public class App {
-    private static final int MAX_BURGERANZAHL = 10;
+public final class App {
+    protected static final int MAX_BURGERANZAHL = 10;
     public static final char UMBRUCH = '\n';
 
     public static final Scanner scanner = new Scanner(System.in);
     public static final DyeBucket dyebucket = new DyeBucket();
 
-    private static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
-    private static boolean isEmpty = true;
-    private static Burger aktiverBurger;
-    private static boolean wirdZusammengestellt = false;
+    protected static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
+    protected static boolean isEmpty = true;
+    protected static Burger aktiverBurger;
+    protected static boolean wirdZusammengestellt = false;
+
+    protected static final Color keyWordColor = Color.BLUE;
+    protected static final Color quitWordColor = Color.RED;
 
     public static void main(String[] args) {
         StringBuffer ausgabe = new StringBuffer();
@@ -23,20 +26,39 @@ public class App {
 
         // Kopfzeile
         String slogen = "You'll never burger alone - Create your Burger";
-        System.out.println("#".repeat(slogen.length()) + (UMBRUCH));
-        System.out.println(slogen);
+        String einleitung = "- Mit ";
+        
+        ausgabe.append("#".repeat(slogen.length()) + (UMBRUCH));
+        ausgabe.append(slogen + (UMBRUCH));
 
-        Color keyWordColor = Color.CYAN;
-        ausgabe.append(UMBRUCH).append("- Mit " + dyebucket.dyeText("'help'", keyWordColor) +
-                " kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.");
+        // Help-Ausgabe
+        ausgabe.append(UMBRUCH).append(einleitung);
+            
+            // Befehle
+            ausgabe.append(highlightBefehl("help")).append(", ");
+            ausgabe.append(highlightBefehl("h")).append(" oder ");
+            ausgabe.append(highlightBefehl("?")); 
+
+        ausgabe.append(" kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.").append(UMBRUCH);
+
+        // Quit-Ausgabe
+        ausgabe.append(einleitung);
+            // Befehle
+            ausgabe.append(highlightBefehl("quit")).append(", ");       
+            ausgabe.append(highlightBefehl("q")).append(" oder ");   
+            ausgabe.append(highlightBefehl("!")); 
+
+        ausgabe.append(" kannst du das Programm beenden.").append(UMBRUCH);
+
+        ausgabe.append("#".repeat(slogen.length()));
 
         System.out.println(ausgabe.toString());
 
-//        Burger testBurger = new Burger("testBurger");
-//        testBurger.zutatHinzufuegen(Zutat.getZutat(10));
-//        testBurger.zutatHinzufuegen(Zutat.getZutat(20));
-//        testBurger.zutatHinzufuegen(Zutat.getZutat(30));
-//        System.out.println(testBurger);
+        //        Burger testBurger = new Burger("testBurger");
+        //        testBurger.zutatHinzufuegen(Zutat.getZutat(10));
+        //        testBurger.zutatHinzufuegen(Zutat.getZutat(20));
+        //        testBurger.zutatHinzufuegen(Zutat.getZutat(30));
+        //        System.out.println(testBurger);
 
         befehlseingabe();
     }
@@ -44,7 +66,7 @@ public class App {
     /**
      * Fragt den Benutzer so lange nach der Eingabe eines Befehls, bis dieser 'bestellen' oder 'quit' eingibt.
      */
-    private static void befehlseingabe() {
+    protected static void befehlseingabe() {
         String eingabe;
 
         do{
@@ -60,62 +82,106 @@ public class App {
             String argument = befehlsArgument(eingabe);
 
             switch(befehl) {
-                case "menu":
+                case "menu", "m":
                     menu();
                     break;
-                case "neuer burger":
+
+                case "neuer burger", "new":{
                     if(!wirdZusammengestellt) {
                         neuerBurger(argument);
                         wirdZusammengestellt = true;
 
-                        System.out.println("Du stellst einen neuen Burger zusammen.");
-                        System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschließen.");
+                        System.out.println("\nDu stellst einen neuen Burger zusammen.");
+                        System.out.println("Mit 'ok' kannst du deine Zusammenstellung abschliessen.");
                     }
+
                     else {
-                        System.err.println("FEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch" +
-                                "in der Zusammenstellung. Bitte beende erste die Zusammenstellung mit 'ok'.");
+                        System.err.println("FEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch in der Zusammenstellung."
+                        + "Bitte beende erste die Zusammenstellung mit 'ok'.");
                     }
+
                     break;
-                case "zutat":
+                }
+
+                case "zutat", "ingredient":{
                     if(stringIsNumber(argument)) {
                         zutatHinzufuegen(Integer.parseInt(argument));
                     }
+
                     else {
                         System.err.println("FEHLER! '" + argument + "' ist keine Nummer!");
                     }
+
                     break;
-                case "ok":
+                }
+
+                case "ok", "done":{
+                    if(!wirdZusammengestellt){
+                        System.err.println("FEHLER: du erstellst momentan noch keinen burger.\nBitte erstelle einen neuen Burger mithilfe von: 'Mein burger [" +  highlightBefehl("Burgername") + "]'");
+                        break;
+                    }
+
+                    if(aktiverBurger != null && aktiverBurger.getAnzahlZutaten() == 0){
+                        System.err.println("FEHLER: du hast noch keine Zutaten fuer '" + aktiverBurger.getName() + "' hinzugefuegt\nBitte fuege deinem neuen Burger vorerst mindestens ein Broetchen hinzu.");
+
+                        break;
+                    }
+
                     wirdZusammengestellt = false;
+                    System.out.println("Dein Burger '" + aktiverBurger.getName() + " wurde in Bestellung gegeben.");
+
                     break;
-                case "meine burger":
+                }
+
+                case "meine burger", "my":{
                     meineBurger();
                     break;
-                case "bestellen":
+
+                }
+
+                case "bestellen", "order":{
                     bestellen();
                     break;
-                case "help", "hilfe":
+                }
+
+                case "hilfe", "help", "h", "?":{
                     help();
                     break;
-                case "quit":
+                }
+
+                case "abbruch", "cancel":{ // Resettet eine neue Zusammenstellung
+                    if(aktiverBurger == null || wirdZusammengestellt) {
+                        System.err.println("Sie erstellen momentan noch keinen neuen Burger.");
+                        break;
+                    }
+
+                    aktiverBurger = null;
+                    break;
+                }
+
+                case "beende", "quit", "q", "!":{ // Beendet das Programm
                     System.out.println(dyebucket.dyeText("Auf Wiedersehen!" , Color.blue));
                     return;
-                    // Nur dummy fuer korrekte Ausfuehrung des Switchs
+                }
+                    
                     //break;
-                default:
+                default:{
                     unbekannteEingabe();
                     break;
+                }
             }
 
-        } while(true); //(!eingabe.equals("quit"));
+        } while(true); //(!eingabe.equals("quit")); => Redundant, da er auf die gegebenen Schluesselwoerter das Programm beendet
     }
 
     /**
      * Gibt das gesamte Menue ueber die Konsole aus.
      */
-    private static void menu() {
+    protected static void menu() {
         ArrayList<Zutat> zutatenKatalog = Zutat.getKatalog();
+        String seitenrand = "#".repeat(5);
 
-        System.out.println("\n##### Folgende Zutaten stehen zur Auswahl: #####\n");
+        System.out.println(seitenrand+ "\nFolgende Zutaten stehen zur Auswahl: " + seitenrand + UMBRUCH);
 
         for(Zutat aktuelleZutat : zutatenKatalog) {
             System.out.println(aktuelleZutat.toString());
@@ -123,10 +189,42 @@ public class App {
     }
 
     /**
+     * Faerbt einen Text mit der dazugegebenen Farbe ein und 
+     * @param befehl Eingabe des Befehls
+     * @param color Farbe des erlaubten Spektrums fuer den Farbbucket
+     * @return Gefaerbten Befehl in ' ' eingebetten
+     */
+    protected static String highlightBefehl(String befehl, Color color){
+        befehl = "'" + befehl + "'";
+
+        return dyebucket.dyeItalic(dyebucket.dyeText(befehl, color));
+    }
+
+    /**
+     * Faerbt ein Keyword eines Commands mit der festgelegten keyword-farbe ein
+     * @param befehl wird als einfacher String erwartet
+     * @return Keyword, welches gefaerbt, kursiv notiert und in ' ' eingebettet ist 
+     */
+    protected static String highlightBefehl(String befehl){
+        return highlightBefehl(befehl, keyWordColor);
+    }
+
+    /**
+     * Faerbt ein Quit-Keyword eines Commands mit der festgelegten quitkeyword-farbe ein
+     * @param befehl wird als einfacher String erwartet
+     * @return Keyword, welches gefaerbt, kursiv notiert und in ' ' eingebettet ist 
+     */
+    protected static String highlightQuit(String befehl){
+        return highlightBefehl(befehl, quitWordColor);
+    }
+
+
+
+    /**
      * Fuegt der Bestellung einen neuen Burger mit dem uebergebenen Namen hinzu.
      * @param burgerName Name des Burgers
      */
-    private static void neuerBurger(String burgerName) {
+    protected static void neuerBurger(String burgerName) {
         Burger neuerBurger = new Burger(burgerName);
 
         try {
@@ -148,7 +246,7 @@ public class App {
      * Fuegt dem aktuellen Burger die Zutat mit der uebergebenen Nummer hinzu.
      * @param nummer Zutatennummer
      */
-    private static void zutatHinzufuegen(int nummer) {
+    protected static void zutatHinzufuegen(int nummer) {
         System.out.println("");
 
         if(aktiverBurger != null) {
@@ -166,24 +264,27 @@ public class App {
      * Gibt alle Burger dieser Bestellung aus. Sollte noch kein Burger aufgenommen worden sein,
      * wird ein entsprechender Fehler ausgegeben.
      */
-    private static void meineBurger() {
+    protected static void meineBurger() {
         if(!isEmpty){
-            System.out.println("Folgende Burger wurden deiner Bestellung hinzugefuegt:");
+            String seiten = "#".repeat(4);
+            System.out.println(seiten + " Folgende Burger wurden deiner Bestellung hinzugefuegt: " + seiten);
+
             for (int i = 0; i < burgerListe.length; i++) {
                 Burger aktuellerBurger = burgerListe[i];
 
                 if(aktuellerBurger != null) {
-                    System.out.println((i + 1) + ")" + aktuellerBurger);
+                    System.out.println(+ (i + 1) + ") " + aktuellerBurger);
                 }
             }
         }
+
         else {
             System.err.println("Der Bestellung wurden noch keine Burger hinzugefuegt. Bitte fuege der\n" +
                     "Bestellung zunaechst einen neuen Burger mit 'neuer Burger' hinzu.");
         }
     }
 
-    private static void bestellen() {
+    protected static void bestellen() {
 
         // 1. alle burger zubereiten
         // 2. alle burger printen
@@ -194,12 +295,152 @@ public class App {
         }
     }
 
-    private static void help() {
-        StringBuffer ausgabe = new StringBuffer();
+    protected static void help() {
+        final StringBuffer ausgabe = new StringBuffer();
 
-        Color keyWordColor = Color.CYAN;
-        ausgabe.append(UMBRUCH).append("- Mit " + dyebucket.dyeText("'help'", keyWordColor) +
-                " kannst du dir alle zur Verfuegung stehenden Befehle anzeigen lassen.");
+        final String einleitung = "";
+        final String alternativerBefehl = " | ";
+        final String erlaeuterung = "=> ";
+        
+        String anfang = dyebucket.dyeText("Hier sind alle noetigen Kommandos mit ihren Zusatzargumenten und ihrer Beschreibung aufgelistet.", Color.YELLOW);
+        String rand = "#".repeat(anfang.length());
+
+        // Anfang
+        ausgabe.append(rand).append(UMBRUCH);
+
+        ausgabe.append(anfang);
+
+        ausgabe.append(UMBRUCH).append(UMBRUCH).append(erlaeuterung).append("'Kommando [Argument]'");
+        ausgabe.append(UMBRUCH).append("Weder Argumente noch Kommands sind Case-Sensitiv.");
+
+        ausgabe.append(UMBRUCH).append(UMBRUCH).append(dyebucket.dyeText("Wichtig! Es duerfen keine Leerzeichen am Ende hinzugefuegt werden, wenn Argumente vorhanden sind!", quitWordColor));
+        
+        ausgabe.append(UMBRUCH).append(rand).append(UMBRUCH);
+
+        // Erlaeuterung der Farbgebung
+        ausgabe.append(UMBRUCH).append(dyebucket.dyeItalic("Farb-Bedeutungen: ")).append(alternativerBefehl);
+        for(Kommando.Kommandotyp typ : Kommando.Kommandotyp.values()){
+            ausgabe.append(dyebucket.dyeText(typ.toString(), typ.getEigenfarbe())).append(alternativerBefehl);
+        }
+
+        ausgabe.append(UMBRUCH).append(UMBRUCH).append(rand).append(UMBRUCH);
+
+        /// Befehle:
+        for(Kommando aktuellesKommando : Kommando.values()){
+            if(aktuellesKommando == null) continue;
+
+            ausgabe.append(UMBRUCH);
+            ausgabe.append(einleitung);
+        
+            String[] kommandoVarianten = aktuellesKommando.getKommandos();
+
+            ausgabe.append(alternativerBefehl);
+
+            for(String variante : kommandoVarianten){
+                // Faerbt die Variante je nachdem ob sie etwas abbricht oder nicht
+                variante = highlightBefehl(variante, aktuellesKommando.getEigenfarbe());
+
+                variante = variante + alternativerBefehl;
+                ausgabe.append(variante);
+            }
+
+            ausgabe.append(UMBRUCH).append(erlaeuterung).append(aktuellesKommando.getDescription()).append(UMBRUCH);
+        }
+
+        ausgabe.append(UMBRUCH).append(rand);
+
+        /*
+        // Help-Ausgabe
+        ausgabe.append(UMBRUCH).append(einleitung);
+            
+            // Befehle (Syntax)
+            ausgabe.append(highlightBefehl("help")).append(alternativerBefehl);
+            ausgabe.append(highlightBefehl("h")).append(alternativerBefehl);
+            ausgabe.append(highlightBefehl("?")).append(UMBRUCH); 
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Stellt alle Befehle zur Verfuegung")).append(UMBRUCH);
+
+        ausgabe.append(UMBRUCH);
+
+        // Quit-Ausgabe
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightQuit("beende")).append(alternativerBefehl); 
+            ausgabe.append(highlightQuit("quit")).append(alternativerBefehl);       
+            ausgabe.append(highlightQuit("q")).append(alternativerBefehl);   
+            ausgabe.append(highlightQuit("!")).append(UMBRUCH);
+            
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("beendet das Programm")).append(UMBRUCH);
+
+        ausgabe.append(UMBRUCH);
+
+        // Menu
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightBefehl("Menu")).append(alternativerBefehl);       
+            ausgabe.append(highlightBefehl("M")).append(UMBRUCH);  
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Gibt alle moeglichen Zutaten")).append(UMBRUCH);
+
+        // Neuer Burger
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightBefehl("neuer Burger [Burgername:String]")).append(alternativerBefehl); 
+            ausgabe.append(highlightBefehl("new [Burgername:String]")).append(UMBRUCH); 
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Erstelle einen neuen Burger. Mithilfe von " + highlightBefehl("Zutat [Zutatsnummer]") + " koennen diesem Zutaten hinzugefuegt werden. Burger muessen mit "+highlightBefehl("ok")+" abgeschlossen werden.\nAchtung: Du kannst maximal " + MAX_BURGERANZAHL + " Burger erstellen")).append(UMBRUCH);
+
+        // Zutat
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightBefehl("Zutat [Burgername:String]")).append(alternativerBefehl); 
+            ausgabe.append(highlightBefehl("Ingredient [zutatnummer:int]")).append(UMBRUCH); 
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Fuege deinem Burger nach " + highlightBefehl("Mein Burger [Burgername]") + " eine Zutat mithilfe ihrer ID hinzu")).append(UMBRUCH);
+
+        // Abbrechen
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightQuit("Abbruch")).append(alternativerBefehl);  
+            ausgabe.append(highlightQuit("Cancel")).append(UMBRUCH); 
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Bricht die Zusammenstellung deines aktuellen Burgers ab und erstellt einen neuen")).append(UMBRUCH);
+
+        // ok
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightBefehl("ok")).append(UMBRUCH); 
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Beende das Zusammenstellen deines Burgers. Dein Burger kann bis zu " + Burger.MAX_ZUTATENANZAHL + " Zutaten haben.\nAchtung: Es muss mindestens ein Broetchen hinzugefuegt werden! Du musst ebenfalls einen neuen Burger erstellen, bevor du einen abgeben kannst.")).append(UMBRUCH);
+
+        
+        // Meine Burger
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightBefehl("Meine Burger")).append(alternativerBefehl);       
+            ausgabe.append(highlightBefehl("My")).append(UMBRUCH);  
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Listet alle von dir erstellten Burger aus.")).append(UMBRUCH);
+
+        // Bestellen
+        ausgabe.append(einleitung);
+            // Befehle (Syntax)
+            ausgabe.append(highlightBefehl("Order")).append(alternativerBefehl);       
+            ausgabe.append(highlightBefehl("Bestellen")).append(UMBRUCH);  
+
+        // Erlaeuterung
+        ausgabe.append(erlaeuterung).append(dyebucket.dyeItalic("Gibt die erstellten Burger, ihr Rezept, den Gesamtpreis und Gesamtzubereitungszeit an und beendet die Bestellung.")).append(UMBRUCH);
+
+        */
+
         System.out.println(ausgabe.toString());
     }
 
@@ -257,8 +498,8 @@ public class App {
         // Bratlinge
         new Bratling(20, "Rindfleisch (Original)", 1.85f, 270, 25).setNonVegan().setClassic(true);
         new Bratling(21, "Haenchenfleisch gegrillt", 1.15f,  180, 11).setNonVegan().setClassic(true);
-        new Bratling(22, "Falafel-Bratling", 1.45f, 210, 21).setVegan().setClassic(true);
-        new Bratling(23, "Gemuese Bratling", 1.75f, 240, 25).setVegetarisch().setClassic(true);
+        new Bratling(22, "Falafel-Bratling", 1.45f, 210, 21).setVegan();
+        new Bratling(23, "Gemuese Bratling", 1.75f, 240, 25).setVegetarisch();
 
         // Salat
         new Salat(30, "Eisbergsalat", 0.18f);
@@ -267,8 +508,8 @@ public class App {
         // Gemuese
         new Gemuese(40, "Tomate", 0.25f, 3, 3).setClassic(true);;
         new Gemuese(41, "Salzgurke", 0.15f, 4, 2).setClassic(true);
-        new Gemuese(42, "Rote Zwiebelringe", 0.08f, 5, 2);
-        new Gemuese(43, "Jalapeno-Ringe", 0.08f, 5, 2);
+        new Gemuese(42, "Rote Zwiebelringe", 0.08f, 5, 2).switchScheibenart();
+        new Gemuese(43, "Jalapeno-Ringe", 0.08f, 5, 2).switchScheibenart();
 
         // Sauce
         new Sauce(50, "Ketchup", 0.10f, 10, Geschmack.NORMAL).setVegan().setClassic(true);
