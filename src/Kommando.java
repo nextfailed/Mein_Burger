@@ -55,15 +55,15 @@ public enum Kommando {
         Kommandotyp.HINZUFUEGEN
     ),
 
-    CANCEL(
-        new String[]{
-        "Abbruch", "Cancel" 
-        },
-
-        "Bricht die Zusammenstellung deines aktuellen Burgers ab und erstellt einen neuen.",
-
-        Kommandotyp.ABBRUCH
-    ),
+//    CANCEL(
+//        new String[]{
+//        "Abbruch", "Cancel"
+//        },
+//
+//        "Bricht die Zusammenstellung deines aktuellen Burgers ab und erstellt einen neuen.",
+//
+//        Kommandotyp.ABBRUCH
+//    ),
 
     OK(
         new String[]{
