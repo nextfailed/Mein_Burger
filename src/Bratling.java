@@ -1,9 +1,20 @@
 public class Bratling extends Zutat {
-    private int bratzeit;
-    private int hoehe;
+    private final int bratzeit;
+    private final int hoehe;
 
-    private final static float SCHRUMP_FRATE = 0.035f; // => 3.5% Schrumpfrate
+    private final static float SCHRUMPFRATE = 0.035f; // => 3.5% Schrumpfrate
 
+
+    /**
+     * Konstruktor der Bratling-Klasse
+     * @param nummer Katalognummer
+     * @param name Name des Bratlings
+     * @param preis Preis in Euro
+     * @param klassisch Ist eine standard Zutat
+     * @param diaettyp Vegan, vegetarisch oder keins von beidem
+     * @param bratzeit Bratzeit in Minuten
+     * @param hoehe Hoehe in Millimeter
+     */
     public Bratling(int nummer, String name, float preis, boolean klassisch, int diaettyp, int bratzeit, int hoehe) {
         super(nummer, name, preis, klassisch, diaettyp);
         this.bratzeit = bratzeit; // Bratzeit ist in Sekunden angegeben, 1 Minute -> Backzeit = 60;
@@ -32,7 +43,7 @@ public class Bratling extends Zutat {
 
     @Override
     public float berechneHoehe() {
-        return (float)(this.hoehe * Math.pow((1 - SCHRUMP_FRATE), bratzeit/60));
+        return (float)(this.hoehe * Math.pow((1 - SCHRUMPFRATE), bratzeit/60f));
     }
 
     @Override

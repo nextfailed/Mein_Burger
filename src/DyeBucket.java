@@ -2,19 +2,34 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Der DyeBucket dient der Faerbung und Umformatierung von Generics.
+ */
 public class DyeBucket{
-    public <C> String dyeText(C content, String color){
-        if(color.equals("italic")) return dyeItalic(content);
-
-        return ("\u001B["+getColor(color)+"m" + content + "\u001B[0m");
-    }
-
-    
+    /**
+     * Formatiert das Generic kursiv.
+     * @param content Input
+     * @param <C> Inputtyp
+     * @return kursiver Input
+     */
     public <C> String dyeItalic(C content){
         return ("\033[3m" + content + "\033[0m");
     }
 
+    /**
+     * Farbt das Generic in die uebergebene Farbe.
+     * @param content Input
+     * @param color Farbe
+     * @param <C> Inputtyp
+     * @return gefaerbter Input
+     */
     public <C> String dyeText(C content, Color color){
+        return ("\u001B["+getColor(color)+"m" + content + "\u001B[0m");
+    }
+
+    public <C> String dyeText(C content, String color){
+        if(color.equals("italic")) return dyeItalic(content);
+
         return ("\u001B["+getColor(color)+"m" + content + "\u001B[0m");
     }
 

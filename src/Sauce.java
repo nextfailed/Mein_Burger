@@ -1,8 +1,8 @@
 import java.util.Optional;
 
 public class Sauce extends Zutat implements hatGeschmack{
-    private int menge;
-    private Geschmack geschmack;
+    private final int menge;
+    private final Geschmack geschmack;
 
 
     public Sauce(int nummer, String name, float preis, boolean klassisch, int diaettyp, int menge, Geschmack geschmack) {
@@ -13,15 +13,6 @@ public class Sauce extends Zutat implements hatGeschmack{
 
     public Sauce(int nummer, String name, float preis, int menge, Geschmack geschmack) {
         this(nummer, name, preis, false, INDIKATOR_NON_VEGAN, menge, geschmack);
-    }
-
-    Optional<Geschmack> parse(String string) {
-        try {
-            return Optional.of(Geschmack.valueOf(string.toUpperCase()));
-        }
-        catch (IllegalArgumentException exception) {
-            return Optional.empty();
-        }
     }
 
     @Override 
@@ -40,7 +31,7 @@ public class Sauce extends Zutat implements hatGeschmack{
 
     /**
      * Saucen haben keine Zubereitungsdauer
-     * @return
+     * @return immer 0
      */
     @Override
     public int zubereiten() {
@@ -49,7 +40,7 @@ public class Sauce extends Zutat implements hatGeschmack{
 
     /**
      * Saucen haben keinen Einfluss auf die Hoehe
-     * @return
+     * @return immer 0
      */
     @Override
     public float berechneHoehe() {
@@ -59,5 +50,5 @@ public class Sauce extends Zutat implements hatGeschmack{
     @Override
     public String getZubereitung(){
         return (this.name + " wird geschuettelt");
-    }; 
+    }
 }
