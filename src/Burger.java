@@ -11,12 +11,12 @@ public class Burger {
     public static final int INDIKATOR_VEGAN = Zutat.INDIKATOR_VEGAN; // Vegan wird als Level 2 angesehen, da vegan ueber Level 1 steht und er somit ebenfalls vegetarisch repraesentiert
     public static final int INDIKATOR_VEGETARISCH = Zutat.INDIKATOR_VEGETARISCH; // Vegetarisch wird als Level 1 angesehen, da er nicht vegan ist, aber mehr Restriktionen als non-Vegan hat
 
-    private String name;
+    private final String name;
 
-    private Zutat[] zutaten;
+    private final Zutat[] zutaten;
 
     /**
-     * Der Name wird dem Burger (inklusive Farbgebung) hinzugefuegt. Zutaten wird auf die Maximale Anzahl gesetzt.
+     * Der Name wird dem Burger (inklusive Farbgebung) hinzugefuegt. Zutaten wird auf die maximale Anzahl gesetzt.
      * @param name Name des Burgers
      */
     public Burger(String name) {
@@ -26,26 +26,27 @@ public class Burger {
 
 
     /**
+     * Ausgabe der Burgerdetails und dessen Rezepts.
      * @return Burgerdetails und Rezept
      */
     @Override
     public String toString(){
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         int umNStellenEinruecken = 3;
 
         String einruecken = " ".repeat(umNStellenEinruecken);
 
         // Kopfzeile
-        buffer.append("Rezept fuer ").append(this.name).append(": (");
-        buffer.append(Math.round(this.berechneHoehe()*100f)/100f + "mm");
+        builder.append("Rezept fuer ").append(this.name).append(": (");
+        builder.append(Math.round(this.berechneHoehe()*100f)/100f).append("mm");
 
         String diaetstyp = getDiaettypAsString();
 
-        if(!diaetstyp.equals("")) buffer.append(", " + diaetstyp);
+        if(!diaetstyp.isBlank()) builder.append(", ").append(diaetstyp);
 
         String isKlassischString = Zutat.getKlassischToString(this.isKlassisch());
 
-        if(!isKlassischString.equals("")) buffer.append(", " + isKlassischString);
+        if(!isKlassischString.isBlank()) { builder.append(", ").append(isKlassischString); }
 
             // fuegt gefundene Geschmaecker an
             Geschmack[] geschmaecker = getGeschmack();
@@ -53,31 +54,31 @@ public class Burger {
                 // Fuege dem String den jeweiligen Geschmack hinzu, es seidenn er ist null oder normal 
                 if(currentGeschmack == null || currentGeschmack == Geschmack.NORMAL) continue; 
 
-                buffer.append(", " + currentGeschmack.toString());
+                builder.append(", ").append(currentGeschmack);
             }
 
         // Fuegt den Preis hinzu
-        buffer.append(") - ").append(Math.round(berechnePreis()*100f)/100f + "EUR\n\n");
+        builder.append(") - ").append(Math.round(berechnePreis()*100f)/100f).append("EUR\n\n");
 
         // Zutatenliste
-        buffer.append(einruecken).append("Zutaten: ");
+        builder.append(einruecken).append("Zutaten: ");
         for(int i = 0; i < zutaten.length; i++){
             Zutat aktuelleZutat = zutaten[i];
 
             if(aktuelleZutat == null) continue;
-            if(!(i == 0)) buffer.append(", ");
+            if(!(i == 0)) builder.append(", ");
 
-            buffer.append(aktuelleZutat.getName());
+            builder.append(aktuelleZutat.getName());
         }
 
         // Setzt die naechste Zeile um 2 nach unten
-        buffer.append("\n".repeat(2));
+        builder.append("\n".repeat(2));
 
         // Zubereitung
-        buffer.append(einruecken).append("Und so gehts: \n");
-        buffer.append(kuechenAnweisung());
+        builder.append(einruecken).append("Und so gehts: \n");
+        builder.append(kuechenAnweisung());
 
-        return buffer.toString();
+        return builder.toString();
     }
 
     // Getter
@@ -173,7 +174,6 @@ public class Burger {
         return isKlassisch;
     }
 
-
     /**
      * Konvertiert Diaetstyp von Integer als sein String und gibt diesen zurueck.
      * Die Methode ist in Zutat definitert, Burger ruft diese statisch auf.
@@ -187,7 +187,7 @@ public class Burger {
 
     /**
      * Fuehrt getDiaettypAsString() direkt mit dem errechneten Diaetstypen des gesamten Burgers aus. 
-     * @return
+     * @return Diaettyp
      */
     protected String getDiaettypAsString(){
         return Zutat.getDiaetstypAsString(getDiaettyp());
@@ -216,7 +216,7 @@ public class Burger {
      * @return Anweisung der Zutatenzubereitung als String
      */
     public String kuechenAnweisung() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         int umNStellenEinruecken = 3;
 
         String einruecken = " ".repeat(umNStellenEinruecken);
@@ -225,13 +225,13 @@ public class Burger {
         for(Zutat aktuelleZutat : zutaten){
             if(aktuelleZutat == null) continue;
 
-            buffer.append(einruecken);
-            buffer.append(listenZaehler++ + " - ").append(aktuelleZutat.getZubereitung()).append("\n");
+            builder.append(einruecken);
+            builder.append(listenZaehler++).append(" - ").append(aktuelleZutat.getZubereitung()).append("\n");
         }
 
 
 
-        return buffer.toString();
+        return builder.toString();
     }
 
     /**
@@ -280,7 +280,7 @@ public class Burger {
         if(zutat instanceof Broetchen){
             zutaten[BROETCHEN_POSITION] = zutat;
 
-            System.out.println(zutat.toString() + " hinzugefuegt.");
+            System.out.println(zutat + " hinzugefuegt.");
             return;
         }
 

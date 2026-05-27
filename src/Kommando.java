@@ -1,7 +1,9 @@
 import java.awt.Color;
 
+/**
+ * Liste der Kommandos
+ */
 public enum Kommando {
-    /// Liste der Kommandos
     HELP(
         new String[]{
         "Hilfe", "Help", "h", "?"
@@ -102,8 +104,10 @@ public enum Kommando {
     private final boolean isEssential;
 
     private final Kommandotyp kommandotyp;
-        
-    // Dient jediglich zur Farbspezifikation
+
+    /**
+     * Dient jediglich zur Farbspezifikation
+     */
     public enum Kommandotyp{
         ABBRUCH("Abbruch", Color.RED), 
         HINZUFUEGEN("Hinzufuegen", Color.GREEN),
@@ -111,8 +115,8 @@ public enum Kommando {
         AUSGABE("Ausgabe", Color.BLUE),
         NORMAL("Sonstiges");
 
-        Color eigenfarbe;
-        String description;
+        final Color eigenfarbe;
+        final String description;
 
         private Kommandotyp(String description, Color eigenfarbe){
             this.description = description;
@@ -135,8 +139,8 @@ public enum Kommando {
     }
         
     /**
-     * 
-     * @param commands Beinhaltet Aliases fuer den selben Befehlsaufruf 
+     * Konstruktor des Kommando-Enums.
+     * @param commands Beinhaltet Aliases fuer denselben Befehlsaufruf
      * @param description Beinhaltet die Beschreibung zu dem jeweiligen Befehl
      * @param type Gibt den Typen des Befehls sowie die dazugehoerige Farbe mit an
      * @param essential Gibt an, ob das Kommando bereits am Anfang ausgegeben wird oder erst mit dem ersten Help-Aufruf
@@ -149,21 +153,10 @@ public enum Kommando {
         this.kommandotyp = type;
     }
 
-    /**
-     * 
-     * @param commands
-     * @param description
-     * @param type
-     */
     private Kommando(String[] commands, String description, Kommandotyp type){
         this(commands, description, type, false);
     }
 
-    /**
-     * 
-     * @param commands
-     * @param description
-     */
     private Kommando(String[] commands, String description){
         this(commands, description, Kommandotyp.NORMAL);
     }
@@ -190,7 +183,7 @@ public enum Kommando {
 
     /**
      * Gibt die Farbe des Kommandotypens zurueck, dient zur Einfaerbung des Kommandos
-     * @return
+     * @return Color
      */
     public Color getEigenfarbe(){
         return this.kommandotyp.eigenfarbe;
@@ -198,7 +191,7 @@ public enum Kommando {
 
     /**
      * Gibt aus, ob das Kommando bereits am Anfang ausgegeben wird oder erst nach dem ersten Help-Aufruf.
-     * @return
+     * @return wahr oder falsch
      */
     public boolean getisEssential(){
         return this.isEssential;

@@ -2,10 +2,9 @@ import java.util.ArrayList;
 import java.awt.Color;
 
 /**
- * Abstakte Oberklasse für alle Zutaten des Burgers.
- * 
+ * Abstrakte Oberklasse für alle Zutaten des Burgers.
  * Vegan und vegetarisch werden als Integer abgespeichert, da jeder vegane burger ebenfalls vegetarisch ist.
- * Waeren beide in booleans gespeichert, koennte TODO
+ * Waeren beide als boolean gespeichert, koennte es zu Problemen fuehren.
  */
 public abstract class Zutat{
     protected int nummer;
@@ -27,15 +26,11 @@ public abstract class Zutat{
 
     /**
      * Vollständiger Konstruktor mit allen Parametern:
-     * 
-     * Diaettypen:
-     * 2 = vegan, 1 = vegetarisch, default oder 0 = non-vegan (weder vegetarisch noch vegan)
-     * 
-     * @param nummer
-     * @param name
-     * @param preis
-     * @param klassisch
-     * @param diaettyp
+     * @param nummer Katalognummer
+     * @param name Zutatenname
+     * @param preis Preis in Euro
+     * @param klassisch Ist eine standard Zutat
+     * @param diaettyp Vegan, vegetarisch oder keins von beidem
      */
     public Zutat(int nummer, String name, float preis, boolean klassisch, int diaettyp){
         this.nummer = nummer;
@@ -66,14 +61,6 @@ public abstract class Zutat{
      */
     public static ArrayList<Zutat> getKatalog(){
         return zutatenkatalog;
-    }
-
-    /**
-     * Eine neue Zutat wird in den Katalog eingefuegt (Redundant, da bei der Erzeugung bereits eine Instanz eingefuegt wird)
-     * @param neueZutat Zutat
-     */
-    public static void addZutat(Zutat neueZutat){
-        zutatenkatalog.add(neueZutat);
     }
 
     /**
@@ -197,9 +184,9 @@ public abstract class Zutat{
     }
 
     /**
-     * Teilt getVegan() und getVegetarisch() auf eine Funktion auf, da der return bis auf den Indikator identisch waere
-     * @param indikator
-     * @return
+     * Teilt getVegan() und getVegetarisch() auf eine Funktion auf, da der return bis auf den Indikator identisch waere.
+     * @param indikator Diaettypnummer
+     * @return wahr oder falsch
      */
     protected boolean getDiaetdyp(int indikator){
         return this.diaettyp >= indikator; // der typ kann >= der indikator sein, da ein veganer burger ebenfalls vegetarisch ist
@@ -253,8 +240,8 @@ public abstract class Zutat{
     }
 
     /**
-     * Printed den eingegebenen Input aus
-     * @param eingabe
+     * Printed den eingegebenen Input aus.
+     * @param eingabe Eingabestring
      */
     protected void print(String eingabe){
         String umbruch = "\n";
@@ -263,8 +250,8 @@ public abstract class Zutat{
     }
 
     /**
-     * Gibt die Zubereitungsausgabe zurueck
-     * @return
+     * Gibt die Zubereitungsausgabe zurueck.
+     * @return Zubereitungsausgabe
      */
     public abstract String getZubereitung(); 
 }

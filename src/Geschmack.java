@@ -1,8 +1,8 @@
 import java.awt.Color;
 
 /**
- * Geschmack fuer Saucen aber auch andere Klassen falls neue ergaenzt werden besitzen einen Geschmack als Enum.
- * Geschmaecker besitzen ihren eigenen Geschmack als String-Ausgabe und wird direkt als solches durch die toString-Methode mit ihrer jeweiligen Farbe direkt ausgegeben
+ * Geschmack fuer Saucen aber auch andere Klassen. Geschmaecker besitzen ihren eigenen Geschmack als String-Ausgabe und
+ * wird direkt als solches durch die toString-Methode mit ihrer jeweiligen Farbe direkt ausgegeben.
  */
 public enum Geschmack {
         NORMAL(""),
@@ -10,8 +10,8 @@ public enum Geschmack {
         SUESS("Suess", Color.MAGENTA),
         SALZIG("Salzig", Color.BLUE);
 
-        String beschreibung;
-        Color farbrepraesentierung;
+        final String beschreibung;
+        final Color farbrepraesentierung;
         static final DyeBucket bucket = new DyeBucket();
 
         private Geschmack(String name, Color color){

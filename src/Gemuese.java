@@ -1,6 +1,9 @@
+/**
+ * Gemuese-Objektklasse, Unterklasse von Zutat.
+ */
 public class Gemuese extends Zutat {
-    private float scheibenDicke;
-    private int scheibenAnzahl;
+    private final float scheibenDicke;
+    private final int scheibenAnzahl;
 
     Scheibenart gesetzteScheibenart;
 
@@ -24,12 +27,12 @@ public class Gemuese extends Zutat {
     }
 
     /**
-     * Vollstaendiger konstruktor fuer Gemuese. Die Scheibenart ist als default immer auf Scheiben gesetzt
-     * @param nummer
-     * @param name
-     * @param preis
-     * @param scheibenAnzahl
-     * @param scheibenDicke
+     * Konstruktor fuer Gemuese. Die Scheibenart ist als default immer auf Scheiben gesetzt
+     * @param nummer Katalognummer
+     * @param name Gemuesename
+     * @param preis Preis in Euro
+     * @param scheibenAnzahl Anzahl der Stuecke
+     * @param scheibenDicke Scheibendicke in Millimeter
      */
     public Gemuese(int nummer, String name, float preis, int scheibenAnzahl, float scheibenDicke) {
         super(nummer, name, preis);
@@ -49,8 +52,8 @@ public class Gemuese extends Zutat {
     }
 
     /**
-     * Switcht von Scheibe auf Ringe und von Ringe auf Scheibe
-     * Jedes Gemuese ist von default aus her eine Scheibe
+     * Switcht von Scheibe auf Ringe und von Ringe auf Scheibe.
+     * Jedes Gemuese ist von default aus her eine Scheibe.
      */
     public void switchScheibenart(){
         if(gesetzteScheibenart == Scheibenart.SCHEIBEN){
@@ -72,7 +75,7 @@ public class Gemuese extends Zutat {
     }
 
     /**
-     * @return
+     * @return Zubereitungszeit in Sekunden
      */
     @Override
     public int zubereiten() {
@@ -82,26 +85,32 @@ public class Gemuese extends Zutat {
     }
 
     /**
-     * @return
+     * Berechnet die Hoehe aller Scheiben.
+     * @return Hoehe in Millimeter
      */
     @Override
     public float berechneHoehe() {
         return scheibenDicke * scheibenAnzahl;
     }
 
+    /**
+     * Erstellt das Ausgabestring fuer die Konsole.
+     * @return Ausgabestring
+     */
     @Override
     public String getZubereitung() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         String einruecken = " ".repeat(6);
         char umbruch = '\n';
 
-        buffer.append(this.name + " wird gewaschen").append(umbruch);
+        builder.append(this.name).append(" wird gewaschen").append(umbruch);
 
         for(int i = 0; i < scheibenAnzahl; i++){
-            buffer.append(einruecken).append((i + 1) + ". "+ this.gesetzteScheibenart.toString() + " mit " + scheibenDicke + "mm schneiden").append(umbruch);
+            builder.append(einruecken).append((i + 1)).append(". ").append(this.gesetzteScheibenart.toString())
+                    .append(" mit ").append(scheibenDicke).append("mm schneiden").append(umbruch);
         }
 
 
-        return buffer.toString();
+        return builder.toString();
     }
 }
