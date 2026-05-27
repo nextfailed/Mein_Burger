@@ -291,7 +291,7 @@ public class Burger {
 
         // Sucht nach einer leeren Stelle und fuegt dort die Zutat ein
         for (int i = BROETCHEN_POSITION + 1; i < zutaten.length; i++) {
-            if (zutaten[i] != null) {
+            if (zutaten[i] == null) {
                 zutaten[i] = zutat;
 
                 System.out.println(zutat.toString() + " hinzugefuegt.");
@@ -300,6 +300,6 @@ public class Burger {
         }
 
         // Gibt eine Fehlermeldung aus, falls keine leere Stelle im Array gefunden wurde und die Zutatenliste somit voll ist 
-        System.err.println("Es ist kein Platz mehr fuer " + zutat + " moeglich. Maximale Zutatenanzahl wurde ueberschritten.");
+        System.err.println("Es ist kein Platz mehr fuer " + App.highlightBefehl(zutat.getName()) + ".\nMaximale Zutatenanzahl wurde ueberschritten.");
     }
 }

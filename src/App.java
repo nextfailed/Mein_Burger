@@ -412,7 +412,11 @@ public final class App {
         if(aktiverBurger != null) {
             Zutat zutat = Zutat.getZutat(nummer);
 
-            if(zutat != null) aktiverBurger.zutatHinzufuegen(zutat);
+            if(zutat != null) {
+                aktiverBurger.zutatHinzufuegen(zutat);
+
+                System.out.println(aktiverBurger.getAnzahlZutaten() + " : " + Burger.MAX_ZUTATENANZAHL + " Zutat(en) hinzugefuegt.");
+            };
         }
 
         else {
