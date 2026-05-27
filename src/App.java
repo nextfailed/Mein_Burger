@@ -212,7 +212,7 @@ public final class App {
             System.out.print("> ");
             eingabe = scanner.nextLine();
 
-            eingabe.trim();
+            eingabe = eingabe.trim();
 
             if(!eingabe.contains(" ")) {
                 eingabe += " ";
@@ -451,9 +451,52 @@ public final class App {
         // 2. alle burger printen
         // 3. gesamtpreis ausgeben
 
-        for(int i = 0; i < burgerListe.length; i++) {
-            burgerListe[i].zubereiten();
+        float gesamtkosten = 0;
+        float gesamtdauer = 0;
+
+        String ueberschrift = "Ihre Burger werden frisch zubereitet: ";
+        String rand = "#".repeat(ueberschrift.length());
+
+        rand = dyebucket.dyeText(rand, Color.GREEN);
+
+        System.out.println("");
+        System.out.println(rand);
+        System.out.println(dyebucket.dyeText(ueberschrift, Color.GREEN));
+        System.out.println(rand);
+        System.out.println("");
+
+        int count = 1;
+        for(Burger aktuellerBurger : burgerListe) {
+            if(aktuellerBurger == null) continue;
+
+            gesamtdauer += aktuellerBurger.zubereiten();
+            gesamtkosten += aktuellerBurger.berechnePreis();
+
+            System.out.println((count++) + ") " + aktuellerBurger.toString());
         }
+
+
+        String dauerToString = "# Gesamtdauer: " + Math.round((gesamtdauer/60f)*100f)/100f + " Minuten";
+        String preisToString = "# Ihre Kosten: " +Math.round(gesamtkosten*100f)/100f  + " EUR";
+
+        rand = "#".repeat(Math.max(dauerToString.length(), preisToString.length()));
+
+        System.out.println(rand);
+
+        System.out.println(dyebucket.dyeText(dauerToString, Color.CYAN));
+        System.out.println(dyebucket.dyeText(preisToString, Color.YELLOW));
+
+        System.out.println(rand);
+
+        burgerListe = new Burger[MAX_BURGERANZAHL];
+
+        String abgeschlossen = "Ihre Bestellung wurde abgeschlossen. Sie koennen nun eine neue Bestellung aufgegeben.";
+        rand = "#".repeat(abgeschlossen.length());
+
+        System.out.println("");
+        System.out.println(rand);
+        System.out.println(dyebucket.dyeText(abgeschlossen, Color.GREEN));
+        System.out.println(rand);
     }
 
     /**

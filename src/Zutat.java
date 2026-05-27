@@ -111,8 +111,8 @@ public abstract class Zutat{
 
     public static String getDiaetstypAsString(int indikator){
         return switch(indikator){
-            case INDIKATOR_VEGAN -> bucket.dyeText("(vegan) ", Color.GREEN);
-            case INDIKATOR_VEGETARISCH -> bucket.dyeText("(vegetarisch) ", Color.YELLOW);
+            case INDIKATOR_VEGAN -> bucket.dyeText("(vegan)", Color.GREEN);
+            case INDIKATOR_VEGETARISCH -> bucket.dyeText("(vegetarisch)", Color.YELLOW);
             default -> "";
         };
     }
@@ -235,7 +235,7 @@ public abstract class Zutat{
      * @return Gibt die Variable Klassisch-Variante als String zurueck.
      */
     public static String getKlassischToString(boolean klassisch){
-        return klassisch ? bucket.dyeText("(klassisch) ", Color.RED) :"";
+        return klassisch ? bucket.dyeText("(klassisch)", Color.RED) : "";
     }
 
     /**

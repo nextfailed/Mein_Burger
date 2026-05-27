@@ -37,10 +37,15 @@ public class Burger {
 
         // Kopfzeile
         buffer.append("Rezept fuer ").append(this.name).append(": (");
-        buffer.append(Math.round(this.berechneHoehe()*100f)/100f + "mm, ");
-        buffer.append(getDiaettypAsString());
+        buffer.append(Math.round(this.berechneHoehe()*100f)/100f + "mm");
 
-        buffer.append(Zutat.getKlassischToString(this.isKlassisch()));
+        String diaetstyp = getDiaettypAsString();
+
+        if(!diaetstyp.equals("")) buffer.append(", " + diaetstyp);
+
+        String isKlassischString = Zutat.getKlassischToString(this.isKlassisch());
+
+        if(!isKlassischString.equals("")) buffer.append(", " + isKlassischString);
 
             // fuegt gefundene Geschmaecker an
             Geschmack[] geschmaecker = getGeschmack();
@@ -286,7 +291,7 @@ public class Burger {
 
         // Sucht nach einer leeren Stelle und fuegt dort die Zutat ein
         for (int i = BROETCHEN_POSITION + 1; i < zutaten.length; i++) {
-            if (zutaten[i] == null) {
+            if (zutaten[i] != null) {
                 zutaten[i] = zutat;
 
                 System.out.println(zutat.toString() + " hinzugefuegt.");

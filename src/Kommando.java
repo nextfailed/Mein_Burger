@@ -46,7 +46,7 @@ public enum Kommando {
 
     ZUTAT(
         new String[]{
-        "Zutat", "Ingredient", ""
+        "Zutat", "Ingredient", "Z"
         },
 
         "Fuege deinem Burger nach " + App.highlightBefehl("Mein Burger [Burgername]") + " eine Zutat mithilfe ihrer ID hinzu. ID wird als Argument ans Ende dazugegeben.",
@@ -55,7 +55,7 @@ public enum Kommando {
 
     CANCEL(
         new String[]{
-        "Cancel", "Abbruch"
+        "Abbruch", "Cancel" 
         },
 
         "Bricht die Zusammenstellung deines aktuellen Burgers ab und erstellt einen neuen.",

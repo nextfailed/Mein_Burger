@@ -98,7 +98,7 @@ public class Gemuese extends Zutat {
         buffer.append(this.name + " wird gewaschen").append(umbruch);
 
         for(int i = 0; i < scheibenAnzahl; i++){
-            buffer.append(einruecken).append((i + 1) + ") "+ this.gesetzteScheibenart.toString() + " mit " + scheibenDicke + "mm schneiden").append(umbruch);
+            buffer.append(einruecken).append((i + 1) + ". "+ this.gesetzteScheibenart.toString() + " mit " + scheibenDicke + "mm schneiden").append(umbruch);
         }
 
 
