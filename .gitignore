@@ -29,3 +29,17 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+src/App.class
+src/Bratling.class
+src/Broetchen.class
+src/Burger.class
+src/DyeBucket.class
+src/Gemuese.class
+src/Gemuese$Scheibenart.class
+src/Geschmack.class
+src/hatGeschmack.class
+src/Kommando.class
+src/Kommando$Kommandotyp.class
+src/Salat.class
+src/Sauce.class
+src/Zutat.class
