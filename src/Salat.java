@@ -7,10 +7,9 @@ public class Salat extends Zutat {
         super.diaettyp = INDIKATOR_VEGAN;
     }
 
-
     /**
-     *
-     * @return
+     * Salat muss nicht zubereitet werden.
+     * @return immer 0
      */
     @Override
     public int zubereiten() {
@@ -18,14 +17,18 @@ public class Salat extends Zutat {
     }
 
     /**
-     * Salat besitzt keine Hoehe und wird immer "0" zurueck geben.
-     * @return
+     * Salat besitzt keine Hoehe.
+     * @return immer 0
      */
     @Override
     public float berechneHoehe() {
         return 0;
     }
 
+    /**
+     * Erweitert den String des Salats, um einen Satz zu bilden.
+     * @return "'Salattyp' wird gewaschen und geschleudert"
+     */
     @Override
     public String getZubereitung() {
         return (this.name + " wird gewaschen und geschleudert");
