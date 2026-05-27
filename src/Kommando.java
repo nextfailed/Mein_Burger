@@ -76,7 +76,7 @@ public enum Kommando {
 
     MY(
         new String[]{
-        "Mein Burger", "My"
+        "Burgerliste", "Meine_Burger", "My"
         }, 
 
         "Listet alle von dir erstellten Burger aus.",

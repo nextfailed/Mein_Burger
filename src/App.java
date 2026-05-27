@@ -232,7 +232,10 @@ public final class App {
 
             else if(kommandoGefunden(befehl, Kommando.NEW)){
                 if(!wirdZusammengestellt) {
-                    neuerBurger(argument);
+                    if(!neuerBurger(argument)){
+                        continue;
+                    };
+
                     wirdZusammengestellt = true;
 
                     System.out.println("\nDu stellst einen neuen Burger Namens "+ aktiverBurger.getName() + " zusammen.");
@@ -383,22 +386,20 @@ public final class App {
      * Fuegt der Bestellung einen neuen Burger mit dem uebergebenen Namen hinzu.
      * @param burgerName Name des Burgers
      */
-    protected static void neuerBurger(String burgerName) {
+    protected static boolean neuerBurger(String burgerName) {
         Burger neuerBurger = new Burger(burgerName);
 
-        try {
-            for(int i = 0; i < burgerListe.length; i++) {
-                if(burgerListe[i] == null) {
-                    burgerListe[i] = neuerBurger;
-                    aktiverBurger = neuerBurger;
-                    isEmpty = false;
-                    return;
-                }
+        for(int i = 0; i < burgerListe.length; i++) {
+            if(burgerListe[i] == null) {
+                burgerListe[i] = neuerBurger;
+                aktiverBurger = neuerBurger;
+                isEmpty = false;
+                return true;
             }
         }
-        catch (Exception exception) {
-            System.err.println("Es wurde bereits das Maximum von " + highlightQuit(MAX_BURGERANZAHL + "") + " Burgern in dieser Bestellung erreicht!");
-        }
+    
+        System.err.println("Es wurde bereits das Maximum von " + highlightQuit(MAX_BURGERANZAHL + "") + " Burgern in dieser Bestellung erreicht!");
+        return false;
     }
 
     /**
@@ -410,8 +411,10 @@ public final class App {
 
         if(aktiverBurger != null) {
             Zutat zutat = Zutat.getZutat(nummer);
-            aktiverBurger.zutatHinzufuegen(zutat);
+
+            if(zutat != null) aktiverBurger.zutatHinzufuegen(zutat);
         }
+
         else {
             System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt." +
                     "\nBitte fuege der Bestellung zunaechst einen neuen Burger mit "+ highlightBefehl(Kommando.NEW.getMainAlias()) + " hinzu.");
@@ -446,10 +449,15 @@ public final class App {
      *
      */
     protected static void bestellen() {
-        // TODO: Unvollstaendig
         // 1. alle burger zubereiten
         // 2. alle burger printen
         // 3. gesamtpreis ausgeben
+
+        if(isEmpty){
+            System.err.println("Sie haben bis jetzt noch keine Bestellung aufgegeben.");
+            System.err.println("Bitte geben Sie mithilfe von " + highlightBefehl(Kommando.NEW.getMainAlias()) + " eine Bestellung auf.");            
+            return;
+        }
 
         float gesamtkosten = 0;
         float gesamtdauer = 0;
@@ -488,8 +496,8 @@ public final class App {
 
         System.out.println(rand);
 
-        burgerListe = new Burger[MAX_BURGERANZAHL];
-        isEmpty = true;
+        // Abschliessung und Zuruecksetzung
+        resetBestellung();
 
         String abgeschlossen = "Ihre Bestellung wurde abgeschlossen. Sie koennen nun eine neue Bestellung aufgegeben.";
         rand = "#".repeat(abgeschlossen.length());
@@ -498,6 +506,17 @@ public final class App {
         System.out.println(rand);
         System.out.println(dyebucket.dyeText(abgeschlossen, Color.GREEN));
         System.out.println(rand);
+    }
+
+    /**
+     * Resettet die Werte der momentanen Bestellung vollstaendig.
+     */
+    public static void resetBestellung(){        
+        burgerListe = new Burger[MAX_BURGERANZAHL];
+        aktiverBurger = null;
+        isEmpty = true;
+
+        wirdZusammengestellt = false;
     }
 
     /**
