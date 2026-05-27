@@ -228,18 +228,18 @@ public class App {
     }
 
     /**
-     * Faerbt ein Keyword eines Commands mit der festgelegten keyword-farbe ein
+     * Faerbt ein Keyword eines Commands mit der festgelegten keyword-farbe ein.
      * @param befehl wird als einfacher String erwartet
-     * @return Keyword, welches gefaerbt, kursiv notiert und in ' ' eingebettet ist 
+     * @return Keyword, welches gefaerbt, kursiv notiert und in Anfuehrungszeichen eingebettet ist
      */
     protected static String highlightBefehl(String befehl){
         return highlightBefehl(befehl, keyWordColor);
     }
 
     /**
-     * Faerbt ein Quit-Keyword eines Commands mit der festgelegten quitkeyword-farbe ein
+     * Faerbt ein Quit-Keyword eines Commands mit der festgelegten quitkeyword-farbe ein.
      * @param befehl wird als einfacher String erwartet
-     * @return Keyword, welches gefaerbt, kursiv notiert und in ' ' eingebettet ist 
+     * @return Keyword, welches gefaerbt, kursiv notiert und in Anfuehrungszeichen eingebettet ist
      */
     protected static String highlightQuit(String befehl){
         return highlightBefehl(befehl, quitWordColor);
