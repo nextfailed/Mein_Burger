@@ -489,6 +489,7 @@ public final class App {
         System.out.println(rand);
 
         burgerListe = new Burger[MAX_BURGERANZAHL];
+        isEmpty = true;
 
         String abgeschlossen = "Ihre Bestellung wurde abgeschlossen. Sie koennen nun eine neue Bestellung aufgegeben.";
         rand = "#".repeat(abgeschlossen.length());
