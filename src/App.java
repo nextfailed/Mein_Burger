@@ -107,7 +107,7 @@ public class App {
                 if(!wirdZusammengestellt) {
                     if(!neuerBurger(argument)){
                         continue;
-                    };
+                    }
 
                     wirdZusammengestellt = true;
 
@@ -284,7 +284,7 @@ public class App {
                 aktiverBurger.zutatHinzufuegen(zutat);
 
                 System.out.println(aktiverBurger.getAnzahlZutaten() + " : " + Burger.MAX_ZUTATENANZAHL + " Zutat(en) hinzugefuegt.");
-            };
+            }
         }
 
         else {
