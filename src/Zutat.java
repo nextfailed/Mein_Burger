@@ -4,8 +4,8 @@ import java.awt.Color;
 /**
  * Abstakte Oberklasse für alle Zutaten des Burgers.
  * 
- * Vegan und Vegetarisch werden als Integer abgespeichert, da jeder vegane burger ebenfalls vegetarisch ist.
- * Waeren beide in booleans gespeichert, koennte 
+ * Vegan und vegetarisch werden als Integer abgespeichert, da jeder vegane burger ebenfalls vegetarisch ist.
+ * Waeren beide in booleans gespeichert, koennte TODO
  */
 public abstract class Zutat{
     protected int nummer;
@@ -51,19 +51,18 @@ public abstract class Zutat{
 
     /**
      * Verkürzter Konstruktor ohne Ernaehrungsart oder ob er klassisch ist.
-     * Kann mithilfe von Settern im nachhinein angepasst werden
-     * 
-     * @param nummer
-     * @param name
-     * @param preis
+     * Kann mithilfe von Settern im Nachhinein angepasst werden.
+     * @param nummer Katalognummer
+     * @param name Zutatenname
+     * @param preis Preis in Euro
      */
     public Zutat(int nummer, String name, float preis){
         this(nummer,name, preis, false, 0);
     }
 
     /**
-     * Gibt die Liste an Zutaten zurueck. Jede Zutat wird bei ihrer Instanziierung im statischen Zutat.Katalog abgespeichert
-     * @return
+     * Gibt die Liste an Zutaten zurueck. Jede Zutat wird bei ihrer Instanziierung im statischen Zutatkatalog abgespeichert.
+     * @return Zutatenkatalog
      */
     public static ArrayList<Zutat> getKatalog(){
         return zutatenkatalog;
@@ -71,7 +70,7 @@ public abstract class Zutat{
 
     /**
      * Eine neue Zutat wird in den Katalog eingefuegt (Redundant, da bei der Erzeugung bereits eine Instanz eingefuegt wird)
-     * @param neueZutat
+     * @param neueZutat Zutat
      */
     public static void addZutat(Zutat neueZutat){
         zutatenkatalog.add(neueZutat);
@@ -79,8 +78,8 @@ public abstract class Zutat{
 
     /**
      * Zutat wird mit ihrer jeweiligen Nummer im Array gesucht und herausgegeben 
-     * @param nummer
-     * @return
+     * @param nummer Zutatennummer
+     * @return Zutat
      */
     public static Zutat getZutat(int nummer){
         for(Zutat current : zutatenkatalog){
@@ -118,20 +117,20 @@ public abstract class Zutat{
     }
 
     /**
-     * Gibt die Dauer des Herstellens zurueck
-     * @return
+     * Gibt die Dauer des Herstellens zurueck.
+     * @return Dauer in Sekunden TODO Sekunden oder Minuten?
      */
     public abstract int zubereiten();
 
     /**
-     * Berechnet die Hoehe dynamisch
-     * @return
+     * Berechnet die Hoehe dynamisch.
+     * @return Hoehe in Millimeter
      */
     public abstract float berechneHoehe();
 
     /**
-     * Setzt den Diaetstyp auf Vegan, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
-     * @return
+     * Setzt den Diaetstyp auf vegan, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
+     * @return diese Zutat
      */
     public Zutat setVegan(){
         this.diaettyp = INDIKATOR_VEGAN;
@@ -141,7 +140,7 @@ public abstract class Zutat{
 
     /**
      * Setzt den Diaetstyp auf vegetarisch, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
-     * @return
+     * @return diese Zutat
      */
     public Zutat setVegetarisch(){
         this.diaettyp = INDIKATOR_VEGETARISCH;
@@ -151,7 +150,7 @@ public abstract class Zutat{
 
     /**
      * Setzt den Diaetstyp auf nicht vegan oder vegetarisch, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
-     * @return
+     * @return diese Zutat
      */
     public Zutat setNonVegan(){
         this.diaettyp = INDIKATOR_NON_VEGAN;
@@ -161,7 +160,7 @@ public abstract class Zutat{
 
     /**
      * Switcht beim Aufruf klassisch zwischen true und false, gibt sich selbst zurueck, damit man beim Casten ebenfalls den diaetstyp einstellen kann
-     * @return
+     * @return diese Zutat
      */
     public Zutat switchClassic(){
         this.klassisch = !klassisch;
@@ -171,8 +170,8 @@ public abstract class Zutat{
 
     /**
      * Setzt klassisch auf den mitgegebenen Wert, gibt sich selbst zurueck, damit man beim Casten ebenfalls den diaetstyp einstellen kann
-     * @param neuerWert
-     * @return
+     * @param neuerWert wahr oder falsch
+     * @return diese Zutat
      */
     public Zutat setClassic(boolean neuerWert){
         this.klassisch = neuerWert;
@@ -198,7 +197,7 @@ public abstract class Zutat{
     }
 
     /**
-     * Teilt getVegan() und getVegetarisch() auf eine Funktion auf, da der return bis auf den Indikator identisch waeren 
+     * Teilt getVegan() und getVegetarisch() auf eine Funktion auf, da der return bis auf den Indikator identisch waere
      * @param indikator
      * @return
      */

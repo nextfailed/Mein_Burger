@@ -15,6 +15,11 @@ public class Sauce extends Zutat implements hatGeschmack{
         this(nummer, name, preis, false, INDIKATOR_NON_VEGAN, menge, geschmack);
     }
 
+    /**
+     * Wandelt den Geschmacks-String zum zugehoerigen Enum um.
+     * @param string Geschmack-String
+     * @return Geschmack-Enum
+     */
     Optional<Geschmack> parse(String string) {
         try {
             return Optional.of(Geschmack.valueOf(string.toUpperCase()));
@@ -40,7 +45,7 @@ public class Sauce extends Zutat implements hatGeschmack{
 
     /**
      * Saucen haben keine Zubereitungsdauer
-     * @return
+     * @return immer 0
      */
     @Override
     public int zubereiten() {
@@ -49,7 +54,7 @@ public class Sauce extends Zutat implements hatGeschmack{
 
     /**
      * Saucen haben keinen Einfluss auf die Hoehe
-     * @return
+     * @return immer 0
      */
     @Override
     public float berechneHoehe() {
