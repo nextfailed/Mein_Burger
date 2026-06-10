@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -13,13 +12,13 @@ public class App {
     public static final Scanner scanner = new Scanner(System.in);
     public static final DyeBucket dyebucket = new DyeBucket();
     private static final Lager lager = new Lager();
-    private static final Warenkorb warenkorb = new Warenkorb();
+    private static Warenkorb warenkorb = new Warenkorb();
 
     // Bestellungsspeicher
-    protected static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
-    protected static boolean isEmpty = true;
-    protected static Burger aktiverBurger;
-    protected static boolean wirdZusammengestellt = false;
+//    protected static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
+//    protected static boolean isEmpty = true;
+//    protected static Burger aktiverBurger;
+//    protected static boolean wirdZusammengestellt = false;
 
     // Wichtig fuer Ausgaben
     protected static final String einleitung = "";
@@ -106,19 +105,17 @@ public class App {
             }
 
             else if(kommandoGefunden(befehl, Kommando.NEW)){
-                if(!wirdZusammengestellt) {
+                if(!warenkorb.isInBearbeitung()) {
                     if(!warenkorb.add(new Burger(argument))) {
                         continue;
                     }
 
-                    wirdZusammengestellt = true;
-
-                    System.out.println("\nDu stellst einen neuen Burger Namens "+ aktiverBurger.getName() + " zusammen.");
+                    System.out.println("\nDu stellst einen neuen Burger Namens "+ warenkorb.getAktiverBurger().getName() + " zusammen.");
                     System.out.println("Mit " + highlightBefehl("ok") + " kannst du deine Zusammenstellung abschliessen.");
                 }
 
                 else {
-                    System.err.println("\nFEHLER! Der Burger " + aktiverBurger.getName() + " befindet sich noch in der Zusammenstellung."
+                    System.err.println("\nFEHLER! Der Burger " + warenkorb.getAktiverBurger().getName() + " befindet sich noch in der Zusammenstellung."
                     + "\nBitte beende erste die Zusammenstellung mit "+ highlightBefehl("ok") +".");
                 }
 
@@ -140,23 +137,23 @@ public class App {
             }
 
             else if(kommandoGefunden(befehl, Kommando.OK)){
-                if(!wirdZusammengestellt){
+                if(!warenkorb.isInBearbeitung()){
                     System.err.println("\nFEHLER: Du erstellst momentan noch keinen burger.\nBitte erstelle einen neuen Burger mithilfe von: " + highlightBefehl("Mein burger [Burgername]"));
                     continue;
                 }
-                if(aktiverBurger == null) {
+                if(warenkorb.getAktiverBurger() == null) {
                     System.err.println("\nFEHLER: Dein Burger existiert nicht.");
                     continue;
                 }
 
-                if(aktiverBurger.getAnzahlZutaten() == 0){
-                    System.err.println("\nFEHLER: Du hast noch keine Zutaten fuer " + aktiverBurger.getName() + " hinzugefuegt\nBitte fuege deinem neuen Burger vorerst mindestens "+ highlightQuit("ein Broetchen") +" hinzu.");
+                if(warenkorb.getAktiverBurger().getAnzahlZutaten() == 0){
+                    System.err.println("\nFEHLER: Du hast noch keine Zutaten fuer " + warenkorb.getAktiverBurger().getName() + " hinzugefuegt\nBitte fuege deinem neuen Burger vorerst mindestens "+ highlightQuit("ein Broetchen") +" hinzu.");
 
                     continue;
                 }
 
                 wirdZusammengestellt = false;
-                System.out.println("\nDein Burger " + aktiverBurger.getName() + " wurde deiner Bestellung hinzugefuegt.");
+                System.out.println("\nDein Burger " + warenkorb.getAktiverBurger().getName() + " wurde deiner Bestellung hinzugefuegt.");
             }
 
             else if(kommandoGefunden(befehl, Kommando.NEW)){
@@ -256,21 +253,8 @@ public class App {
      */
     protected static void zutatHinzufuegen(int nummer) {
         System.out.println();
-
-        if(aktiverBurger != null) {
-            Zutat zutat = lager.getZutat(nummer);
-
-            if(zutat != null) {
-                aktiverBurger.zutatHinzufuegen(zutat);
-
-                System.out.println(aktiverBurger.getAnzahlZutaten() + " : " + Burger.MAX_ZUTATENANZAHL + " Zutat(en) hinzugefuegt.");
-            }
-        }
-
-        else {
-            System.err.println("FEHLER! Zurzeit wird kein Burger von dir erstellt." +
-                    "\nBitte fuege der Bestellung zunaechst einen neuen Burger mit "+ highlightBefehl(Kommando.NEW.getMainAlias()) + " hinzu.");
-        }
+        Zutat zutat = lager.getZutat(nummer);
+        warenkorb.addZutat(zutat);
     }
 
     /**
@@ -278,97 +262,32 @@ public class App {
      * wird ein entsprechender Fehler ausgegeben.
      */
     protected static void meineBurger() {
-        if(!isEmpty){
-            String seiten = "#".repeat(4);
-            System.out.println(seiten + " Folgende Burger wurden deiner Bestellung hinzugefuegt: " + seiten);
-
-            for (int i = 0; i < burgerListe.length; i++) {
-                Burger aktuellerBurger = burgerListe[i];
-
-                if(aktuellerBurger != null) {
-                    System.out.println((i + 1) + ") " + aktuellerBurger);
-                }
-            }
-        }
-
-        else {
-            System.err.println("Der Bestellung wurden noch keine Burger hinzugefuegt. Bitte fuege der\n" +
-                    "Bestellung zunaechst einen neuen Burger mit " + highlightBefehl(Kommando.MY.getMainAlias()) + " hinzu.");
-        }
+        System.out.println(warenkorb);
     }
 
     /**
-     *
+     * //TODO
      */
     protected static void bestellen() {
-        // 1. alle burger zubereiten
-        // 2. alle burger printen
-        // 3. gesamtpreis ausgeben
-
-        if(isEmpty){
-            System.err.println("Sie haben bis jetzt noch keine Bestellung aufgegeben.");
-            System.err.println("Bitte geben Sie mithilfe von " + highlightBefehl(Kommando.NEW.getMainAlias()) + " eine Bestellung auf.");            
-            return;
-        }
-
-        float gesamtkosten = 0;
-        float gesamtdauer = 0;
-
-        String ueberschrift = "Ihre Burger werden frisch zubereitet: ";
-        String rand = "#".repeat(ueberschrift.length());
-
-        rand = dyebucket.dyeText(rand, Color.GREEN);
-
-        System.out.println();
-        System.out.println(rand);
-        System.out.println(dyebucket.dyeText(ueberschrift, Color.GREEN));
-        System.out.println(rand);
-        System.out.println();
-
-        int count = 1;
-        for(Burger aktuellerBurger : burgerListe) {
-            if(aktuellerBurger == null) continue;
-
-            gesamtdauer += aktuellerBurger.zubereiten();
-            gesamtkosten += aktuellerBurger.berechnePreis();
-
-            System.out.println((count++) + ") " + aktuellerBurger);
-        }
-
-
-        String dauerToString = "# Gesamtdauer: " + Math.round((gesamtdauer/60f)*100f)/100f + " Minuten";
-        String preisToString = "# Ihre Kosten: " +Math.round(gesamtkosten*100f)/100f  + " EUR";
-
-        rand = "#".repeat(Math.max(dauerToString.length(), preisToString.length()));
-
-        System.out.println(rand);
-
-        System.out.println(dyebucket.dyeText(dauerToString, Color.CYAN));
-        System.out.println(dyebucket.dyeText(preisToString, Color.YELLOW));
-
-        System.out.println(rand);
+        warenkorb.abschliessen();
 
         // Abschliessung und Zuruecksetzung
-        resetBestellung();
+        neuerWarenkorb();
 
         String abgeschlossen = "Ihre Bestellung wurde abgeschlossen. Sie koennen nun eine neue Bestellung aufgegeben.";
-        rand = "#".repeat(abgeschlossen.length());
+        String rand = "#".repeat(abgeschlossen.length());
 
         System.out.println();
         System.out.println(rand);
-        System.out.println(dyebucket.dyeText(abgeschlossen, Color.GREEN));
+        System.out.println(App.dyebucket.dyeText(abgeschlossen, Color.GREEN));
         System.out.println(rand);
     }
 
     /**
-     * Resettet die Werte der momentanen Bestellung vollstaendig.
+     * Resettet die Werte der momentanen Bestellung vollstaendig. //TODO
      */
-    public static void resetBestellung(){        
-        burgerListe = new Burger[MAX_BURGERANZAHL];
-        aktiverBurger = null;
-        isEmpty = true;
-
-        wirdZusammengestellt = false;
+    public static void neuerWarenkorb(){
+        warenkorb = new Warenkorb();
     }
 
     /**
