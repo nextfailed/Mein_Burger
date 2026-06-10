@@ -1,7 +1,7 @@
 /**
  * Broetchen-Objektklasse, Unterklasse von Zutat.
  */
-public class Broetchen extends Zutat{
+public class Broetchen extends ZutatExtended{
     private final int backzeit;
     private final int hoehe;
 

@@ -1,6 +1,5 @@
-import java.util.Optional;
 
-public class Sauce extends Zutat implements hatGeschmack{
+public class Sauce extends ZutatExtended implements hatGeschmack{
     private final int menge;
     private final Geschmack geschmack;
 

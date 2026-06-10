@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.awt.Color;
 
 /**
@@ -18,7 +17,7 @@ public abstract class Zutat{
     public static final int INDIKATOR_VEGETARISCH = 1;
     public static final int INDIKATOR_NON_VEGAN = 0;
 
-    public int diaettyp; // Diaettyp speicher vegan und vegetarisch als einzelner Integer ab
+    protected int diaettyp; // Diaettyp speicher vegan und vegetarisch als einzelner Integer ab
 
     protected static final DyeBucket bucket = new DyeBucket();
 
@@ -88,36 +87,7 @@ public abstract class Zutat{
      */
     public abstract float berechneHoehe();
 
-    /**
-     * Setzt den Diaetstyp auf vegan, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
-     * @return diese Zutat
-     */
-    public Zutat setVegan(){
-        this.diaettyp = INDIKATOR_VEGAN;
-
-        return this;
-    }
-
-    /**
-     * Setzt den Diaetstyp auf vegetarisch, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
-     * @return diese Zutat
-     */
-    public Zutat setVegetarisch(){
-        this.diaettyp = INDIKATOR_VEGETARISCH;
-
-        return this;
-    }
-
-    /**
-     * Setzt den Diaetstyp auf nicht vegan oder vegetarisch, gibt sich selbst zurueck, damit man beim Casten ebenfalls Classic auf true setzen kann
-     * @return diese Zutat
-     */
-    public Zutat setNonVegan(){
-        this.diaettyp = INDIKATOR_NON_VEGAN;
-
-        return this;
-    }
-
+    
     /**
      * Switcht beim Aufruf klassisch zwischen true und false, gibt sich selbst zurueck, damit man beim Casten ebenfalls den diaetstyp einstellen kann
      * @return diese Zutat

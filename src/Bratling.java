@@ -1,4 +1,4 @@
-public class Bratling extends Zutat {
+public class Bratling extends ZutatExtended {
     private final int bratzeit;
     private final int hoehe;
 
