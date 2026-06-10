@@ -119,8 +119,8 @@ public class Burger {
         // Laeuft ueber jede Zutat und sucht jeden Geschmack der existiert und notiert diesen bei fund einmalig
         for(Zutat currentZutat : zutaten){ 
             // Geschmack von Zutat wird nur angeschaut, falls auch die Zutat existiert und einen Geschmack hat
-            if(currentZutat != null && currentZutat instanceof hatGeschmack){
-                Geschmack currentGeschmack = ((hatGeschmack)currentZutat).getGeschmack();
+            if(currentZutat != null && currentZutat instanceof HatGeschmack){
+                Geschmack currentGeschmack = ((HatGeschmack)currentZutat).getGeschmack();
 
                 // Suche im Geschmacks-Verzeichnis, ob der momentan gefundene Geschmack bereits vorkommt, wenn nicht fuege ihn an einer leeren Stelle an
                 for(int i = 0; i < geschmaecker.length; i++){

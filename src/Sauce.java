@@ -1,5 +1,5 @@
 
-public class Sauce extends ZutatExtended implements hatGeschmack{
+public class Sauce extends ZutatExtended implements HatGeschmack{
     private final int menge;
     private final Geschmack geschmack;
 
