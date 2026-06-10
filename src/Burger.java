@@ -72,7 +72,7 @@ public class Burger {
         }
 
         // Setzt die naechste Zeile um 2 nach unten
-        builder.append("\n".repeat(2));
+        builder.repeat("\n", 2);
 
         // Zubereitung
         builder.append(einruecken).append("Und so gehts: \n");

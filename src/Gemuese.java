@@ -16,7 +16,7 @@ public class Gemuese extends Zutat {
 
         public final String tag;
 
-        private Scheibenart(String tag){
+        Scheibenart(String tag){
             this.tag = tag;
         }
 

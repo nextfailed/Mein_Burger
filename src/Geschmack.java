@@ -14,12 +14,12 @@ public enum Geschmack {
         final Color farbrepraesentierung;
         static final DyeBucket bucket = new DyeBucket();
 
-        private Geschmack(String name, Color color){
+        Geschmack(String name, Color color){
                 this.beschreibung = name;
                 this.farbrepraesentierung = color;
         }
 
-        private Geschmack(String name){
+        Geschmack(String name){
                 this(name, Color.WHITE);
         }
 
