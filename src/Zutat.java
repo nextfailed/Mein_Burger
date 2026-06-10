@@ -22,7 +22,7 @@ public abstract class Zutat{
 
     protected static final DyeBucket bucket = new DyeBucket();
 
-    private static final ArrayList<Zutat> zutatenkatalog = new ArrayList<>();
+    //private static final ArrayList<Zutat> zutatenkatalog = new ArrayList<>();
 
     /**
      * Vollständiger Konstruktor mit allen Parametern:
@@ -41,7 +41,7 @@ public abstract class Zutat{
 
         this.diaettyp = diaettyp;
 
-        zutatenkatalog.add(this);
+        //zutatenkatalog.add(this);
     }
 
     /**
@@ -59,25 +59,25 @@ public abstract class Zutat{
      * Gibt die Liste an Zutaten zurueck. Jede Zutat wird bei ihrer Instanziierung im statischen Zutatkatalog abgespeichert.
      * @return Zutatenkatalog
      */
-    public static ArrayList<Zutat> getKatalog(){
-        return zutatenkatalog;
-    }
+//    public static ArrayList<Zutat> getKatalog(){
+//        return zutatenkatalog;
+//    }
 
     /**
-     * Zutat wird mit ihrer jeweiligen Nummer im Array gesucht und herausgegeben 
+     * Zutat wird mit ihrer jeweiligen Nummer im Array gesucht und herausgegeben
      * @param nummer Zutatennummer
      * @return Zutat
      */
-    public static Zutat getZutat(int nummer){
-        for(Zutat current : zutatenkatalog){
-            if(current.getNummer() == nummer) {
-                return current;
-            }
-        }
-
-        System.err.println("Zutat mit der Nummer " + nummer + " konnte nicht gefunden werden.");
-        return null;
-    }
+//    public static Zutat getZutat(int nummer){
+//        for(Zutat current : zutatenkatalog){
+//            if(current.getNummer() == nummer) {
+//                return current;
+//            }
+//        }
+//
+//        System.err.println("Zutat mit der Nummer " + nummer + " konnte nicht gefunden werden.");
+//        return null;
+//    }
 
     @Override
     public String toString(){

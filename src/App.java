@@ -12,6 +12,7 @@ public class App {
     // Tools
     public static final Scanner scanner = new Scanner(System.in);
     public static final DyeBucket dyebucket = new DyeBucket();
+    private static final Lager lager = new Lager();
 
     // Bestellungsspeicher
     protected static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
@@ -32,7 +33,7 @@ public class App {
 
     public static void main(String[] args) {
         StringBuilder ausgabe = new StringBuilder();
-        generiereKatalog();
+        //generiereKatalog();
 
         // Kopfzeile
         String slogen = "You'll never burger alone - Create your Burger";
@@ -208,14 +209,14 @@ public class App {
      * Gibt das gesamte Menue ueber die Konsole aus.
      */
     protected static void menu() {
-        ArrayList<Zutat> zutatenKatalog = Zutat.getKatalog();
         String seitenrand = "#".repeat(5);
 
         System.out.println(seitenrand+ "\nFolgende Zutaten stehen zur Auswahl: " + seitenrand + UMBRUCH);
+        System.out.println(lager);
 
-        for(Zutat aktuelleZutat : zutatenKatalog) {
-            System.out.println(aktuelleZutat.toString());
-        }
+//        for(Zutat aktuelleZutat : zutatenKatalog) {
+//            System.out.println(aktuelleZutat.toString());
+//        }
     }
 
     /**
@@ -278,7 +279,7 @@ public class App {
         System.out.println();
 
         if(aktiverBurger != null) {
-            Zutat zutat = Zutat.getZutat(nummer);
+            Zutat zutat = lager.getZutat(nummer);
 
             if(zutat != null) {
                 aktiverBurger.zutatHinzufuegen(zutat);
@@ -490,36 +491,36 @@ public class App {
      * Zutatenklasse durch den Konstruktoraufruf deklariert und
      * muessen daher nur instanziiert werden.
      */
-    public static void generiereKatalog() {
-
-        // Broetchen
-        new Broetchen(10, "Hamburger (Standard)", 0.85f, 27, 90).setVegetarisch().setClassic(true);
-        new Broetchen(11, "Hamburger Sesam", 0.95f, 90, 27).setVegetarisch().setClassic(true);
-        new Broetchen(12, "Vegan-Broetchen", 0.55f, 240, 34).setVegan();
-        new Broetchen(13, "Ciabatta", 0.45f, 330, 41).setVegetarisch();
-
-        // Bratlinge
-        new Bratling(20, "Rindfleisch (Original)", 1.85f, 270, 25).setNonVegan().setClassic(true);
-        new Bratling(21, "Haenchenfleisch gegrillt", 1.15f,  180, 11).setNonVegan().setClassic(true);
-        new Bratling(22, "Falafel-Bratling", 1.45f, 210, 21).setVegan();
-        new Bratling(23, "Gemuese Bratling", 1.75f, 240, 25).setVegetarisch();
-
-        // Salat
-        new Salat(30, "Eisbergsalat", 0.18f);
-        new Salat(31, "Roculasalat", 0.25f);
-
-        // Gemuese
-        new Gemuese(40, "Tomate", 0.25f, 3, 3).setClassic(true);
-        new Gemuese(41, "Salzgurke", 0.15f, 4, 2).setClassic(true);
-        new Gemuese(42, "Rote Zwiebelringe", 0.08f, 5, 2).switchScheibenart();
-        new Gemuese(43, "Jalapeno-Ringe", 0.08f, 5, 2).switchScheibenart();
-
-        // Sauce
-        new Sauce(50, "Ketchup", 0.10f, 10, Geschmack.NORMAL).setVegan().setClassic(true);
-        new Sauce(51, "Sandwich-Sauce", 0.15f, 10, Geschmack.NORMAL).setVegetarisch().setClassic(true);
-        new Sauce(52, "Chili-Sauce", 0.25f, 8, Geschmack.SCHARF).setVegan();
-        new Sauce(53, "Honig-Senf-Sauce", 0.18f, 8, Geschmack.SUESS).setVegetarisch();
-
-        // Platz fuer Erweitungen
-    }
+//    public static void generiereKatalog() {
+//
+//        // Broetchen
+//        new Broetchen(10, "Hamburger (Standard)", 0.85f, 27, 90).setVegetarisch().setClassic(true);
+//        new Broetchen(11, "Hamburger Sesam", 0.95f, 90, 27).setVegetarisch().setClassic(true);
+//        new Broetchen(12, "Vegan-Broetchen", 0.55f, 240, 34).setVegan();
+//        new Broetchen(13, "Ciabatta", 0.45f, 330, 41).setVegetarisch();
+//
+//        // Bratlinge
+//        new Bratling(20, "Rindfleisch (Original)", 1.85f, 270, 25).setNonVegan().setClassic(true);
+//        new Bratling(21, "Haenchenfleisch gegrillt", 1.15f,  180, 11).setNonVegan().setClassic(true);
+//        new Bratling(22, "Falafel-Bratling", 1.45f, 210, 21).setVegan();
+//        new Bratling(23, "Gemuese Bratling", 1.75f, 240, 25).setVegetarisch();
+//
+//        // Salat
+//        new Salat(30, "Eisbergsalat", 0.18f);
+//        new Salat(31, "Roculasalat", 0.25f);
+//
+//        // Gemuese
+//        new Gemuese(40, "Tomate", 0.25f, 3, 3).setClassic(true);
+//        new Gemuese(41, "Salzgurke", 0.15f, 4, 2).setClassic(true);
+//        new Gemuese(42, "Rote Zwiebelringe", 0.08f, 5, 2).switchScheibenart();
+//        new Gemuese(43, "Jalapeno-Ringe", 0.08f, 5, 2).switchScheibenart();
+//
+//        // Sauce
+//        new Sauce(50, "Ketchup", 0.10f, 10, Geschmack.NORMAL).setVegan().setClassic(true);
+//        new Sauce(51, "Sandwich-Sauce", 0.15f, 10, Geschmack.NORMAL).setVegetarisch().setClassic(true);
+//        new Sauce(52, "Chili-Sauce", 0.25f, 8, Geschmack.SCHARF).setVegan();
+//        new Sauce(53, "Honig-Senf-Sauce", 0.18f, 8, Geschmack.SUESS).setVegetarisch();
+//
+//        // Platz fuer Erweitungen
+//    }
 }

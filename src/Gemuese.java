@@ -47,15 +47,16 @@ public class Gemuese extends Zutat {
      * Setzt die Art des geschnittenen Gemueses auf das Scheiben-Enum, welches mitgeliefert wird
      * @param art Scheibenart
      */
-    public void switchScheibenart(Scheibenart art){
+    public Gemuese switchScheibenart(Scheibenart art){
         this.gesetzteScheibenart = art;
+        return this;
     }
 
     /**
      * Switcht von Scheibe auf Ringe und von Ringe auf Scheibe.
      * Jedes Gemuese ist von default aus her eine Scheibe.
      */
-    public void switchScheibenart(){
+    public Gemuese switchScheibenart(){
         if(gesetzteScheibenart == Scheibenart.SCHEIBEN){
             gesetzteScheibenart = Scheibenart.RINGE;
         }
@@ -63,6 +64,7 @@ public class Gemuese extends Zutat {
         else{
             gesetzteScheibenart = Scheibenart.SCHEIBEN;
         }
+        return this;
     }
 
     // Getter
