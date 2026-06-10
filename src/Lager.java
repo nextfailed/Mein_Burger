@@ -32,9 +32,9 @@ public class Lager {
 
     /**
      * Erzeugt den Standartkatalog, der von Anfang an existiert.
-     * Zutaten werden automatisch in der ArrayListe<Zutat> innerhalb der //TODO
-     * Zutatenklasse durch den Konstruktoraufruf deklariert und
-     * muessen daher nur instanziiert werden.
+     * Beim Erstellen des Lagers wird der Katalog automatisch in
+     * die ArrayListe {@code zutatenkatalog} gespeichert.
+     * Die Liste kann ausserhalb der Laufzeit erweitert werde.
      */
     private ArrayList<Zutat> generiereKatalog() {
         List<Zutat> zutatenkatalog;

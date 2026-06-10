@@ -22,8 +22,6 @@ public abstract class Zutat{
 
     protected static final DyeBucket bucket = new DyeBucket();
 
-    //private static final ArrayList<Zutat> zutatenkatalog = new ArrayList<>();
-
     /**
      * Vollständiger Konstruktor mit allen Parametern:
      * @param nummer Katalognummer
@@ -40,8 +38,6 @@ public abstract class Zutat{
         this.klassisch = klassisch;
 
         this.diaettyp = diaettyp;
-
-        //zutatenkatalog.add(this);
     }
 
     /**
@@ -55,29 +51,6 @@ public abstract class Zutat{
         this(nummer,name, preis, false, 0);
     }
 
-    /**
-     * Gibt die Liste an Zutaten zurueck. Jede Zutat wird bei ihrer Instanziierung im statischen Zutatkatalog abgespeichert.
-     * @return Zutatenkatalog
-     */
-//    public static ArrayList<Zutat> getKatalog(){
-//        return zutatenkatalog;
-//    }
-
-    /**
-     * Zutat wird mit ihrer jeweiligen Nummer im Array gesucht und herausgegeben
-     * @param nummer Zutatennummer
-     * @return Zutat
-     */
-//    public static Zutat getZutat(int nummer){
-//        for(Zutat current : zutatenkatalog){
-//            if(current.getNummer() == nummer) {
-//                return current;
-//            }
-//        }
-//
-//        System.err.println("Zutat mit der Nummer " + nummer + " konnte nicht gefunden werden.");
-//        return null;
-//    }
 
     @Override
     public String toString(){
@@ -105,7 +78,7 @@ public abstract class Zutat{
 
     /**
      * Gibt die Dauer des Herstellens zurueck.
-     * @return Dauer in Sekunden TODO Sekunden oder Minuten?
+     * @return Dauer in Sekunden
      */
     public abstract int zubereiten();
 
