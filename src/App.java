@@ -13,6 +13,7 @@ public class App {
     public static final Scanner scanner = new Scanner(System.in);
     public static final DyeBucket dyebucket = new DyeBucket();
     private static final Lager lager = new Lager();
+    private static final Warenkorb warenkorb = new Warenkorb();
 
     // Bestellungsspeicher
     protected static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
@@ -106,7 +107,7 @@ public class App {
 
             else if(kommandoGefunden(befehl, Kommando.NEW)){
                 if(!wirdZusammengestellt) {
-                    if(!neuerBurger(argument)){
+                    if(!warenkorb.add(new Burger(argument))) {
                         continue;
                     }
 
@@ -247,26 +248,6 @@ public class App {
      */
     protected static String highlightQuit(String befehl){
         return highlightBefehl(befehl, quitWordColor);
-    }
-
-    /**
-     * Fuegt der Bestellung einen neuen Burger mit dem uebergebenen Namen hinzu.
-     * @param burgerName Name des Burgers
-     */
-    protected static boolean neuerBurger(String burgerName) {
-        Burger neuerBurger = new Burger(burgerName);
-
-        for(int i = 0; i < burgerListe.length; i++) {
-            if(burgerListe[i] == null) {
-                burgerListe[i] = neuerBurger;
-                aktiverBurger = neuerBurger;
-                isEmpty = false;
-                return true;
-            }
-        }
-    
-        System.err.println("Es wurde bereits das Maximum von " + highlightQuit(MAX_BURGERANZAHL + "") + " Burgern in dieser Bestellung erreicht!");
-        return false;
     }
 
     /**
