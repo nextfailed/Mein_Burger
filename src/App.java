@@ -5,20 +5,11 @@ import java.util.Scanner;
  * Hauptklasse für die Kontrolle des Programms.
  */
 public class App {
-    // Finalisierte Maximalanzahlen
-    protected static final int MAX_BURGERANZAHL = 10;
-
     // Tools
     public static final Scanner scanner = new Scanner(System.in);
     public static final DyeBucket dyebucket = new DyeBucket();
     private static final Lager lager = new Lager();
     private static Warenkorb warenkorb = new Warenkorb();
-
-    // Bestellungsspeicher
-//    protected static Burger[] burgerListe = new Burger[MAX_BURGERANZAHL];
-//    protected static boolean isEmpty = true;
-//    protected static Burger aktiverBurger;
-//    protected static boolean wirdZusammengestellt = false;
 
     // Wichtig fuer Ausgaben
     protected static final String einleitung = "";
@@ -66,7 +57,7 @@ public class App {
 
         ausgabe.append(rand);
 
-        /// Befehle:
+        // Befehle:
         System.out.println(ausgabe);
 
         befehlseingabe();
@@ -110,7 +101,7 @@ public class App {
                         continue;
                     }
 
-                    System.out.println("\nDu stellst einen neuen Burger Namens "+ warenkorb.getAktiverBurger().getName() + " zusammen.");
+                    System.out.println("\nDu erstellst Burger " + warenkorb.size() + " : " + Warenkorb.MAX_BURGERANZAHL + " mit dem Namen "+ warenkorb.getAktiverBurger().getName() + ".");
                     System.out.println("Mit " + highlightBefehl("ok") + " kannst du deine Zusammenstellung abschliessen.");
                 }
 
@@ -152,8 +143,8 @@ public class App {
                     continue;
                 }
 
-                wirdZusammengestellt = false;
                 System.out.println("\nDein Burger " + warenkorb.getAktiverBurger().getName() + " wurde deiner Bestellung hinzugefuegt.");
+                warenkorb.beendeAktiverBurger();
             }
 
             else if(kommandoGefunden(befehl, Kommando.NEW)){
@@ -211,10 +202,6 @@ public class App {
 
         System.out.println(seitenrand+ "\nFolgende Zutaten stehen zur Auswahl: " + seitenrand + UMBRUCH);
         System.out.println(lager);
-
-//        for(Zutat aktuelleZutat : zutatenKatalog) {
-//            System.out.println(aktuelleZutat.toString());
-//        }
     }
 
     /**
@@ -243,7 +230,7 @@ public class App {
      * @param befehl wird als einfacher String erwartet
      * @return Keyword, welches gefaerbt, kursiv notiert und in Anfuehrungszeichen eingebettet ist
      */
-    protected static String highlightQuit(String befehl){
+    protected static String highlightQuit(String befehl) {
         return highlightBefehl(befehl, quitWordColor);
     }
 
@@ -266,12 +253,12 @@ public class App {
     }
 
     /**
-     * //TODO
+     * Loest die Bestellung im Warenkorb aus und gibt deren Rueckgabe
+     * ueber die Konsole aus.
      */
     protected static void bestellen() {
-        warenkorb.abschliessen();
-
         // Abschliessung und Zuruecksetzung
+        System.out.println(warenkorb.abschliessen());
         neuerWarenkorb();
 
         String abgeschlossen = "Ihre Bestellung wurde abgeschlossen. Sie koennen nun eine neue Bestellung aufgegeben.";
@@ -284,9 +271,9 @@ public class App {
     }
 
     /**
-     * Resettet die Werte der momentanen Bestellung vollstaendig. //TODO
+     * Erstelle einen neuen (leeren) Warenkorb.
      */
-    public static void neuerWarenkorb(){
+    private static void neuerWarenkorb(){
         warenkorb = new Warenkorb();
     }
 
@@ -319,7 +306,7 @@ public class App {
 
         ausgabe.append(UMBRUCH).append(UMBRUCH).append(rand).append(UMBRUCH);
 
-        /// Befehle:
+        // Befehle:
         for(Kommando aktuellesKommando : Kommando.values()){
             if(aktuellesKommando == null) continue;
 

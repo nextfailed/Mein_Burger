@@ -1,19 +1,20 @@
 import java.awt.*;
 
-//TODO Javadocs
+/**
+ * Der Warenkorb verwaltet die Bestellung und den Burger der sich z.Z.
+ * in Bearbeitung befindet. Maximale Anzahl der Burger pro Bestellung = 10.
+ */
 public class Warenkorb {
-    private final int MAX_BURGERANZAHL = 10;
+    public static final int MAX_BURGERANZAHL = 10;
 
-    private Burger[] burgerListe;
+    private final Burger[] burgerListe;
     private Burger aktiverBurger;
-    protected static boolean inBearbeitung;
 
     private int size;
 
     public Warenkorb() {
         burgerListe = new Burger[MAX_BURGERANZAHL];
         aktiverBurger = null;
-        inBearbeitung = false;
         size = 0;
     }
 
@@ -21,20 +22,25 @@ public class Warenkorb {
         return size == 0;
     }
 
-    public Burger[] getBurgerListe() {
-        return burgerListe;
-    }
-
     public Burger getAktiverBurger() {
         return aktiverBurger;
     }
 
-    //TODO Javadocs
-    public boolean isInBearbeitung() {
-        return inBearbeitung;
+    public int size() {
+        return size;
     }
 
-    //TODO Javadocs
+    /**
+     * Gibt zurueck, ob ein Burger z.Z. in Bearbeitung ist.
+     * @return Wahr oder falsch
+     */
+    public boolean isInBearbeitung() {
+        return aktiverBurger != null;
+    }
+
+    /**
+     * Setzt den aktiven Burger inaktiv.
+     */
     public void beendeAktiverBurger() {
         aktiverBurger = null;
     }
@@ -44,18 +50,20 @@ public class Warenkorb {
      * @param neuerBurger neuer Burger
      */
     public boolean add(Burger neuerBurger) {
-        if(size > MAX_BURGERANZAHL) {
+        if(size >= MAX_BURGERANZAHL) {
             System.err.println("FEHLER: Es koennen maximal 10 Burger in einer Bestellung aufgenommen werden!");
             return false;
         }
         burgerListe[size] = neuerBurger;
         size++;
         aktiverBurger = neuerBurger;
-        inBearbeitung = true;
         return true;
     }
 
-    //TODO Javadocs
+    /**
+     * Fuegt dem aktiven Burger die uebergebene Zutat hinzu.
+     * @param neueZutat neue Zutat
+     */
     public void addZutat(Zutat neueZutat) {
         if(aktiverBurger != null) {
             if(neueZutat != null) {
@@ -70,7 +78,11 @@ public class Warenkorb {
         }
     }
 
-    //TODO Javadocs
+    /**
+     * Schliesst die Bestellung ab und beginnt die Zubereitung der einzelnen
+     * Burger im Warenkorb.
+     * @return String für die Konsolenausgabe
+     */
     public String abschliessen() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -85,7 +97,7 @@ public class Warenkorb {
         float gesamtkosten = 0;
         float gesamtdauer = 0;
 
-        String ueberschrift = "Ihre Burger werden frisch zubereitet: ";
+        String ueberschrift = " Ihre Burger werden frisch zubereitet: ";
         String rand = "#".repeat(ueberschrift.length());
 
         rand = App.dyebucket.dyeText(rand, Color.GREEN);
@@ -100,6 +112,8 @@ public class Warenkorb {
         for(Burger aktuellerBurger : burgerListe) {
             if(aktuellerBurger == null) continue;
 
+            stringBuilder.repeat("\n", 2);
+
             gesamtdauer += aktuellerBurger.zubereiten();
             gesamtkosten += aktuellerBurger.berechnePreis();
 
@@ -108,6 +122,7 @@ public class Warenkorb {
             stringBuilder.append(aktuellerBurger);
         }
 
+        stringBuilder.repeat("\n", 2);
 
         String dauerToString = "# Gesamtdauer: " + Math.round((gesamtdauer/60f)*100f)/100f + " Minuten";
         String preisToString = "# Ihre Kosten: " +Math.round(gesamtkosten*100f)/100f  + " EUR";
@@ -116,8 +131,11 @@ public class Warenkorb {
 
         stringBuilder.append(rand);
 
+        stringBuilder.repeat("\n", 2);
         stringBuilder.append(App.dyebucket.dyeText(dauerToString, Color.CYAN));
+        stringBuilder.append("\n");
         stringBuilder.append(App.dyebucket.dyeText(preisToString, Color.YELLOW));
+        stringBuilder.repeat("\n", 2);
 
         stringBuilder.append(rand);
 
@@ -132,12 +150,13 @@ public class Warenkorb {
             stringBuilder.append(seiten);
             stringBuilder.append(" Folgende Burger wurden deiner Bestellung hinzugefuegt: ");
             stringBuilder.append(seiten);
+            stringBuilder.repeat("\n", 2);
 
             for (int i = 0; i < burgerListe.length; i++) {
                 Burger aktuellerBurger = burgerListe[i];
 
                 if(aktuellerBurger != null) {
-                    stringBuilder.append(i).append(1).append(". ").append(aktuellerBurger);
+                    stringBuilder.append(i + 1).append(". ").append(aktuellerBurger);
                 }
             }
         }

@@ -41,7 +41,7 @@ public enum Kommando {
 
         "Erstelle einen neuen Burger. Dem Neuen Burger muss im Kommando als Argument ein Name hinzugegeben werden.\n  Mithilfe von " + App.highlightBefehl("Zutat [Zutatsnummer]") + 
         " koennen diesem Zutaten hinzugefuegt werden. Burger muessen mit "+ App.highlightBefehl("ok") +" abgeschlossen werden.\n  Achtung: Du kannst maximal " 
-        + App.dyebucket.dyeText(App.MAX_BURGERANZAHL, Color.YELLOW) + " Burger erstellen",
+        + App.dyebucket.dyeText(Warenkorb.MAX_BURGERANZAHL, Color.YELLOW) + " Burger erstellen",
         
         Kommandotyp.HINZUFUEGEN
     ),
@@ -99,11 +99,11 @@ public enum Kommando {
 
     /// Initialisierungen    
    
-    private final String[] aliases;
-    private final String beschreibung;
-    private final boolean isEssential;
+     final String[] aliases;
+     final String beschreibung;
+     final boolean isEssential;
 
-    private final Kommandotyp kommandotyp;
+     final Kommandotyp kommandotyp;
 
     /**
      * Dient jediglich zur Farbspezifikation
@@ -118,12 +118,12 @@ public enum Kommando {
         final Color eigenfarbe;
         final String description;
 
-        private Kommandotyp(String description, Color eigenfarbe){
+        Kommandotyp(String description, Color eigenfarbe){
             this.description = description;
             this.eigenfarbe = eigenfarbe;
         }
 
-        private Kommandotyp(String description){
+        Kommandotyp(String description){
             this(description, Color.WHITE);
         }
 
@@ -145,7 +145,7 @@ public enum Kommando {
      * @param type Gibt den Typen des Befehls sowie die dazugehoerige Farbe mit an
      * @param essential Gibt an, ob das Kommando bereits am Anfang ausgegeben wird oder erst mit dem ersten Help-Aufruf
      */
-    private Kommando(String[] commands, String description, Kommandotyp type, boolean essential){
+    Kommando(String[] commands, String description, Kommandotyp type, boolean essential){
         this.aliases = commands;
         this.beschreibung = description;
         this.isEssential = essential;
@@ -153,11 +153,11 @@ public enum Kommando {
         this.kommandotyp = type;
     }
 
-    private Kommando(String[] commands, String description, Kommandotyp type){
+    Kommando(String[] commands, String description, Kommandotyp type){
         this(commands, description, type, false);
     }
 
-    private Kommando(String[] commands, String description){
+    Kommando(String[] commands, String description){
         this(commands, description, Kommandotyp.NORMAL);
     }
 
