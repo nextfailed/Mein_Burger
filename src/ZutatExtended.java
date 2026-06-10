@@ -1,3 +1,10 @@
+/**
+ * Gibt jeder Zutat, die nicht fest Vegan, Vegetarisch oder Nicht-Vegan ist die 
+ * Setter-Methoden fuer Vegan, Vegetarisch und Nicht-Vegan.
+ * 
+ * Somit koennen Zutaten wie zuvor auch durch den Aufruf von {@code new ZutatExtended(...).setVegan()} erstellt werden,
+ * festgelegte Zutaten wie Salat koennen jedoch hier nicht ueberschrieben werden, da es nur eine normale Zutat ohne die erweiterten Methoden ist.
+ */
 public abstract class ZutatExtended extends Zutat{
     
     /**
