@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Lager {
 
     private final ArrayList<Zutat> zutatenkatalog;
-
+    
     public Lager() {
         zutatenkatalog = generiereKatalog();
     }
@@ -37,8 +36,7 @@ public class Lager {
      * Die Liste kann ausserhalb der Laufzeit erweitert werde.
      */
     private ArrayList<Zutat> generiereKatalog() {
-        List<Zutat> zutatenkatalog;
-
+        
         return new ArrayList<>(Arrays.asList(
         // Broetchen
         new Broetchen(10, "Hamburger (Standard)", 0.85f, 27, 90).setVegetarisch().setClassic(true),
