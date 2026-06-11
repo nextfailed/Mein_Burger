@@ -17,7 +17,7 @@ public class Bratling extends ZutatExtended {
      */
     public Bratling(int nummer, String name, float preis, boolean klassisch, int diaettyp, int bratzeit, int hoehe) {
         super(nummer, name, preis, klassisch, diaettyp);
-        this.bratzeit = bratzeit; // Bratzeit ist in Sekunden angegeben, 1 Minute -> Backzeit = 60;
+        this.bratzeit = bratzeit; // Bratzeit ist in Sekunden angegeben, 1 Minute → Backzeit = 60;
         this.hoehe = hoehe;
     }
 
@@ -47,7 +47,8 @@ public class Bratling extends ZutatExtended {
     }
 
     @Override
-    public String getZubereitung() {        
-        return (this.name + " auf jeder Seite " + bratzeit/60 + " Minuten und " + bratzeit % 60 + " Sekunden grillen");
+    public String getZubereitung() {
+        int bratzeitJeSeite = bratzeit / 2;
+        return (this.name + " auf jeder Seite " + bratzeitJeSeite/60 + " Minuten und " + bratzeitJeSeite % 60 + " Sekunden grillen");
     }
 }

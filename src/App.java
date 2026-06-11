@@ -155,20 +155,6 @@ public class App {
                 bestellen();
             }
 
-
-//            else if(kommandoGefunden(befehl, Kommando.CANCEL)){ // Resettet eine neue Zusammenstellung
-//                if(aktiverBurger == null && wirdZusammengestellt) {
-//                    System.err.println("Sie erstellen momentan noch keinen neuen Burger.");
-//                }
-//
-//                else{
-//                    aktiverBurger = null;
-//
-//                    System.out.println(highlightQuit("\nDein neuer Burger wurde komplett zurueckgesetzt"));
-//                    wirdZusammengestellt = false;
-//                }
-//            }
-
             else if(kommandoGefunden(befehl, Kommando.QUIT)){ // Beendet das Programm
                 System.out.println(dyebucket.dyeText("Auf Wiedersehen!" , Color.blue));
                 return;

@@ -1,16 +1,15 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Verwaltungsklasse für alle verfuegbaren Zutaten.
+ */
 public class Lager {
 
     private final ArrayList<Zutat> zutatenkatalog;
     
     public Lager() {
         zutatenkatalog = generiereKatalog();
-    }
-
-    public ArrayList<Zutat> getZutatenkatalog() {
-        return zutatenkatalog;
     }
 
     /**
@@ -38,35 +37,40 @@ public class Lager {
     private ArrayList<Zutat> generiereKatalog() {
         
         return new ArrayList<>(Arrays.asList(
-        // Broetchen
-        new Broetchen(10, "Hamburger (Standard)", 0.85f, 27, 90).setVegetarisch().setClassic(true),
-        new Broetchen(11, "Hamburger Sesam", 0.95f, 90, 27).setVegetarisch().setClassic(true),
-        new Broetchen(12, "Vegan-Broetchen", 0.55f, 240, 34).setVegan(),
-        new Broetchen(13, "Ciabatta", 0.45f, 330, 41).setVegetarisch(),
+                // Broetchen
+                new Broetchen(10, "Hamburger (Standard)", 0.85f, 27, 90).setVegetarisch().setClassic(true),
+                new Broetchen(11, "Hamburger Sesam", 0.95f, 90, 27).setVegetarisch().setClassic(true),
+                new Broetchen(12, "Vegan-Broetchen", 0.55f, 240, 34).setVegan(),
+                new Broetchen(13, "Ciabatta", 0.45f, 330, 41).setVegetarisch(),
 
-        // Bratlinge
-        new Bratling(20, "Rindfleisch (Original)", 1.85f, 270, 25).setNonVegan().setClassic(true),
-        new Bratling(21, "Haenchenfleisch gegrillt", 1.15f, 180, 11).setNonVegan().setClassic(true),
-        new Bratling(22, "Falafel-Bratling", 1.45f, 210, 21).setVegan(),
-        new Bratling(23, "Gemuese Bratling", 1.75f, 240, 25).setVegetarisch(),
+                // Bratlinge
+                new Bratling(20, "Rindfleisch (Original)", 1.85f, 270, 25).setNonVegan().setClassic(true),
+                new Bratling(21, "Haenchenfleisch gegrillt", 1.15f, 180, 11).setNonVegan().setClassic(true),
+                new Bratling(22, "Falafel-Bratling", 1.45f, 210, 21).setVegan(),
+                new Bratling(23, "Gemuese Bratling", 1.75f, 240, 25).setVegetarisch(),
 
-        // Salat
-        new Salat(30, "Eisbergsalat", 0.18f),
-        new Salat(31, "Roculasalat", 0.25f),
+                // Salat
+                new Salat(30, "Eisbergsalat", 0.18f),
+                new Salat(31, "Roculasalat", 0.25f),
 
-        // Gemuese
-        new Gemuese(40, "Tomate", 0.25f, 3, 3).setClassic(true),
-        new Gemuese(41, "Salzgurke", 0.15f, 4, 2).setClassic(true),
-        new Gemuese(42, "Rote Zwiebelringe", 0.08f, 5, 2).switchScheibenart(),
-        new Gemuese(43, "Jalapeno-Ringe", 0.08f, 5, 2).switchScheibenart(),
+                // Gemuese
+                new Gemuese(40, "Tomate", 0.25f, 3, 3).setClassic(true),
+                new Gemuese(41, "Salzgurke", 0.15f, 4, 2).setClassic(true),
+                new Gemuese(42, "Rote Zwiebelringe", 0.08f, 5, 2).switchScheibenart(),
+                new Gemuese(43, "Jalapeno-Ringe", 0.08f, 5, 2).switchScheibenart(),
 
-        // Sauce
-        new Sauce(50, "Ketchup", 0.10f, 10, Geschmack.NORMAL).setVegan().setClassic(true),
-        new Sauce(51, "Sandwich-Sauce", 0.15f, 10, Geschmack.NORMAL).setVegetarisch().setClassic(true),
-        new Sauce(52, "Chili-Sauce", 0.25f, 8, Geschmack.SCHARF).setVegan(),
-        new Sauce(53, "Honig-Senf-Sauce", 0.18f, 8, Geschmack.SUESS).setVegetarisch()
+                // Sauce
+                new Sauce(50, "Ketchup", 0.10f, 10, Geschmack.NORMAL).setVegan().setClassic(true),
+                new Sauce(51, "Sandwich-Sauce", 0.15f, 10, Geschmack.NORMAL).setVegetarisch().setClassic(true),
+                new Sauce(52, "Chili-Sauce", 0.25f, 8, Geschmack.SCHARF).setVegan(),
+                new Sauce(53, "Honig-Senf-Sauce", 0.18f, 8, Geschmack.SUESS).setVegetarisch(),
 
-        // Platz fuer Erweitungen
+                new Kaese(125, "Sandwich-Käse", 0.39f, 80, KaeseTyp.KUHMILCH).setClassic(true),
+                new Kaese(126, "Gouda", 0.59f, 140, KaeseTyp.KUHMILCH),
+                new Kaese(127, "Salakis", 0.75f, 60, KaeseTyp.SCHAFSMILCH),
+                new Kaese(128, "Landana Rosso", 0.39f, 210, KaeseTyp.ZIEGENMILCH)
+
+                // Platz fuer Erweitungen
         ));
     }
 

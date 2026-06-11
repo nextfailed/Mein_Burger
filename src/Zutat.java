@@ -53,14 +53,31 @@ public abstract class Zutat{
 
     @Override
     public String toString(){
-        // DyeBucket Faerbt den Text 
+        StringBuilder stringBuilder = new StringBuilder();
+
         String diaetString = getDiaetstypAsString();
-
-
         String isKlassisch = getKlassischToString();
 
+        stringBuilder.append(nummer);
+        stringBuilder.append(" : ");
+        stringBuilder.append(bucket.dyeText(name, Color.CYAN));
+        stringBuilder.append(", ");
+        stringBuilder.append(diaetString);
+        stringBuilder.append(", ");
+        stringBuilder.append(isKlassisch);
+        stringBuilder.append(" - ");
+        stringBuilder.append(bucket.dyeText(this.preis + "EUR ", Color.YELLOW));
 
-        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + " - " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
+        return stringBuilder.toString();
+
+        // DyeBucket Faerbt den Text 
+//        String diaetString = getDiaetstypAsString();
+//
+//
+//        String isKlassisch = getKlassischToString();
+//
+//
+//        return  nummer + " : " + bucket.dyeText(name, Color.CYAN) + " - " + bucket.dyeText(this.preis + "EUR ", Color.YELLOW) + diaetString + isKlassisch;
     }
 
     public String getDiaetstypAsString(){
